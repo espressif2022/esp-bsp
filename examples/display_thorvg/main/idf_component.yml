@@ -1,0 +1,10 @@
+description: BSP Display and camera example
+
+dependencies:
+  esp32_p4_function_ev_board:
+    version: "*"
+    override_path: "../../../bsp/esp32_p4_function_ev_board"
+  espressif/thorvg:
+    path: thorvg
+    git: https://github.com/espressif2022/idf-extra-components_fork.git
+    version: "feature/add_component_thorvg"
