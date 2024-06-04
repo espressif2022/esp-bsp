@@ -1,0 +1,11 @@
+description: BSP Display rotation example
+dependencies:
+  idf: ">=5.3"
+  esp_jpeg: "*"
+  lvgl/lvgl: "^8"
+  # esp32_s3_lcd_ev_board:
+  #   version: "*"
+  #   override_path: "../../../bsp/esp32_s3_lcd_ev_board"
+    # esp32_s3_lcd_ev_board:
+    #   version: "1.2.0"
+    #   override_path: "../../../bsp/esp32_p4_box"
