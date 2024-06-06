@@ -37,7 +37,8 @@
    With sampling frequency 22050 Hz and 16bit mono resolution it equals to ~3.715 seconds */
 #define RECORDING_LENGTH (160)
 
-#define REC_FILENAME    FS_MNT_PATH"/recording.wav"
+#define REC_CODEC_FILENAME      FS_MNT_PATH"/record_codec.wav"
+#define REC_PDM_FILENAME        FS_MNT_PATH"/record_pdm.wav"
 
 static const char *TAG = "DISP";
 
@@ -72,7 +73,8 @@ typedef struct __attribute__((packed))
 * Function definitions
 *******************************************************************************/
 static void app_disp_lvgl_show_settings(lv_obj_t *screen, lv_group_t *group);
-static void app_disp_lvgl_show_record(lv_obj_t *screen, lv_group_t *group);
+static void app_disp_lvgl_show_codec_record(lv_obj_t *screen, lv_group_t *group);
+static void app_disp_lvgl_show_pdm_record(lv_obj_t *screen, lv_group_t *group);
 static void app_disp_lvgl_show_filesystem(lv_obj_t *screen, lv_group_t *group);
 static void app_disp_lvgl_show_files(const char *path);
 static void scroll_begin_event(lv_event_t *e);
@@ -86,7 +88,8 @@ static void set_tab_group(void);
 static lv_obj_t *tabview = NULL;
 static lv_obj_t *tab_btns = NULL;
 static lv_group_t *filesystem_group = NULL;
-static lv_group_t *recording_group = NULL;
+static lv_group_t *codec_recording_group = NULL;
+static lv_group_t *pdm_recording_group = NULL;
 static lv_group_t *settings_group = NULL;
 
 /* FS */
@@ -102,7 +105,10 @@ static SemaphoreHandle_t audio_mux;
 static bool play_file_repeat = false;
 static bool play_file_stop = false;
 static char usb_drive_play_file[250];
-static lv_obj_t *play_btn = NULL, *play1_btn = NULL, *rec_btn = NULL, *rec_stop_btn = NULL;
+static lv_obj_t *play_btn = NULL;
+
+static lv_obj_t *codec_play_btn = NULL, *codec_rec_btn = NULL, *codec_stop_btn = NULL;
+static lv_obj_t *pdm_play_btn = NULL, *pdm_rec_btn = NULL, *pdm_stop_btn = NULL;
 
 /*******************************************************************************
 * Public API functions
@@ -129,14 +135,16 @@ void app_disp_lvgl_show(void)
 
     /* Add tabs (the tabs are page (lv_page) and can be scrolled */
     lv_obj_t *tab_filesystem = lv_tabview_add_tab(tabview, LV_SYMBOL_LIST" File System");
-    lv_obj_t *tab_rec = lv_tabview_add_tab(tabview, LV_SYMBOL_AUDIO" Record");
+    lv_obj_t *tab_codec_rec = lv_tabview_add_tab(tabview, LV_SYMBOL_AUDIO" Codec");
+    lv_obj_t *tab_pdm_rec = lv_tabview_add_tab(tabview, LV_SYMBOL_AUDIO" PDM");
     lv_obj_t *tab_settings = lv_tabview_add_tab(tabview, LV_SYMBOL_SETTINGS" Settings");
 
     /* Input device group */
     lv_indev_t *indev = bsp_display_get_input_dev();
     if (indev && indev->driver && indev->driver->type == LV_INDEV_TYPE_ENCODER) {
         filesystem_group = lv_group_create();
-        recording_group = lv_group_create();
+        codec_recording_group = lv_group_create();
+        pdm_recording_group = lv_group_create();
         settings_group = lv_group_create();
         lv_group_add_obj(filesystem_group, tab_btns);
         lv_indev_set_group(indev, filesystem_group);
@@ -147,7 +155,10 @@ void app_disp_lvgl_show(void)
     app_disp_lvgl_show_filesystem(tab_filesystem, filesystem_group);
 
     /* Show record tab page */
-    app_disp_lvgl_show_record(tab_rec, recording_group);
+    app_disp_lvgl_show_codec_record(tab_codec_rec, codec_recording_group);
+
+    /* Show record tab page */
+    app_disp_lvgl_show_pdm_record(tab_pdm_rec, pdm_recording_group);
 
     /* Show settings tab page */
     app_disp_lvgl_show_settings(tab_settings, settings_group);
@@ -332,6 +343,8 @@ static void play_file(void *arg)
     if (file == NULL) {
         ESP_LOGE(TAG, "%s file does not exist!", path);
         goto END;
+    } else {
+        ESP_LOGI(TAG, "play_file:%s!", path);
     }
 
     /* Read WAV header file */
@@ -391,9 +404,15 @@ END:
         bsp_display_unlock();
     }
 
-    if (play1_btn) {
+    if (codec_play_btn) {
         bsp_display_lock(0);
-        lv_obj_clear_state(play1_btn, LV_STATE_DISABLED);
+        lv_obj_clear_state(codec_play_btn, LV_STATE_DISABLED);
+        bsp_display_unlock();
+    }
+
+    if (pdm_play_btn) {
+        bsp_display_lock(0);
+        lv_obj_clear_state(pdm_play_btn, LV_STATE_DISABLED);
         bsp_display_unlock();
     }
 
@@ -761,7 +780,7 @@ static void rec_stop_event_cb(lv_event_t *e)
     }
 }
 
-static void rec_file(void *arg)
+static void rec_codec_file(void *arg)
 {
     char *path = arg;
     FILE *codec_record_file = NULL;
@@ -790,60 +809,29 @@ static void rec_file(void *arg)
         goto END;
     }
 
-    ESP_LOGI(TAG, "Recording start");
+    ESP_LOGI(TAG, "Recording start:%s", path);
 
-    // esp_codec_dev_sample_info_t fs = {
-    //     .sample_rate = SAMPLE_RATE,
-    //     .channel = 1,
-    //     .bits_per_sample = 16,
-    //     .mclk_multiple = I2S_MCLK_MULTIPLE_384,
-    // };
-    // esp_codec_dev_open(mic_codec_dev, &fs);
-
-    // size_t bytes_written_to_spiffs = 0;
-    // while (bytes_written_to_spiffs < RECORDING_LENGTH * BUFFER_SIZE) {
-    //     ESP_ERROR_CHECK(esp_codec_dev_read(mic_codec_dev, recording_buffer, BUFFER_SIZE));
-
-    //     /* Write WAV file data */
-    //     size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, codec_record_file);
-    //     bytes_written_to_spiffs += data_written;
-    // }
-
-    // ESP_LOGI(TAG, "Recording stop, length: %i bytes", bytes_written_to_spiffs);
-
-    esp_codec_dev_sample_info_t pdm_fs = {
+    esp_codec_dev_sample_info_t fs = {
         .sample_rate = SAMPLE_RATE,
         .channel = 1,
         .bits_per_sample = 16,
-        // .mclk_multiple = I2S_MCLK_MULTIPLE_384,
+        .mclk_multiple = I2S_MCLK_MULTIPLE_384,
     };
-    // esp_codec_dev_open(mic_pdm_dev, &pdm_fs);
-
-    extern i2s_chan_handle_t i2s_pdm_rx_chan;
+    esp_codec_dev_open(mic_codec_dev, &fs);
 
     size_t bytes_written_to_spiffs = 0;
-    size_t bytes_read;
-
     while (bytes_written_to_spiffs < RECORDING_LENGTH * BUFFER_SIZE) {
+        ESP_ERROR_CHECK(esp_codec_dev_read(mic_codec_dev, recording_buffer, BUFFER_SIZE));
 
-        if (i2s_channel_read(i2s_pdm_rx_chan, (char *)recording_buffer, BUFFER_SIZE, &bytes_read, 1000) == ESP_OK) {
-            // printf("[0] %d [1] %d [2] %d [3]%d ...\n", recording_buffer[0], recording_buffer[1], recording_buffer[2], recording_buffer[3]);
-            /* Write WAV file data */
-            size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, codec_record_file);
-            bytes_written_to_spiffs += data_written;
-        } else {
-            printf("Read Failed!\n");
-        }
-        // ESP_ERROR_CHECK(esp_codec_dev_read(mic_pdm_dev, recording_buffer, BUFFER_SIZE));
-        // ESP_LOGI(TAG, "Recording fwrite, %i bytes, %d, %d", BUFFER_SIZE, bytes_written_to_spiffs, RECORDING_LENGTH * BUFFER_SIZE);
+        /* Write WAV file data */
+        size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, codec_record_file);
+        bytes_written_to_spiffs += data_written;
     }
 
     ESP_LOGI(TAG, "Recording stop, length: %i bytes", bytes_written_to_spiffs);
-    vTaskDelay(pdMS_TO_TICKS(500));
 
 END:
-    // esp_codec_dev_close(mic_codec_dev);
-    // esp_codec_dev_close(mic_pdm_dev);
+    esp_codec_dev_close(mic_codec_dev);
 
     if (codec_record_file) {
         fclose(codec_record_file);
@@ -853,11 +841,83 @@ END:
         free(recording_buffer);
     }
 
-    if (rec_btn && play1_btn && rec_stop_btn) {
+    if (codec_rec_btn && codec_play_btn && codec_stop_btn) {
         bsp_display_lock(0);
-        lv_obj_clear_state(rec_btn, LV_STATE_DISABLED);
-        lv_obj_clear_state(play1_btn, LV_STATE_DISABLED);
-        lv_obj_clear_state(rec_stop_btn, LV_STATE_DISABLED);
+        lv_obj_clear_state(codec_rec_btn, LV_STATE_DISABLED);
+        lv_obj_clear_state(codec_play_btn, LV_STATE_DISABLED);
+        lv_obj_clear_state(codec_stop_btn, LV_STATE_DISABLED);
+        bsp_display_unlock();
+    }
+
+    vTaskDelete(NULL);
+}
+
+static void rec_pdm_file(void *arg)
+{
+    char *path = arg;
+    FILE *codec_record_file = NULL;
+    int16_t *recording_buffer = heap_caps_malloc(BUFFER_SIZE, MALLOC_CAP_DEFAULT);
+    if (recording_buffer == NULL) {
+        ESP_LOGE(TAG, "Not enough memory for playing!");
+        goto END;
+    }
+
+    /* Open file for recording */
+    codec_record_file = fopen(path, "wb");
+    if (codec_record_file == NULL) {
+        ESP_LOGE(TAG, "%s file does not exist!", path);
+        goto END;
+    }
+
+    /* Write WAV file header */
+    const dumb_wav_header_t recording_header = {
+        .bits_per_sample = 16,
+        .data_size = RECORDING_LENGTH * BUFFER_SIZE,
+        .num_channels = 1,
+        .sample_rate = SAMPLE_RATE
+    };
+    if (fwrite((void *)&recording_header, 1, sizeof(dumb_wav_header_t), codec_record_file) != sizeof(dumb_wav_header_t)) {
+        ESP_LOGW(TAG, "Error in writting to file");
+        goto END;
+    }
+
+    ESP_LOGI(TAG, "Recording start:%s", path);
+
+    esp_codec_dev_sample_info_t pdm_fs = {
+        .sample_rate = SAMPLE_RATE,
+        .channel = 1,
+        .bits_per_sample = 16,
+    };
+    esp_codec_dev_open(mic_pdm_dev, &pdm_fs);
+
+    size_t bytes_written_to_spiffs = 0;
+    while (bytes_written_to_spiffs < RECORDING_LENGTH * BUFFER_SIZE) {
+        ESP_ERROR_CHECK(esp_codec_dev_read(mic_pdm_dev, recording_buffer, BUFFER_SIZE));
+        // ESP_LOGI(TAG, "Recording fwrite, %i bytes, %d, %d", BUFFER_SIZE, bytes_written_to_spiffs, RECORDING_LENGTH * BUFFER_SIZE);
+
+        /* Write WAV file data */
+        size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, codec_record_file);
+        bytes_written_to_spiffs += data_written;
+    }
+
+    ESP_LOGI(TAG, "Recording stop, length: %i bytes", bytes_written_to_spiffs);
+
+END:
+    esp_codec_dev_close(mic_pdm_dev);
+
+    if (codec_record_file) {
+        fclose(codec_record_file);
+    }
+
+    if (recording_buffer) {
+        free(recording_buffer);
+    }
+
+    if (pdm_rec_btn && pdm_play_btn && pdm_stop_btn) {
+        bsp_display_lock(0);
+        lv_obj_clear_state(pdm_rec_btn, LV_STATE_DISABLED);
+        lv_obj_clear_state(pdm_play_btn, LV_STATE_DISABLED);
+        lv_obj_clear_state(pdm_stop_btn, LV_STATE_DISABLED);
         bsp_display_unlock();
     }
 
@@ -865,22 +925,38 @@ END:
 }
 
 /* Stop playing recorded audio file */
-static void rec_event_cb(lv_event_t *e)
+static void rec_codec_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t *obj = lv_event_get_target(e);
 
     if (code == LV_EVENT_CLICKED) {
         lv_obj_add_state(obj, LV_STATE_DISABLED);
-        if (rec_stop_btn && play1_btn) {
-            lv_obj_add_state(play1_btn, LV_STATE_DISABLED);
-            lv_obj_add_state(rec_stop_btn, LV_STATE_DISABLED);
+        if (codec_stop_btn && codec_play_btn) {
+            lv_obj_add_state(codec_play_btn, LV_STATE_DISABLED);
+            lv_obj_add_state(codec_stop_btn, LV_STATE_DISABLED);
         }
-        xTaskCreate(rec_file, "rec_file", 4096, e->user_data, 6, NULL);
+        xTaskCreate(rec_codec_file, "rec_codec_file", 4096 * 2, e->user_data, 6, NULL);
     }
 }
 
-static void app_disp_lvgl_show_record(lv_obj_t *screen, lv_group_t *group)
+/* Stop playing recorded audio file */
+static void rec_pdm_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);
+
+    if (code == LV_EVENT_CLICKED) {
+        lv_obj_add_state(obj, LV_STATE_DISABLED);
+        if (pdm_stop_btn && pdm_play_btn) {
+            lv_obj_add_state(pdm_play_btn, LV_STATE_DISABLED);
+            lv_obj_add_state(pdm_stop_btn, LV_STATE_DISABLED);
+        }
+        xTaskCreate(rec_pdm_file, "rec_pdm_file", 4096 * 2, e->user_data, 6, NULL);
+    }
+}
+
+static void app_disp_lvgl_show_codec_record(lv_obj_t *screen, lv_group_t *group)
 {
     lv_obj_t *label;
 
@@ -899,7 +975,7 @@ static void app_disp_lvgl_show_record(lv_obj_t *screen, lv_group_t *group)
 
     /* Buttons */
     lv_obj_t *cont_row = lv_obj_create(screen);
-    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 200);
+    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 80);
     lv_obj_align(cont_row, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_flex_flow(cont_row, LV_FLEX_FLOW_ROW);
     lv_obj_set_style_pad_top(cont_row, 2, 0);
@@ -907,27 +983,78 @@ static void app_disp_lvgl_show_record(lv_obj_t *screen, lv_group_t *group)
     lv_obj_set_flex_align(cont_row, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 
     /* Rec button */
-    rec_btn = lv_btn_create(cont_row);
-    label = lv_label_create(rec_btn);
+    codec_rec_btn = lv_btn_create(cont_row);
+    label = lv_label_create(codec_rec_btn);
     lv_label_set_text_static(label, "REC");
-    lv_obj_add_event_cb(rec_btn, rec_event_cb, LV_EVENT_CLICKED, (char *)REC_FILENAME);
+    lv_obj_add_event_cb(codec_rec_btn, rec_codec_event_cb, LV_EVENT_CLICKED, (char *)REC_CODEC_FILENAME);
 
     /* Play button */
-    play1_btn = lv_btn_create(cont_row);
-    label = lv_label_create(play1_btn);
+    codec_play_btn = lv_btn_create(cont_row);
+    label = lv_label_create(codec_play_btn);
     lv_label_set_text_static(label, LV_SYMBOL_PLAY);
-    lv_obj_add_event_cb(play1_btn, rec_play_event_cb, LV_EVENT_CLICKED, (char *)REC_FILENAME);
+    lv_obj_add_event_cb(codec_play_btn, rec_play_event_cb, LV_EVENT_CLICKED, (char *)REC_CODEC_FILENAME);
 
     /* Stop button */
-    rec_stop_btn = lv_btn_create(cont_row);
-    label = lv_label_create(rec_stop_btn);
+    codec_stop_btn = lv_btn_create(cont_row);
+    label = lv_label_create(codec_stop_btn);
     lv_label_set_text_static(label, LV_SYMBOL_STOP);
-    lv_obj_add_event_cb(rec_stop_btn, rec_stop_event_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(codec_stop_btn, rec_stop_event_cb, LV_EVENT_CLICKED, NULL);
 
     if (group) {
-        lv_group_add_obj(group, rec_btn);
-        lv_group_add_obj(group, play1_btn);
-        lv_group_add_obj(group, rec_stop_btn);
+        lv_group_add_obj(group, codec_rec_btn);
+        lv_group_add_obj(group, codec_play_btn);
+        lv_group_add_obj(group, codec_stop_btn);
+    }
+}
+
+static void app_disp_lvgl_show_pdm_record(lv_obj_t *screen, lv_group_t *group)
+{
+    lv_obj_t *label;
+
+    /* Disable scrolling in this TAB */
+    lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
+
+    /* TAB style */
+    lv_obj_set_style_border_width(screen, 0, 0);
+    lv_obj_set_style_bg_color(screen, lv_color_make(0x00, 0x00, 0x00), 0);
+    lv_obj_set_style_bg_grad_color(screen, lv_color_make(0x05, 0x05, 0x05), 0);
+    lv_obj_set_style_bg_grad_dir(screen, LV_GRAD_DIR_VER, 0);
+    lv_obj_set_style_bg_opa(screen, 255, 0);
+
+    lv_obj_set_flex_flow(screen, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(screen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+
+    /* Buttons */
+    lv_obj_t *cont_row = lv_obj_create(screen);
+    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 80);
+    lv_obj_align(cont_row, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_flex_flow(cont_row, LV_FLEX_FLOW_ROW);
+    lv_obj_set_style_pad_top(cont_row, 2, 0);
+    lv_obj_set_style_pad_bottom(cont_row, 2, 0);
+    lv_obj_set_flex_align(cont_row, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+
+    /* Rec button */
+    pdm_rec_btn = lv_btn_create(cont_row);
+    label = lv_label_create(pdm_rec_btn);
+    lv_label_set_text_static(label, "REC");
+    lv_obj_add_event_cb(pdm_rec_btn, rec_pdm_event_cb, LV_EVENT_CLICKED, (char *)REC_PDM_FILENAME);
+
+    /* Play button */
+    pdm_play_btn = lv_btn_create(cont_row);
+    label = lv_label_create(pdm_play_btn);
+    lv_label_set_text_static(label, LV_SYMBOL_PLAY);
+    lv_obj_add_event_cb(pdm_play_btn, rec_play_event_cb, LV_EVENT_CLICKED, (char *)REC_PDM_FILENAME);
+
+    /* Stop button */
+    pdm_stop_btn = lv_btn_create(cont_row);
+    label = lv_label_create(pdm_stop_btn);
+    lv_label_set_text_static(label, LV_SYMBOL_STOP);
+    lv_obj_add_event_cb(pdm_stop_btn, rec_stop_event_cb, LV_EVENT_CLICKED, NULL);
+
+    if (group) {
+        lv_group_add_obj(group, pdm_rec_btn);
+        lv_group_add_obj(group, pdm_play_btn);
+        lv_group_add_obj(group, pdm_stop_btn);
     }
 }
 
@@ -980,10 +1107,10 @@ static void app_disp_lvgl_show_settings(lv_obj_t *screen, lv_group_t *group)
 static void set_tab_group(void)
 {
     lv_indev_t *indev = bsp_display_get_input_dev();
-    if (indev && filesystem_group && recording_group && settings_group) {
+    if (indev && filesystem_group && codec_recording_group && settings_group) {
         uint16_t tab = lv_tabview_get_tab_act(tabview);
         lv_group_set_editing(filesystem_group, false);
-        lv_group_set_editing(recording_group, false);
+        lv_group_set_editing(codec_recording_group, false);
         lv_group_set_editing(settings_group, false);
         //lv_group_remove_obj(tab_btns);
         switch (tab) {
@@ -992,8 +1119,8 @@ static void set_tab_group(void)
             lv_indev_set_group(indev, filesystem_group);
             break;
         case 1:
-            lv_group_add_obj(recording_group, tab_btns);
-            lv_indev_set_group(indev, recording_group);
+            lv_group_add_obj(codec_recording_group, tab_btns);
+            lv_indev_set_group(indev, codec_recording_group);
             break;
         case 2:
             lv_group_add_obj(settings_group, tab_btns);
