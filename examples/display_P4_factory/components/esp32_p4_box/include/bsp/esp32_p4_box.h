@@ -25,6 +25,7 @@
 #include "driver/i2s.h"
 #else
 #include "driver/i2s_std.h"
+#include "driver/i2s_pdm.h"
 #endif
 
 #if (BSP_CONFIG_NO_GRAPHIC_LIB == 0)
@@ -61,11 +62,11 @@
 #define BSP_POWER_AMP_IO      (GPIO_NUM_36)
 #define BSP_MUTE_STATUS       (GPIO_NUM_1)
 
-#define BSP_LPI2S_CLK           (GPIO_NUM_34)
-#define BSP_LPI2S_DAT           (GPIO_NUM_33)
+#define BSP_LP_I2S_CLK        (GPIO_NUM_34)
+#define BSP_LP_I2S_DAT        (GPIO_NUM_33)
 
 /* Display */
-#define BSP_LCD_BACKLIGHT     (GPIO_NUM_NC)
+#define BSP_LCD_BACKLIGHT     (GPIO_NUM_48)
 #define BSP_LCD_TOUCH_INT     (GPIO_NUM_NC)
 
 /* uSD card */
@@ -120,6 +121,9 @@ esp_err_t bsp_audio_init(const i2s_config_t *i2s_config);
 esp_err_t bsp_audio_init(const i2s_std_config_t *i2s_config);
 #endif
 
+
+esp_err_t bsp_microphone_init(const i2s_pdm_rx_config_t *i2s_config);
+
 /**
  * @brief Get codec I2S interface (initialized in bsp_audio_init)
  *
@@ -127,6 +131,8 @@ esp_err_t bsp_audio_init(const i2s_std_config_t *i2s_config);
  *      - Pointer to codec I2S interface handle or NULL when error occurred
  */
 const audio_codec_data_if_t *bsp_audio_get_codec_itf(void);
+
+const audio_codec_data_if_t *bsp_audio_get_pdm_itf(void);
 
 /**
  * @brief Initialize speaker codec device
@@ -141,6 +147,8 @@ esp_codec_dev_handle_t bsp_audio_codec_speaker_init(void);
  * @return Pointer to codec device handle or NULL when error occurred
  */
 esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void);
+
+esp_codec_dev_handle_t bsp_audio_pdm_microphone_init(void);
 /**************************************************************************************************
  *
  * I2C interface

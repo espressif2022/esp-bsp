@@ -21,7 +21,8 @@ void app_main(void)
     bsp_display_start();
 
     /* Set default display brightness */
-    bsp_display_brightness_set(APP_DISP_DEFAULT_BRIGHTNESS);
+    // bsp_display_brightness_set(APP_DISP_DEFAULT_BRIGHTNESS);
+    bsp_display_backlight_off();
 
     /* Add and show LVGL objects on display */
     app_disp_lvgl_show();

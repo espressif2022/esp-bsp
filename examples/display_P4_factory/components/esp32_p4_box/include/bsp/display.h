@@ -41,8 +41,8 @@
 #define BSP_LCD_MIPI_DSI_LCD_VBP                (16)
 #define BSP_LCD_MIPI_DSI_LCD_VFP                (10)
 
-#define BSP_LCD_MIPI_DSI_LANE_NUM               (2)    // 2 data lanes
-#define BSP_LCD_MIPI_DSI_LANE_BITRATE_MBPS      (400) // 1Gbps
+#define BSP_LCD_MIPI_DSI_LANE_NUM               (2)     // 2 data lanes
+#define BSP_LCD_MIPI_DSI_LANE_BITRATE_MBPS      (400)   // 1Gbps
 
 #define BSP_MIPI_DSI_PHY_PWR_LDO_CHAN           (3)  // LDO_VO3 is connected to VDD_MIPI_DPHY
 #define BSP_MIPI_DSI_PHY_PWR_LDO_VOLTAGE_MV     (2500)

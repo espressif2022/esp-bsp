@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2015-2023 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2015-2024 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -31,7 +31,7 @@
    I2S peripheral -> I2S buffer (DMA) -> App buffer (RAM) -> SPIFFS buffer -> External SPI Flash.
    Vice versa for playback. */
 #define BUFFER_SIZE     (1024)
-#define SAMPLE_RATE     (22050)
+#define SAMPLE_RATE     (16000)
 #define DEFAULT_VOLUME  (70)
 /* The recording will be RECORDING_LENGTH * BUFFER_SIZE long (in bytes)
    With sampling frequency 22050 Hz and 16bit mono resolution it equals to ~3.715 seconds */
@@ -43,6 +43,7 @@ static const char *TAG = "DISP";
 
 static esp_codec_dev_handle_t spk_codec_dev = NULL;
 static esp_codec_dev_handle_t mic_codec_dev = NULL;
+static esp_codec_dev_handle_t mic_pdm_dev = NULL;
 
 /*******************************************************************************
 * Types definitions
@@ -167,6 +168,10 @@ void app_audio_init(void)
     assert(mic_codec_dev);
     /* Microphone input gain */
     esp_codec_dev_set_in_gain(mic_codec_dev, 50.0);
+
+    /* Initialize microphone */
+    mic_pdm_dev = bsp_audio_pdm_microphone_init();
+    assert(mic_pdm_dev);
 }
 
 void app_disp_fs_init(void)
@@ -340,7 +345,6 @@ static void play_file(void *arg)
     ESP_LOGI(TAG, "Sample rate: %" PRIu32 "", wav_header.sample_rate);
     ESP_LOGI(TAG, "Data size: %" PRIu32 "", wav_header.data_size);
 
-
     esp_codec_dev_sample_info_t fs = {
         .sample_rate = wav_header.sample_rate,
         .channel = wav_header.num_channels,
@@ -369,8 +373,6 @@ static void play_file(void *arg)
         }
         vTaskDelay(pdMS_TO_TICKS(100));
     } while (play_file_repeat);
-
-
 
 END:
     esp_codec_dev_close(spk_codec_dev);
@@ -428,7 +430,7 @@ static void repeat_event_cb(lv_event_t *e)
     lv_obj_t *obj = lv_event_get_target(e);
 
     if (code == LV_EVENT_VALUE_CHANGED) {
-        play_file_repeat = ( (lv_obj_get_state(obj) & LV_STATE_CHECKED) ? true : false);
+        play_file_repeat = ((lv_obj_get_state(obj) & LV_STATE_CHECKED) ? true : false);
     }
 }
 
@@ -762,7 +764,7 @@ static void rec_stop_event_cb(lv_event_t *e)
 static void rec_file(void *arg)
 {
     char *path = arg;
-    FILE *record_file = NULL;
+    FILE *codec_record_file = NULL;
     int16_t *recording_buffer = heap_caps_malloc(BUFFER_SIZE, MALLOC_CAP_DEFAULT);
     if (recording_buffer == NULL) {
         ESP_LOGE(TAG, "Not enough memory for playing!");
@@ -770,8 +772,8 @@ static void rec_file(void *arg)
     }
 
     /* Open file for recording */
-    record_file = fopen(path, "wb");
-    if (record_file == NULL) {
+    codec_record_file = fopen(path, "wb");
+    if (codec_record_file == NULL) {
         ESP_LOGE(TAG, "%s file does not exist!", path);
         goto END;
     }
@@ -783,37 +785,68 @@ static void rec_file(void *arg)
         .num_channels = 1,
         .sample_rate = SAMPLE_RATE
     };
-    if (fwrite((void *)&recording_header, 1, sizeof(dumb_wav_header_t), record_file) != sizeof(dumb_wav_header_t)) {
+    if (fwrite((void *)&recording_header, 1, sizeof(dumb_wav_header_t), codec_record_file) != sizeof(dumb_wav_header_t)) {
         ESP_LOGW(TAG, "Error in writting to file");
         goto END;
     }
 
     ESP_LOGI(TAG, "Recording start");
 
-    esp_codec_dev_sample_info_t fs = {
+    // esp_codec_dev_sample_info_t fs = {
+    //     .sample_rate = SAMPLE_RATE,
+    //     .channel = 1,
+    //     .bits_per_sample = 16,
+    //     .mclk_multiple = I2S_MCLK_MULTIPLE_384,
+    // };
+    // esp_codec_dev_open(mic_codec_dev, &fs);
+
+    // size_t bytes_written_to_spiffs = 0;
+    // while (bytes_written_to_spiffs < RECORDING_LENGTH * BUFFER_SIZE) {
+    //     ESP_ERROR_CHECK(esp_codec_dev_read(mic_codec_dev, recording_buffer, BUFFER_SIZE));
+
+    //     /* Write WAV file data */
+    //     size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, codec_record_file);
+    //     bytes_written_to_spiffs += data_written;
+    // }
+
+    // ESP_LOGI(TAG, "Recording stop, length: %i bytes", bytes_written_to_spiffs);
+
+    esp_codec_dev_sample_info_t pdm_fs = {
         .sample_rate = SAMPLE_RATE,
         .channel = 1,
         .bits_per_sample = 16,
-        .mclk_multiple = I2S_MCLK_MULTIPLE_384,
+        // .mclk_multiple = I2S_MCLK_MULTIPLE_384,
     };
-    esp_codec_dev_open(mic_codec_dev, &fs);
+    // esp_codec_dev_open(mic_pdm_dev, &pdm_fs);
+
+    extern i2s_chan_handle_t i2s_pdm_rx_chan;
 
     size_t bytes_written_to_spiffs = 0;
-    while (bytes_written_to_spiffs < RECORDING_LENGTH * BUFFER_SIZE) {
-        ESP_ERROR_CHECK(esp_codec_dev_read(mic_codec_dev, recording_buffer, BUFFER_SIZE));
+    size_t bytes_read;
 
-        /* Write WAV file data */
-        size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, record_file);
-        bytes_written_to_spiffs += data_written;
+    while (bytes_written_to_spiffs < RECORDING_LENGTH * BUFFER_SIZE) {
+
+        if (i2s_channel_read(i2s_pdm_rx_chan, (char *)recording_buffer, BUFFER_SIZE, &bytes_read, 1000) == ESP_OK) {
+            // printf("[0] %d [1] %d [2] %d [3]%d ...\n", recording_buffer[0], recording_buffer[1], recording_buffer[2], recording_buffer[3]);
+            /* Write WAV file data */
+            size_t data_written = fwrite(recording_buffer, 1, BUFFER_SIZE, codec_record_file);
+            bytes_written_to_spiffs += data_written;
+        } else {
+            printf("Read Failed!\n");
+        }
+        // ESP_ERROR_CHECK(esp_codec_dev_read(mic_pdm_dev, recording_buffer, BUFFER_SIZE));
+        // ESP_LOGI(TAG, "Recording fwrite, %i bytes, %d, %d", BUFFER_SIZE, bytes_written_to_spiffs, RECORDING_LENGTH * BUFFER_SIZE);
     }
 
     ESP_LOGI(TAG, "Recording stop, length: %i bytes", bytes_written_to_spiffs);
+    vTaskDelay(pdMS_TO_TICKS(500));
 
 END:
-    esp_codec_dev_close(mic_codec_dev);
+    // esp_codec_dev_close(mic_codec_dev);
+    // esp_codec_dev_close(mic_pdm_dev);
 
-    if (record_file) {
-        fclose(record_file);
+    if (codec_record_file) {
+        fclose(codec_record_file);
     }
 
     if (recording_buffer) {
@@ -866,7 +899,7 @@ static void app_disp_lvgl_show_record(lv_obj_t *screen, lv_group_t *group)
 
     /* Buttons */
     lv_obj_t *cont_row = lv_obj_create(screen);
-    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 80);
+    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 200);
     lv_obj_align(cont_row, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_flex_flow(cont_row, LV_FLEX_FLOW_ROW);
     lv_obj_set_style_pad_top(cont_row, 2, 0);
@@ -918,7 +951,7 @@ static void app_disp_lvgl_show_settings(lv_obj_t *screen, lv_group_t *group)
 
     /* Brightness */
     cont_row = lv_obj_create(screen);
-    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 80);
+    lv_obj_set_size(cont_row, BSP_LCD_H_RES - 20, 200);
     lv_obj_align(cont_row, LV_ALIGN_TOP_MID, 0, 0);
     lv_obj_set_flex_flow(cont_row, LV_FLEX_FLOW_ROW);
     lv_obj_set_style_pad_top(cont_row, 2, 0);
