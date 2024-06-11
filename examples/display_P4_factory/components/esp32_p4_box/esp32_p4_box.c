@@ -281,7 +281,7 @@ static esp_err_t bsp_display_brightness_init(void)
     };
     const ledc_timer_config_t LCD_backlight_timer = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
-        // .duty_resolution = LEDC_TIMER_10_BIT,
+        .duty_resolution = LEDC_TIMER_10_BIT,
         .duty_resolution = LEDC_TIMER_5_BIT,
         .timer_num = 1,
         .freq_hz = 50 * 1000,
@@ -303,9 +303,7 @@ esp_err_t bsp_display_brightness_set(int brightness_percent)
     }
 
     ESP_LOGI(TAG, "Setting LCD backlight: %d%%", brightness_percent);
-    // uint32_t duty_cycle = (1023 * brightness_percent) / 100; // LEDC resolution set to 10bits, thus: 100% = 1023
-    uint32_t duty_cycle = (31 * brightness_percent) / 100; // LEDC resolution set to 10bits, thus: 100% = 1023
-    // uint32_t duty_cycle = 0; // LEDC resolution set to 10bits, thus: 100% = 1023
+    uint32_t duty_cycle = (1023 * brightness_percent) / 100; // LEDC resolution set to 10bits, thus: 100% = 1023
     BSP_ERROR_CHECK_RETURN_ERR(ledc_set_duty(LEDC_LOW_SPEED_MODE, LCD_LEDC_CH, duty_cycle));
     BSP_ERROR_CHECK_RETURN_ERR(ledc_update_duty(LEDC_LOW_SPEED_MODE, LCD_LEDC_CH));
     return ESP_OK;

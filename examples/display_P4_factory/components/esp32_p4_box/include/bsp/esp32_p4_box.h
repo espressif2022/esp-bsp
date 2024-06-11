@@ -60,7 +60,7 @@
 #define BSP_I2S_DOUT          (GPIO_NUM_26) // To Codec ES8311
 #define BSP_I2S_DSIN          (GPIO_NUM_28) // From ADC ES7210
 #define BSP_POWER_AMP_IO      (GPIO_NUM_36)
-#define BSP_MUTE_STATUS       (GPIO_NUM_1)
+#define BSP_MUTE_STATUS       (GPIO_NUM_46)
 
 #define BSP_LP_I2S_CLK        (GPIO_NUM_34)
 #define BSP_LP_I2S_DAT        (GPIO_NUM_33)
@@ -121,7 +121,20 @@ esp_err_t bsp_audio_init(const i2s_config_t *i2s_config);
 esp_err_t bsp_audio_init(const i2s_std_config_t *i2s_config);
 #endif
 
-
+/**
+ * @brief Init microphone
+ *
+ * @note There is no deinit audio function. Users can free audio resources by calling i2s_del_channel()
+ * @warning The type of i2s_config param is depending on IDF version.
+ * @param[in]  i2s_config I2S configuration. Pass NULL to use default values (Mono, duplex, 16bit, 22050 Hz)
+ * @return
+ *      - ESP_OK                On success
+ *      - ESP_ERR_NOT_SUPPORTED The communication mode is not supported on the current chip
+ *      - ESP_ERR_INVALID_ARG   NULL pointer or invalid configuration
+ *      - ESP_ERR_NOT_FOUND     No available I2S channel found
+ *      - ESP_ERR_NO_MEM        No memory for storing the channel information
+ *      - ESP_ERR_INVALID_STATE This channel has not initialized or already started
+ */
 esp_err_t bsp_microphone_init(const i2s_pdm_rx_config_t *i2s_config);
 
 /**
@@ -132,6 +145,12 @@ esp_err_t bsp_microphone_init(const i2s_pdm_rx_config_t *i2s_config);
  */
 const audio_codec_data_if_t *bsp_audio_get_codec_itf(void);
 
+/**
+ * @brief Get PDM I2S interface (initialized in bsp_microphone_init)
+ *
+ * @return
+ *      - Pointer to PDM I2S interface handle or NULL when error occurred
+ */
 const audio_codec_data_if_t *bsp_audio_get_pdm_itf(void);
 
 /**
@@ -148,6 +167,11 @@ esp_codec_dev_handle_t bsp_audio_codec_speaker_init(void);
  */
 esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void);
 
+/**
+ * @brief Initialize microphone PDM device
+ *
+ * @return Pointer to PDM device handle or NULL when error occurred
+ */
 esp_codec_dev_handle_t bsp_audio_pdm_microphone_init(void);
 /**************************************************************************************************
  *
