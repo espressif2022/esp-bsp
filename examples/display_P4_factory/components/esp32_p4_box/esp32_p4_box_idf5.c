@@ -15,8 +15,7 @@ static i2s_chan_handle_t i2s_std_tx_chan = NULL;
 static i2s_chan_handle_t i2s_std_rx_chan = NULL;
 static const audio_codec_data_if_t *i2s_std_data_if = NULL;  /* Codec data interface */
 
-// static i2s_chan_handle_t i2s_pdm_rx_chan;
-i2s_chan_handle_t i2s_pdm_rx_chan;
+static i2s_chan_handle_t i2s_pdm_rx_chan;
 static const audio_codec_data_if_t *i2s_pdm_data_if = NULL;  /* Codec data interface */
 
 /* Can be used for i2s_std_gpio_config_t and/or i2s_std_config_t initialization */
