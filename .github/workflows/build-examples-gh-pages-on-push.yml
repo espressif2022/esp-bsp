@@ -3,7 +3,8 @@ name: "ESP-IDF build examples to github pages (push)"
 on:
   push:
       branches:
-      - master
+      # - master
+      - feat/update_image_convert
 
 jobs:
 
