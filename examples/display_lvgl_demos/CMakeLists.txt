@@ -6,5 +6,7 @@ cmake_minimum_required(VERSION 3.5)
 
 set(COMPONENTS main) # "Trim" the build. Include the minimal set of components; main and anything it depends on.
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-add_compile_options("-Wno-attributes") # For LVGL code
+add_compile_options("-Wno-attributes" "-Wno-format") # For LVGL code
 project(display_lvgl_demos)
+
+# target_add_binary_data(${CMAKE_PROJECT_NAME}.elf "main/output_2.wav" BINARY)
