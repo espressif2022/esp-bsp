@@ -198,14 +198,19 @@ typedef struct {
     /*Cache the last letter and is glyph id*/
     lv_font_fmt_txt_glyph_cache_t * cache;
 
-    uint8_t * (*get_glyph_bitmap_cb)(void *font_dsc, uint32_t glyph_id, uint8_t *buffer, uint32_t offset);
+    /* Function pointer to get the glyph bitmap */
+    uint8_t * (*get_glyph_bitmap_cb)(void * fmt_dsc, void * glyph_dsc);
 
-    lv_fs_file_t *fp;
+    /* File pointer for font file */
+    lv_fs_file_t * fp;
 
-    int nbits;
+    /* Number of glyph */
+    uint32_t loca_count;
 
-    uint32_t *glyph_offset;
+    /* Array of glyph offsets */
+    uint32_t * glyph_offset;
 
+    /* Start offset of glyph data */
     uint32_t glyph_start;
 
 } lv_font_fmt_txt_dsc_t;

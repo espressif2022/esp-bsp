@@ -6,7 +6,7 @@
  */
 void lv_example_bmp_1(void)
 {
-    lv_obj_t *img = lv_img_create(lv_scr_act());
+    lv_obj_t * img = lv_img_create(lv_scr_act());
     /* Assuming a File system is attached to letter 'A'
      * E.g. set LV_USE_FS_STDIO 'A' in lv_conf.h */
 #if LV_COLOR_DEPTH == 32

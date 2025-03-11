@@ -61,13 +61,13 @@
  *   GLOBAL FUNCTIONS
  **********************/
 
-lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t *point1, const lv_point_t *point2,
-                                     const lv_area_t *clip_area, const lv_draw_line_dsc_t *dsc)
+lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t * point1, const lv_point_t * point2,
+                                     const lv_area_t * clip_area, const lv_draw_line_dsc_t * dsc)
 {
     vg_lite_error_t err = VG_LITE_SUCCESS;
     vg_lite_path_t path;
     vg_lite_color_t vgcol; /* vglite takes ABGR */
-    vg_lite_buffer_t *vgbuf = lv_vglite_get_dest_buf();
+    vg_lite_buffer_t * vgbuf = lv_vglite_get_dest_buf();
     vg_lite_cap_style_t cap_style = (dsc->round_start || dsc->round_end) ? VG_LITE_CAP_ROUND : VG_LITE_CAP_BUTT;
     vg_lite_join_style_t join_style = (dsc->round_start || dsc->round_end) ? VG_LITE_JOIN_ROUND : VG_LITE_JOIN_MITER;
 
@@ -76,7 +76,7 @@ lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t *point1, const lv_point_t 
     vg_lite_float_t stroke_dash_pattern[2] = {0, 0};
     uint32_t stroke_dash_count = 0;
     vg_lite_float_t stroke_dash_phase = 0;
-    if (is_dashed) {
+    if(is_dashed) {
         stroke_dash_pattern[0] = (vg_lite_float_t)dsc->dash_width;
         stroke_dash_pattern[1] = (vg_lite_float_t)dsc->dash_gap;
         stroke_dash_count = sizeof(stroke_dash_pattern) / sizeof(vg_lite_float_t);
@@ -105,7 +105,7 @@ lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t *point1, const lv_point_t 
 
     lv_color32_t col32 = { .full = lv_color_to32(dsc->color) }; /*Convert color to RGBA8888*/
     vg_lite_buffer_format_t color_format = LV_COLOR_DEPTH == 16 ? VG_LITE_BGRA8888 : VG_LITE_ABGR8888;
-    if (lv_vglite_premult_and_swizzle(&vgcol, col32, dsc->opa, color_format) != LV_RES_OK) {
+    if(lv_vglite_premult_and_swizzle(&vgcol, col32, dsc->opa, color_format) != LV_RES_OK) {
         VG_LITE_RETURN_INV("Premultiplication and swizzle failed.");
     }
 
@@ -125,7 +125,7 @@ lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t *point1, const lv_point_t 
     err = vg_lite_draw(vgbuf, &path, VG_LITE_FILL_NON_ZERO, &matrix, vglite_blend_mode, vgcol);
     VG_LITE_ERR_RETURN_INV(err, "Draw line failed.");
 
-    if (lv_vglite_run() != LV_RES_OK) {
+    if(lv_vglite_run() != LV_RES_OK) {
         VG_LITE_RETURN_INV("Run failed.");
     }
 

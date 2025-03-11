@@ -1,9 +1,9 @@
 #include "../../lv_examples.h"
 #if LV_USE_METER && LV_BUILD_EXAMPLES
 
-static lv_obj_t *meter;
+static lv_obj_t * meter;
 
-static void set_value(void *indic, int32_t v)
+static void set_value(void * indic, int32_t v)
 {
     lv_meter_set_indicator_value(meter, indic, v);
 }
@@ -18,11 +18,11 @@ void lv_example_meter_1(void)
     lv_obj_set_size(meter, 200, 200);
 
     /*Add a scale first*/
-    lv_meter_scale_t *scale = lv_meter_add_scale(meter);
+    lv_meter_scale_t * scale = lv_meter_add_scale(meter);
     lv_meter_set_scale_ticks(meter, scale, 41, 2, 10, lv_palette_main(LV_PALETTE_GREY));
     lv_meter_set_scale_major_ticks(meter, scale, 8, 4, 15, lv_color_black(), 10);
 
-    lv_meter_indicator_t *indic;
+    lv_meter_indicator_t * indic;
 
     /*Add a blue arc to the start*/
     indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);

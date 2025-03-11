@@ -1261,6 +1261,19 @@ e.g. "hal_data.h"*/
 #endif
 #endif
 
+/* Enable dynamic loading of fonts */
+#ifndef LV_USE_FONT_DYNAMIC_LOAD
+#ifdef _LV_KCONFIG_PRESENT
+#ifdef CONFIG_LV_USE_FONT_DYNAMIC_LOAD
+#define LV_USE_FONT_DYNAMIC_LOAD CONFIG_LV_USE_FONT_DYNAMIC_LOAD
+#else
+#define LV_USE_FONT_DYNAMIC_LOAD 0
+#endif
+#else
+#define LV_USE_FONT_DYNAMIC_LOAD 1
+#endif
+#endif
+
 /*=================
  *  TEXT SETTINGS
  *=================*/
