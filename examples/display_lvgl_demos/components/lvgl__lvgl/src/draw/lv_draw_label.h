@@ -28,7 +28,7 @@ extern "C" {
  **********************/
 
 typedef struct {
-    const lv_font_t * font;
+    const lv_font_t *font;
     uint32_t sel_start;
     uint32_t sel_end;
     lv_color_t color;
@@ -68,7 +68,7 @@ struct _lv_draw_ctx_t;
  * GLOBAL PROTOTYPES
  **********************/
 
-void /* LV_ATTRIBUTE_FAST_MEM */ lv_draw_label_dsc_init(lv_draw_label_dsc_t * dsc);
+void /* LV_ATTRIBUTE_FAST_MEM */ lv_draw_label_dsc_init(lv_draw_label_dsc_t *dsc);
 
 /**
  * Write a text
@@ -79,10 +79,10 @@ void /* LV_ATTRIBUTE_FAST_MEM */ lv_draw_label_dsc_init(lv_draw_label_dsc_t * ds
  * @param hint pointer to a `lv_draw_label_hint_t` variable.
  * It is managed by the draw to speed up the drawing of very long texts (thousands of lines).
  */
-void /* LV_ATTRIBUTE_FAST_MEM */ lv_draw_label(struct _lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t * dsc,
-                                               const lv_area_t * coords, const char * txt, lv_draw_label_hint_t * hint);
+void /* LV_ATTRIBUTE_FAST_MEM */ lv_draw_label(struct _lv_draw_ctx_t *draw_ctx, const lv_draw_label_dsc_t *dsc,
+        const lv_area_t *coords, const char *txt, lv_draw_label_hint_t *hint);
 
-void lv_draw_letter(struct _lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t * dsc,  const lv_point_t * pos_p,
+void lv_draw_letter(struct _lv_draw_ctx_t *draw_ctx, const lv_draw_label_dsc_t *dsc,  const lv_point_t *pos_p,
                     uint32_t letter);
 
 /***********************

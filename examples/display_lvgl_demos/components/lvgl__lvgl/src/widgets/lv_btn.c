@@ -24,7 +24,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void lv_btn_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj);
+static void lv_btn_constructor(const lv_obj_class_t *class_p, lv_obj_t *obj);
 
 /**********************
  *  STATIC VARIABLES
@@ -46,10 +46,10 @@ const lv_obj_class_t lv_btn_class  = {
  *   GLOBAL FUNCTIONS
  **********************/
 
-lv_obj_t * lv_btn_create(lv_obj_t * parent)
+lv_obj_t *lv_btn_create(lv_obj_t *parent)
 {
     LV_LOG_INFO("begin");
-    lv_obj_t * obj = lv_obj_class_create_obj(MY_CLASS, parent);
+    lv_obj_t *obj = lv_obj_class_create_obj(MY_CLASS, parent);
     lv_obj_class_init_obj(obj);
     return obj;
 }
@@ -58,7 +58,7 @@ lv_obj_t * lv_btn_create(lv_obj_t * parent)
  *   STATIC FUNCTIONS
  **********************/
 
-static void lv_btn_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
+static void lv_btn_constructor(const lv_obj_class_t *class_p, lv_obj_t *obj)
 {
     LV_UNUSED(class_p);
     LV_TRACE_OBJ_CREATE("begin");

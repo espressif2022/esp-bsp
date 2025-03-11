@@ -166,7 +166,7 @@ typedef struct {
  */
 typedef union {
     int32_t num;         /**< Number integer number (opacity, enums, booleans or "normal" numbers)*/
-    const void * ptr;    /**< Constant pointers  (font, cone text, etc)*/
+    const void *ptr;     /**< Constant pointers  (font, cone text, etc)*/
     lv_color_t color;    /**< Colors*/
 } lv_style_value_t;
 
@@ -296,9 +296,9 @@ typedef uint8_t lv_style_res_t;
  * Descriptor for style transitions
  */
 typedef struct {
-    const lv_style_prop_t * props; /**< An array with the properties to animate.*/
+    const lv_style_prop_t *props;  /**< An array with the properties to animate.*/
 #if LV_USE_USER_DATA
-    void * user_data;              /**< A custom user data that will be passed to the animation's user_data */
+    void *user_data;               /**< A custom user data that will be passed to the animation's user_data */
 #endif
     lv_anim_path_cb_t path_xcb;     /**< A path for the animation.*/
     uint32_t time;                 /**< Duration of the transition in [ms]*/
@@ -326,8 +326,8 @@ typedef struct {
      *For more properties allocate an array*/
     union {
         lv_style_value_t value1;
-        uint8_t * values_and_props;
-        const lv_style_const_prop_t * const_props;
+        uint8_t *values_and_props;
+        const lv_style_const_prop_t *const_props;
     } v_p;
 
     uint16_t prop1;
@@ -346,13 +346,13 @@ typedef struct {
  *       because this function won't free the used memory, just sets a default state for the style.
  *       In other words be sure to initialize styles only once!
  */
-void lv_style_init(lv_style_t * style);
+void lv_style_init(lv_style_t *style);
 
 /**
  * Clear all properties from a style and free all allocated memories.
  * @param style pointer to a style
  */
-void lv_style_reset(lv_style_t * style);
+void lv_style_reset(lv_style_t *style);
 
 /**
  * Register a new style property for custom usage
@@ -380,7 +380,7 @@ lv_style_prop_t lv_style_get_num_custom_props(void);
  * @param prop  a style property ORed with a state.
  * @return true: the property was found and removed; false: the property wasn't found
  */
-bool lv_style_remove_prop(lv_style_t * style, lv_style_prop_t prop);
+bool lv_style_remove_prop(lv_style_t *style, lv_style_prop_t prop);
 
 /**
  * Set the value of property in a style.
@@ -390,7 +390,7 @@ bool lv_style_remove_prop(lv_style_t * style, lv_style_prop_t prop);
  * @param prop the ID of a property (e.g. `LV_STYLE_BG_COLOR`)
  * @param value `lv_style_value_t` variable in which a field is set according to the type of `prop`
  */
-void lv_style_set_prop(lv_style_t * style, lv_style_prop_t prop, lv_style_value_t value);
+void lv_style_set_prop(lv_style_t *style, lv_style_prop_t prop, lv_style_value_t value);
 
 /**
  * Set a special meta state for a property in a style.
@@ -399,7 +399,7 @@ void lv_style_set_prop(lv_style_t * style, lv_style_prop_t prop, lv_style_value_
  * @param prop the ID of a property (e.g. `LV_STYLE_BG_COLOR`)
  * @param meta the meta value to attach to the property in the style
  */
-void lv_style_set_prop_meta(lv_style_t * style, lv_style_prop_t prop, uint16_t meta);
+void lv_style_set_prop_meta(lv_style_t *style, lv_style_prop_t prop, uint16_t meta);
 
 /**
  * Get the value of a property
@@ -410,7 +410,7 @@ void lv_style_set_prop_meta(lv_style_t * style, lv_style_prop_t prop, uint16_t m
  *         LV_RES_OK: the property was fond, and `value` is set accordingly
  * @note For performance reasons there are no sanity check on `style`
  */
-lv_style_res_t lv_style_get_prop(const lv_style_t * style, lv_style_prop_t prop, lv_style_value_t * value);
+lv_style_res_t lv_style_get_prop(const lv_style_t *style, lv_style_prop_t prop, lv_style_value_t *value);
 
 /**
  * Initialize a transition descriptor.
@@ -425,8 +425,8 @@ lv_style_res_t lv_style_get_prop(const lv_style_t * style, lv_style_prop_t prop,
  *  static lv_style_transition_dsc_t trans1;
  *  lv_style_transition_dsc_init(&trans1, trans_props, NULL, 300, 0, NULL);
  */
-void lv_style_transition_dsc_init(lv_style_transition_dsc_t * tr, const lv_style_prop_t props[],
-                                  lv_anim_path_cb_t path_cb, uint32_t time, uint32_t delay, void * user_data);
+void lv_style_transition_dsc_init(lv_style_transition_dsc_t *tr, const lv_style_prop_t props[],
+                                  lv_anim_path_cb_t path_cb, uint32_t time, uint32_t delay, void *user_data);
 
 /**
  * Get the default value of a property
@@ -445,18 +445,19 @@ lv_style_value_t lv_style_prop_get_default(lv_style_prop_t prop);
  * @note For performance reasons there are no sanity check on `style`
  * @note This function is the same as ::lv_style_get_prop but inlined. Use it only on performance critical places
  */
-static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style, lv_style_prop_t prop,
-                                                       lv_style_value_t * value)
+static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t *style, lv_style_prop_t prop,
+        lv_style_value_t *value)
 {
-    if(style->prop1 == LV_STYLE_PROP_ANY) {
-        const lv_style_const_prop_t * const_prop;
+    if (style->prop1 == LV_STYLE_PROP_ANY) {
+        const lv_style_const_prop_t *const_prop;
         uint32_t i;
-        for(i = 0; i < style->prop_cnt; i++) {
+        for (i = 0; i < style->prop_cnt; i++) {
             const_prop = style->v_p.const_props + i;
             lv_style_prop_t prop_id = LV_STYLE_PROP_ID_MASK(const_prop->prop);
-            if(prop_id == prop) {
-                if(const_prop->prop & LV_STYLE_PROP_META_INHERIT)
+            if (prop_id == prop) {
+                if (const_prop->prop & LV_STYLE_PROP_META_INHERIT) {
                     return LV_STYLE_RES_INHERIT;
+                }
                 *value = (const_prop->prop & LV_STYLE_PROP_META_INITIAL) ? lv_style_prop_get_default(prop_id) : const_prop->value;
                 return LV_STYLE_RES_FOUND;
             }
@@ -464,32 +465,35 @@ static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style,
         return LV_STYLE_RES_NOT_FOUND;
     }
 
-    if(style->prop_cnt == 0) return LV_STYLE_RES_NOT_FOUND;
+    if (style->prop_cnt == 0) {
+        return LV_STYLE_RES_NOT_FOUND;
+    }
 
-    if(style->prop_cnt > 1) {
-        uint8_t * tmp = style->v_p.values_and_props + style->prop_cnt * sizeof(lv_style_value_t);
-        uint16_t * props = (uint16_t *)tmp;
+    if (style->prop_cnt > 1) {
+        uint8_t *tmp = style->v_p.values_and_props + style->prop_cnt * sizeof(lv_style_value_t);
+        uint16_t *props = (uint16_t *)tmp;
         uint32_t i;
-        for(i = 0; i < style->prop_cnt; i++) {
+        for (i = 0; i < style->prop_cnt; i++) {
             lv_style_prop_t prop_id = LV_STYLE_PROP_ID_MASK(props[i]);
-            if(prop_id == prop) {
-                if(props[i] & LV_STYLE_PROP_META_INHERIT)
+            if (prop_id == prop) {
+                if (props[i] & LV_STYLE_PROP_META_INHERIT) {
                     return LV_STYLE_RES_INHERIT;
-                if(props[i] & LV_STYLE_PROP_META_INITIAL)
+                }
+                if (props[i] & LV_STYLE_PROP_META_INITIAL) {
                     *value = lv_style_prop_get_default(prop_id);
-                else {
-                    lv_style_value_t * values = (lv_style_value_t *)style->v_p.values_and_props;
+                } else {
+                    lv_style_value_t *values = (lv_style_value_t *)style->v_p.values_and_props;
                     *value = values[i];
                 }
                 return LV_STYLE_RES_FOUND;
             }
         }
-    }
-    else if(LV_STYLE_PROP_ID_MASK(style->prop1) == prop) {
-        if(style->prop1 & LV_STYLE_PROP_META_INHERIT)
+    } else if (LV_STYLE_PROP_ID_MASK(style->prop1) == prop) {
+        if (style->prop1 & LV_STYLE_PROP_META_INHERIT) {
             return LV_STYLE_RES_INHERIT;
+        }
         *value = (style->prop1 & LV_STYLE_PROP_META_INITIAL) ? lv_style_prop_get_default(LV_STYLE_PROP_ID_MASK(
-                                                                                             style->prop1)) : style->v_p.value1;
+                     style->prop1)) : style->v_p.value1;
         return LV_STYLE_RES_FOUND;
     }
     return LV_STYLE_RES_NOT_FOUND;
@@ -500,7 +504,7 @@ static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style,
  * @param style pointer to a style
  * @return true if the style is empty
  */
-bool lv_style_is_empty(const lv_style_t * style);
+bool lv_style_is_empty(const lv_style_t *style);
 
 /**
  * Tell the group of a property. If the a property from a group is set in a style the (1 << group) bit of style->has_group is set.
@@ -520,13 +524,13 @@ uint8_t _lv_style_prop_lookup_flags(lv_style_prop_t prop);
 
 #include "lv_style_gen.h"
 
-static inline void lv_style_set_size(lv_style_t * style, lv_coord_t value)
+static inline void lv_style_set_size(lv_style_t *style, lv_coord_t value)
 {
     lv_style_set_width(style, value);
     lv_style_set_height(style, value);
 }
 
-static inline void lv_style_set_pad_all(lv_style_t * style, lv_coord_t value)
+static inline void lv_style_set_pad_all(lv_style_t *style, lv_coord_t value)
 {
     lv_style_set_pad_left(style, value);
     lv_style_set_pad_right(style, value);
@@ -534,19 +538,19 @@ static inline void lv_style_set_pad_all(lv_style_t * style, lv_coord_t value)
     lv_style_set_pad_bottom(style, value);
 }
 
-static inline void lv_style_set_pad_hor(lv_style_t * style, lv_coord_t value)
+static inline void lv_style_set_pad_hor(lv_style_t *style, lv_coord_t value)
 {
     lv_style_set_pad_left(style, value);
     lv_style_set_pad_right(style, value);
 }
 
-static inline void lv_style_set_pad_ver(lv_style_t * style, lv_coord_t value)
+static inline void lv_style_set_pad_ver(lv_style_t *style, lv_coord_t value)
 {
     lv_style_set_pad_top(style, value);
     lv_style_set_pad_bottom(style, value);
 }
 
-static inline void lv_style_set_pad_gap(lv_style_t * style, lv_coord_t value)
+static inline void lv_style_set_pad_gap(lv_style_t *style, lv_coord_t value)
 {
     lv_style_set_pad_row(style, value);
     lv_style_set_pad_column(style, value);

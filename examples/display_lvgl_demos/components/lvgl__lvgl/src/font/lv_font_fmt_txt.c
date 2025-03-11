@@ -15,6 +15,8 @@
 #include "../misc/lv_utils.h"
 #include "../misc/lv_mem.h"
 
+#include "esp_log.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -87,9 +89,13 @@ const uint8_t * lv_font_get_bitmap_fmt_txt(const lv_font_t * font, uint32_t unic
     const lv_font_fmt_txt_glyph_dsc_t * gdsc = &fdsc->glyph_dsc[gid];
 
     if(fdsc->bitmap_format == LV_FONT_FMT_TXT_PLAIN) {
-        // ESP_LOGI("lv_font_get_bitmap_fmt_txt", "fdsc->bitmap_format == LV_FONT_FMT_TXT_PLAIN, %p", fdsc->glyph_bitmap);
-        assert(fdsc->glyph_bitmap != NULL);
-        return &fdsc->glyph_bitmap[gdsc->bitmap_index];
+        // ESP_LOGI(" ", "LV_FONT_FMT_TXT_PLAIN, glyph_bitmap:%p, get_glyph_bitmap_cb:%p", fdsc->glyph_bitmap, fdsc->get_glyph_bitmap_cb);
+        if(fdsc->get_glyph_bitmap_cb) {
+            return fdsc->get_glyph_bitmap_cb(fdsc, gdsc->bitmap_index, NULL, gdsc->offset);
+        } else {
+            assert(fdsc->glyph_bitmap != NULL);
+            return &fdsc->glyph_bitmap[gdsc->bitmap_index];
+        }
     }
     /*Handle compressed bitmap*/
     else {

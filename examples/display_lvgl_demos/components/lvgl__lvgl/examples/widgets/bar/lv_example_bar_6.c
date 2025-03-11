@@ -1,17 +1,19 @@
 #include "../../lv_examples.h"
 #if LV_USE_BAR && LV_BUILD_EXAMPLES
 
-static void set_value(void * bar, int32_t v)
+static void set_value(void *bar, int32_t v)
 {
     lv_bar_set_value(bar, v, LV_ANIM_OFF);
 }
 
-static void event_cb(lv_event_t * e)
+static void event_cb(lv_event_t *e)
 {
-    lv_obj_draw_part_dsc_t * dsc = lv_event_get_draw_part_dsc(e);
-    if(dsc->part != LV_PART_INDICATOR) return;
+    lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
+    if (dsc->part != LV_PART_INDICATOR) {
+        return;
+    }
 
-    lv_obj_t * obj = lv_event_get_target(e);
+    lv_obj_t *obj = lv_event_get_target(e);
 
     lv_draw_label_dsc_t label_dsc;
     lv_draw_label_dsc_init(&label_dsc);
@@ -26,7 +28,7 @@ static void event_cb(lv_event_t * e)
 
     lv_area_t txt_area;
     /*If the indicator is long enough put the text inside on the right*/
-    if(lv_area_get_width(dsc->draw_area) > txt_size.x + 20) {
+    if (lv_area_get_width(dsc->draw_area) > txt_size.x + 20) {
         txt_area.x2 = dsc->draw_area->x2 - 5;
         txt_area.x1 = txt_area.x2 - txt_size.x + 1;
         label_dsc.color = lv_color_white();
@@ -49,7 +51,7 @@ static void event_cb(lv_event_t * e)
  */
 void lv_example_bar_6(void)
 {
-    lv_obj_t * bar = lv_bar_create(lv_scr_act());
+    lv_obj_t *bar = lv_bar_create(lv_scr_act());
     lv_obj_add_event_cb(bar, event_cb, LV_EVENT_DRAW_PART_END, NULL);
     lv_obj_set_size(bar, 200, 20);
     lv_obj_center(bar);

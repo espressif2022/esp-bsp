@@ -1,13 +1,15 @@
 #include "../../lv_examples.h"
 #if LV_USE_CHART && LV_BUILD_EXAMPLES
 
-static void draw_event_cb(lv_event_t * e)
+static void draw_event_cb(lv_event_t *e)
 {
-    lv_obj_draw_part_dsc_t * dsc = lv_event_get_draw_part_dsc(e);
-    if(!lv_obj_draw_part_check_type(dsc, &lv_chart_class, LV_CHART_DRAW_PART_TICK_LABEL)) return;
+    lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
+    if (!lv_obj_draw_part_check_type(dsc, &lv_chart_class, LV_CHART_DRAW_PART_TICK_LABEL)) {
+        return;
+    }
 
-    if(dsc->id == LV_CHART_AXIS_PRIMARY_X && dsc->text) {
-        const char * month[] = {"Jan", "Febr", "March", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
+    if (dsc->id == LV_CHART_AXIS_PRIMARY_X && dsc->text) {
+        const char *month[] = {"Jan", "Febr", "March", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         lv_snprintf(dsc->text, dsc->text_length, "%s", month[dsc->value]);
     }
 }
@@ -18,7 +20,7 @@ static void draw_event_cb(lv_event_t * e)
 void lv_example_chart_3(void)
 {
     /*Create a chart*/
-    lv_obj_t * chart;
+    lv_obj_t *chart;
     chart = lv_chart_create(lv_scr_act());
     lv_obj_set_size(chart, 200, 150);
     lv_obj_center(chart);
@@ -37,9 +39,9 @@ void lv_example_chart_3(void)
     lv_chart_set_zoom_x(chart, 800);
 
     /*Add two data series*/
-    lv_chart_series_t * ser1 = lv_chart_add_series(chart, lv_palette_lighten(LV_PALETTE_GREEN, 2), LV_CHART_AXIS_PRIMARY_Y);
-    lv_chart_series_t * ser2 = lv_chart_add_series(chart, lv_palette_darken(LV_PALETTE_GREEN, 2),
-                                                   LV_CHART_AXIS_SECONDARY_Y);
+    lv_chart_series_t *ser1 = lv_chart_add_series(chart, lv_palette_lighten(LV_PALETTE_GREEN, 2), LV_CHART_AXIS_PRIMARY_Y);
+    lv_chart_series_t *ser2 = lv_chart_add_series(chart, lv_palette_darken(LV_PALETTE_GREEN, 2),
+                              LV_CHART_AXIS_SECONDARY_Y);
 
     /*Set the next points on 'ser1'*/
     lv_chart_set_next_value(chart, ser1, 31);
@@ -55,7 +57,7 @@ void lv_example_chart_3(void)
     lv_chart_set_next_value(chart, ser1, 22);
     lv_chart_set_next_value(chart, ser1, 58);
 
-    lv_coord_t * ser2_array = lv_chart_get_y_array(chart, ser2);
+    lv_coord_t *ser2_array = lv_chart_get_y_array(chart, ser2);
     /*Directly set points on 'ser2'*/
     ser2_array[0] = 92;
     ser2_array[1] = 71;

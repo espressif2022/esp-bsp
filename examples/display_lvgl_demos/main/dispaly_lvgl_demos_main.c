@@ -32,6 +32,7 @@ extern const uint8_t output_2_end[]   asm("_binary_output_2_wav_end");
 
 static int64_t last_time = 0;
 static lv_font_t *my_font;
+static lv_obj_t *main_label;
 
 static void timer_callback(TimerHandle_t xTimer)
 {
@@ -39,6 +40,30 @@ static void timer_callback(TimerHandle_t xTimer)
     if (last_time != 0) {
         // printf("Time difference: %lld ms\r\n", (current_time - last_time) / 1000);
     }
+    static int i = 0;
+    bsp_display_lock(0);
+    // lv_label_set_text(main_label, "T");
+#if 0
+    char test[2] = {i % 26 + 'A', 0};
+    lv_label_set_text(main_label, test);
+#else
+    char test[4];
+    if (i % 2 == 0) {
+        test[0] = rand() % 26 + 'A'; // Random English letter
+        test[1] = 0;
+    } else {
+        uint16_t unicode = 0x4E00 + (rand() % (0x9FA5 - 0x4E00 + 1)); // Random Chinese character
+        // Manually encode to UTF-8
+        test[0] = 0xE0 | ((unicode >> 12) & 0x0F);
+        test[1] = 0x80 | ((unicode >> 6) & 0x3F);
+        test[2] = 0x80 | (unicode & 0x3F);
+        test[3] = 0;
+    }
+    printf("label:%s\r\n", test);
+    lv_label_set_text(main_label, test);
+#endif
+    bsp_display_unlock();
+    i++;
     last_time = current_time;
 }
 
@@ -110,7 +135,7 @@ void app_main(void)
     // lv_demo_benchmark();    /* A demo to measure the performance of LVGL or to compare different settings. */
 
     /*Create the main label*/
-    lv_obj_t *main_label = lv_label_create(lv_scr_act());
+    main_label = lv_label_create(lv_scr_act());
     lv_obj_remove_style_all(main_label);
     lv_obj_set_style_text_color(main_label, lv_color_hex(0xFF0000), 0);
     lv_obj_set_style_text_font(main_label, my_font, 0);
@@ -121,7 +146,7 @@ void app_main(void)
 
     bsp_display_unlock();
     /* Create a FreeRTOS timer */
-    TimerHandle_t timer = xTimerCreate("MyTimer", pdMS_TO_TICKS(30), pdTRUE, (void *)0, timer_callback);
+    TimerHandle_t timer = xTimerCreate("MyTimer", pdMS_TO_TICKS(30 * 20), pdTRUE, (void *)0, timer_callback);
 
     if (timer == NULL) {
         ESP_LOGE(TAG, "Failed to create timer");
@@ -133,8 +158,8 @@ void app_main(void)
 
 #if LOG_MEM_INFO
     static char buffer[128];    /* Make sure buffer is enough for `sprintf` */
-    // while (1) {
-    if (1) {
+    while (1) {
+    // if (1) {
         sprintf(buffer, "   Biggest /     Free /    Total\n"
                 "\t  SRAM : [%8d K / %8d K / %8d K]\n"
                 "\t PSRAM : [%8d K / %8d K / %8d K]",
