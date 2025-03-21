@@ -1,0 +1,5 @@
+menu "Example Configuration"
+
+    config EXAMPLE_ENABLE_FILE_SYSTEM_APPEND
+            bool "File system append"
+endmenu
