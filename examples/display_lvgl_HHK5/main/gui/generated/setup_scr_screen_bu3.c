@@ -77,7 +77,7 @@ void setup_scr_screen_bu3(lv_ui *ui)
     //Write codes screen_bu3_bar_step1
     ui->screen_bu3_bar_step1 = lv_bar_create(ui->screen_bu3);
     lv_obj_set_pos(ui->screen_bu3_bar_step1, 67, 305);
-    lv_obj_set_size(ui->screen_bu3_bar_step1, 216, 14);
+    lv_obj_set_size(ui->screen_bu3_bar_step1, 250, 14);
     lv_obj_set_style_anim_duration(ui->screen_bu3_bar_step1, 1000, 0);
     lv_bar_set_mode(ui->screen_bu3_bar_step1, LV_BAR_MODE_NORMAL);
     lv_bar_set_range(ui->screen_bu3_bar_step1, 0, 100);
@@ -98,8 +98,8 @@ void setup_scr_screen_bu3(lv_ui *ui)
 
     //Write codes screen_bu3_bar_step2
     ui->screen_bu3_bar_step2 = lv_bar_create(ui->screen_bu3);
-    lv_obj_set_pos(ui->screen_bu3_bar_step2, 291, 305);
-    lv_obj_set_size(ui->screen_bu3_bar_step2, 216, 14);
+    lv_obj_set_pos(ui->screen_bu3_bar_step2, 327, 305);
+    lv_obj_set_size(ui->screen_bu3_bar_step2, 250, 14);
     lv_obj_set_style_anim_duration(ui->screen_bu3_bar_step2, 1000, 0);
     lv_bar_set_mode(ui->screen_bu3_bar_step2, LV_BAR_MODE_NORMAL);
     lv_bar_set_range(ui->screen_bu3_bar_step2, 0, 100);
@@ -120,8 +120,8 @@ void setup_scr_screen_bu3(lv_ui *ui)
 
     //Write codes screen_bu3_bar_step3
     ui->screen_bu3_bar_step3 = lv_bar_create(ui->screen_bu3);
-    lv_obj_set_pos(ui->screen_bu3_bar_step3, 513, 305);
-    lv_obj_set_size(ui->screen_bu3_bar_step3, 217, 14);
+    lv_obj_set_pos(ui->screen_bu3_bar_step3, 587, 305);
+    lv_obj_set_size(ui->screen_bu3_bar_step3, 250, 14);
     lv_obj_set_style_anim_duration(ui->screen_bu3_bar_step3, 1000, 0);
     lv_bar_set_mode(ui->screen_bu3_bar_step3, LV_BAR_MODE_NORMAL);
     lv_bar_set_range(ui->screen_bu3_bar_step3, 0, 100);
@@ -140,10 +140,35 @@ void setup_scr_screen_bu3(lv_ui *ui)
     lv_obj_set_style_bg_grad_dir(ui->screen_bu3_bar_step3, LV_GRAD_DIR_NONE, LV_PART_INDICATOR|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_bu3_bar_step3, 10, LV_PART_INDICATOR|LV_STATE_DEFAULT);
 
+    //Write codes screen_bu3_btn_1
+    ui->screen_bu3_btn_1 = lv_button_create(ui->screen_bu3);
+    lv_obj_set_pos(ui->screen_bu3_btn_1, 425, 10);
+    lv_obj_set_size(ui->screen_bu3_btn_1, 100, 50);
+    ui->screen_bu3_btn_1_label = lv_label_create(ui->screen_bu3_btn_1);
+    lv_label_set_text(ui->screen_bu3_btn_1_label, "Test");
+    lv_label_set_long_mode(ui->screen_bu3_btn_1_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_bu3_btn_1_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_bu3_btn_1, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_bu3_btn_1_label, LV_PCT(100));
+
+    //Write style for screen_bu3_btn_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_bu3_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_bu3_btn_1, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_bu3_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_bu3_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_bu3_btn_1, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_bu3_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_bu3_btn_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_bu3_btn_1, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_bu3_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_bu3_btn_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
     //The custom code of screen_bu3.
 
 
     //Update current screen layout.
     lv_obj_update_layout(ui->screen_bu3);
 
+    //Init events for screen.
+    events_init_screen_bu3(ui);
 }

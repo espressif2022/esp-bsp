@@ -23,6 +23,7 @@ static char *TAG = "app_main";
 
 #include "gui_guider.h"
 #include "custom.h"
+#include "i2c_slave.h"
 
 void mem_monitor()
 {
@@ -43,6 +44,8 @@ lv_ui guider_ui;
 
 void app_main(void)
 {
+    i2c_slave_read_test_v2();
+
     /* Initialize display and LVGL */
     bsp_display_start();
 

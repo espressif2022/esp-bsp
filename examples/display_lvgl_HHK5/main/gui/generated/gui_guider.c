@@ -84,6 +84,8 @@ void init_scr_del_flag(lv_ui *ui)
     ui->screen_mm_1_del = true;
     ui->screen_error_del = true;
     ui->screen_apps_del = true;
+    ui->screen_select_del = true;
+    ui->screen_restart_del = true;
 }
 
 void setup_bottom_layer(void)
@@ -96,6 +98,8 @@ void setup_ui(lv_ui *ui)
     setup_bottom_layer();
     init_scr_del_flag(ui);
     init_keyboard(ui);
+    // setup_scr_screen_restart(ui);
+    // lv_screen_load(ui->screen_restart);
     setup_scr_screen_main_loop(ui);
     lv_screen_load(ui->screen_main_loop);
 }
