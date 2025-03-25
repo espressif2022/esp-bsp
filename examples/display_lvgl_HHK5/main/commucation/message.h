@@ -87,6 +87,10 @@
 #define SCREEN_NUM_APPS_FIBE_TV_APP                0x02
 #define SCREEN_NUM_APPS_VIRTUAL_REPAIR_TOOL        0x03
 
+
+#define LANG_ENGLISH            0x00
+#define LANG_FRENCH             0x01
+
 /**
  * The following part is offset.
  */
@@ -196,6 +200,6 @@ void message_parse_cmd(uint8_t *data, size_t len);
 
 void message_register_handle();
 
-void process_screen(uint8_t type, uint8_t number);
+void process_screen(uint8_t type, uint8_t number, bool lang);
 
 #endif // MESSAG_H

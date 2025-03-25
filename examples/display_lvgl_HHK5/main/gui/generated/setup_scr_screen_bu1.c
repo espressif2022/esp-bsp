@@ -55,6 +55,7 @@ void setup_scr_screen_bu1(lv_ui *ui)
     ui->screen_bu1_img_1 = lv_image_create(ui->screen_bu1);
     lv_obj_set_pos(ui->screen_bu1_img_1, 430, 138);
     lv_obj_set_size(ui->screen_bu1_img_1, 100, 100);
+    lv_obj_add_flag(ui->screen_bu1_img_1, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui->screen_bu1_img_1, LV_OBJ_FLAG_CLICKABLE);
     lv_image_set_src(ui->screen_bu1_img_1, &_arc_RGB565A8_100x100);
     lv_image_set_pivot(ui->screen_bu1_img_1, 50,50);
@@ -69,7 +70,7 @@ void setup_scr_screen_bu1(lv_ui *ui)
     lv_obj_set_pos(ui->screen_bu1_btn_1, 425, 10);
     lv_obj_set_size(ui->screen_bu1_btn_1, 100, 50);
     ui->screen_bu1_btn_1_label = lv_label_create(ui->screen_bu1_btn_1);
-    lv_label_set_text(ui->screen_bu1_btn_1_label, "Test");
+    lv_label_set_text(ui->screen_bu1_btn_1_label, "next");
     lv_label_set_long_mode(ui->screen_bu1_btn_1_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_bu1_btn_1_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_bu1_btn_1, 0, LV_STATE_DEFAULT);

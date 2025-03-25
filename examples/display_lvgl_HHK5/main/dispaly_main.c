@@ -80,19 +80,49 @@ void app_main(void)
     }
 #endif
 
-    process_screen(SCREEN_TYPE_BOOT, 0x00);
+    return;
+    // process_screen(SCREEN_TYPE_BOOT, 0x00, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x01, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x02, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x03, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x04, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x05, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x07, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x08, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // process_screen(SCREEN_TYPE_BOOT, 0x11, LANG_ENGLISH);
+    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+
+    process_screen(SCREEN_TYPE_FIRMWARE_UPGRADE, 0x1, LANG_ENGLISH);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_FIRMWARE_UPGRADE, 0x12, LANG_ENGLISH);
     vTaskDelay(pdMS_TO_TICKS(1000 * 5));
 
-    process_screen(SCREEN_TYPE_BOOT, 0x01);
+    process_screen(SCREEN_TYPE_WIRELESS_STB_PAIRING, 0x01, LANG_FRENCH);
     vTaskDelay(pdMS_TO_TICKS(1000 * 5));
 
-    process_screen(SCREEN_TYPE_BOOT, 0x02);
+    process_screen(SCREEN_TYPE_DATA_CLIENT_PAIRING, 0x01, LANG_FRENCH);
     vTaskDelay(pdMS_TO_TICKS(1000 * 5));
 
-    process_screen(SCREEN_TYPE_BOOT, 0x03);
+    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x01, LANG_ENGLISH);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x02, LANG_ENGLISH);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x03, LANG_ENGLISH);
     vTaskDelay(pdMS_TO_TICKS(1000 * 5));
 
-    process_screen(SCREEN_TYPE_BOOT, 0x99); // 未匹配
+    process_screen(SCREEN_TYPE_SPEED_TEST, 0x01, LANG_ENGLISH);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
 
-    // goto NEXT;
+    process_screen(SCREEN_TYPE_RESTART_MODEM, 0x01, LANG_ENGLISH);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_RESTART_MODEM, 0x02, LANG_ENGLISH);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
 }

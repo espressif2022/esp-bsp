@@ -48,8 +48,8 @@ void setup_scr_screen_notif(lv_ui *ui)
 
     //Write codes screen_notif_label_notify_info
     ui->screen_notif_label_notify_info = lv_label_create(ui->screen_notif_cont_notify);
-    lv_obj_set_pos(ui->screen_notif_label_notify_info, 88, 17);
-    lv_obj_set_size(ui->screen_notif_label_notify_info, 552, 43);
+    lv_obj_set_pos(ui->screen_notif_label_notify_info, 89, 17);
+    lv_obj_set_size(ui->screen_notif_label_notify_info, 677, 43);
     lv_label_set_text(ui->screen_notif_label_notify_info, "Services configured: Internet, TV and Home Phone\n\n");
     lv_label_set_long_mode(ui->screen_notif_label_notify_info, LV_LABEL_LONG_WRAP);
 
@@ -57,7 +57,7 @@ void setup_scr_screen_notif(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_notif_label_notify_info, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_notif_label_notify_info, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_notif_label_notify_info, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_notif_label_notify_info, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_notif_label_notify_info, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_notif_label_notify_info, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_notif_label_notify_info, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_notif_label_notify_info, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -103,7 +103,7 @@ void setup_scr_screen_notif(lv_ui *ui)
     //Write codes screen_notif_label_1
     ui->screen_notif_label_1 = lv_label_create(ui->screen_notif_cont_title);
     lv_obj_set_pos(ui->screen_notif_label_1, 30, 52);
-    lv_obj_set_size(ui->screen_notif_label_1, 372, 43);
+    lv_obj_set_size(ui->screen_notif_label_1, 510, 43);
     lv_label_set_text(ui->screen_notif_label_1, "Services status\n\n\n");
     lv_label_set_long_mode(ui->screen_notif_label_1, LV_LABEL_LONG_WRAP);
 
@@ -161,10 +161,10 @@ void setup_scr_screen_notif(lv_ui *ui)
 
     //Write codes screen_notif_btn_2
     ui->screen_notif_btn_2 = lv_button_create(ui->screen_notif_cont_title);
-    lv_obj_set_pos(ui->screen_notif_btn_2, 425, 10);
+    lv_obj_set_pos(ui->screen_notif_btn_2, 425, 9);
     lv_obj_set_size(ui->screen_notif_btn_2, 100, 50);
     ui->screen_notif_btn_2_label = lv_label_create(ui->screen_notif_btn_2);
-    lv_label_set_text(ui->screen_notif_btn_2_label, "Test");
+    lv_label_set_text(ui->screen_notif_btn_2_label, "next");
     lv_label_set_long_mode(ui->screen_notif_btn_2_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_notif_btn_2_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_notif_btn_2, 0, LV_STATE_DEFAULT);
@@ -181,6 +181,20 @@ void setup_scr_screen_notif(lv_ui *ui)
     lv_obj_set_style_text_font(ui->screen_notif_btn_2, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_notif_btn_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_notif_btn_2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_notif_img_1
+    ui->screen_notif_img_1 = lv_image_create(ui->screen_notif);
+    lv_obj_set_pos(ui->screen_notif_img_1, 42, 287);
+    lv_obj_set_size(ui->screen_notif_img_1, 29, 35);
+    lv_obj_add_flag(ui->screen_notif_img_1, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui->screen_notif_img_1, LV_OBJ_FLAG_CLICKABLE);
+    lv_image_set_src(ui->screen_notif_img_1, &_icon_ok_RGB565A8_29x35);
+    lv_image_set_pivot(ui->screen_notif_img_1, 50,50);
+    lv_image_set_rotation(ui->screen_notif_img_1, 0);
+
+    //Write style for screen_notif_img_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_image_recolor_opa(ui->screen_notif_img_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_image_opa(ui->screen_notif_img_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //The custom code of screen_notif.
 

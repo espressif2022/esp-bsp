@@ -86,6 +86,7 @@ void init_scr_del_flag(lv_ui *ui)
     ui->screen_apps_del = true;
     ui->screen_select_del = true;
     ui->screen_restart_del = true;
+    ui->screen_null_del = true;
 }
 
 void setup_bottom_layer(void)
@@ -113,9 +114,8 @@ void setup_ui(lv_ui *ui)
     setup_scr_screen_error(ui);
     setup_scr_screen_select(ui);
     setup_scr_screen_restart(ui);
-    
-    // lv_screen_load(ui->screen_restart);
-    lv_screen_load(ui->screen_main_loop);
+
+    lv_screen_load(ui->screen_notif);
 }
 
 void video_play(lv_ui *ui)

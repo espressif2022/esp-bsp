@@ -49,7 +49,7 @@ void setup_scr_screen_select(lv_ui *ui)
     //Write codes screen_select_label_2
     ui->screen_select_label_2 = lv_label_create(ui->screen_select_cont_1);
     lv_obj_set_pos(ui->screen_select_label_2, 29, 52);
-    lv_obj_set_size(ui->screen_select_label_2, 372, 43);
+    lv_obj_set_size(ui->screen_select_label_2, 510, 43);
     lv_label_set_text(ui->screen_select_label_2, "Restart the modem\n\n");
     lv_label_set_long_mode(ui->screen_select_label_2, LV_LABEL_LONG_WRAP);
 
@@ -110,7 +110,7 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_pos(ui->screen_select_btn_4, 425, 10);
     lv_obj_set_size(ui->screen_select_btn_4, 100, 50);
     ui->screen_select_btn_4_label = lv_label_create(ui->screen_select_btn_4);
-    lv_label_set_text(ui->screen_select_btn_4_label, "Test");
+    lv_label_set_text(ui->screen_select_btn_4_label, "next");
     lv_label_set_long_mode(ui->screen_select_btn_4_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_select_btn_4_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_select_btn_4, 0, LV_STATE_DEFAULT);
@@ -130,7 +130,7 @@ void setup_scr_screen_select(lv_ui *ui)
 
     //Write codes screen_select_label_3
     ui->screen_select_label_3 = lv_label_create(ui->screen_select);
-    lv_obj_set_pos(ui->screen_select_label_3, 29, 165);
+    lv_obj_set_pos(ui->screen_select_label_3, 33, 153);
     lv_obj_set_size(ui->screen_select_label_3, 552, 43);
     lv_label_set_text(ui->screen_select_label_3, "Do you want to restart your modem?\n\n");
     lv_label_set_long_mode(ui->screen_select_label_3, LV_LABEL_LONG_WRAP);
@@ -139,7 +139,7 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_select_label_3, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_label_3, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_label_3, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_select_label_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -154,7 +154,7 @@ void setup_scr_screen_select(lv_ui *ui)
     //Write codes screen_select_btn_6
     ui->screen_select_btn_6 = lv_button_create(ui->screen_select);
     lv_obj_set_pos(ui->screen_select_btn_6, 33, 208);
-    lv_obj_set_size(ui->screen_select_btn_6, 866, 40);
+    lv_obj_set_size(ui->screen_select_btn_6, 866, 60);
     ui->screen_select_btn_6_label = lv_label_create(ui->screen_select_btn_6);
     lv_label_set_text(ui->screen_select_btn_6_label, "No, just go back to menu");
     lv_label_set_long_mode(ui->screen_select_btn_6_label, LV_LABEL_LONG_WRAP);
@@ -170,14 +170,14 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_style_radius(ui->screen_select_btn_6, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_select_btn_6, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_select_btn_6, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_btn_6, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_btn_6, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_select_btn_6, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_select_btn_6, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_select_btn_7
     ui->screen_select_btn_7 = lv_button_create(ui->screen_select);
     lv_obj_set_pos(ui->screen_select_btn_7, 33, 279);
-    lv_obj_set_size(ui->screen_select_btn_7, 866, 40);
+    lv_obj_set_size(ui->screen_select_btn_7, 866, 60);
     ui->screen_select_btn_7_label = lv_label_create(ui->screen_select_btn_7);
     lv_label_set_text(ui->screen_select_btn_7_label, "Yes, restart my modem");
     lv_label_set_long_mode(ui->screen_select_btn_7_label, LV_LABEL_LONG_WRAP);
@@ -193,7 +193,7 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_style_radius(ui->screen_select_btn_7, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_select_btn_7, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_select_btn_7, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_btn_7, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_btn_7, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_select_btn_7, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_select_btn_7, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 

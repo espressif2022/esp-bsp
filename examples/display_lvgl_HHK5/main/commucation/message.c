@@ -25,7 +25,8 @@ static cmd_set_error_handler_t cmd_set_error_handler = NULL;
 static cmd_set_apps_handler_t cmd_set_apps_handler = NULL;
 static cmd_set_bellapps_handler_t cmd_set_bellapps_handler = NULL;
 
-extern lv_obj_t * cont_col;
+extern lv_obj_t * cont_main_loop;
+extern lv_obj_t * cont_bellapps;
 
 void register_cmd_set_menu_handler(cmd_set_menu_handler_t handler)
 {
@@ -65,9 +66,11 @@ void register_cmd_set_bellapps_handler(cmd_set_bellapps_handler_t handler)
 void cmd_set_menu(cmd_set_menu_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_MENU, frame:%d, lang:%d, menu num:%d", cmd->frame_num, cmd->lang, cmd->menu_num);
-
     bsp_display_lock(0);
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_col, cmd->frame_num), LV_ANIM_ON);
+
+    lv_screen_load(guider_ui.screen_main_loop);
+    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, cmd->menu_num), LV_ANIM_ON);
+
     bsp_display_unlock();
 }
 
@@ -75,24 +78,60 @@ void cmd_set_screen(cmd_set_screen_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_SCREEN, frame:%d, lang:%d, screen type:%d, screen num:%d",
              cmd->frame_num, cmd->lang, cmd->scren_type, cmd->scren_num);
+
+    process_screen(cmd->scren_type, cmd->scren_num, cmd->lang);
 }
 
 void cmd_set_notif(cmd_set_notif_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_NOTIF, frame:%d, notif type:%d, menu:%d, title:%.*s, text:%.*s",
              cmd->frame_num, cmd->notif_type, cmd->menu, cmd->title_len, cmd->title, cmd->text_len, cmd->text);
+
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_notif);
+    lv_label_set_text(guider_ui.screen_notif_label_1, cmd->title);
+    lv_label_set_text(guider_ui.screen_notif_label_notify_info, cmd->text);
+    if (cmd->notif_type == 1) {
+        lv_image_set_src(guider_ui.screen_notif_img_notif_type, &_error_RGB565A8_29x35);
+    } else if (cmd->notif_type == 0) {
+        lv_image_set_src(guider_ui.screen_notif_img_notif_type, &_icon_ok_RGB565A8_29x35);
+    }
+
+    if (cmd->menu == 1) {
+        lv_obj_clear_flag(guider_ui.screen_notif_btn_3, LV_OBJ_FLAG_HIDDEN);
+    } else if (cmd->menu == 0) {
+        lv_obj_add_flag(guider_ui.screen_notif_btn_3, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    bsp_display_unlock();
 }
 
 void cmd_set_config(cmd_set_config_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_CONFIG, frame:%d, config type:%d, menu:%d, title:%.*s, text:%.*s, url:%.*s",
              cmd->frame_num, cmd->config_type, cmd->menu, cmd->title_len, cmd->title, cmd->text_len, cmd->text, cmd->url_len, cmd->url);
+
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_network);
+
+    bsp_display_unlock();
 }
 
 void cmd_set_error(cmd_set_error_t *cmd)
 {
-    ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, error num:%d, error len:%d, label:%.*s, text:%.*s, url:%.*s",
-             cmd->frame_num, cmd->error_num, cmd->error_len, cmd->label, cmd->text_len, cmd->text, cmd->url_len, cmd->url);
+    ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, error num:%d, error len:%d, label:%s, text:%s, url:%s",
+             cmd->frame_num, cmd->error_num, cmd->error_len, cmd->label, cmd->text, cmd->url);
+
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_error);
+    lv_label_set_text_fmt(guider_ui.screen_error_label_info_1, "Error %02d - %s\n\n", cmd->error_num, cmd->label);
+    lv_label_set_text(guider_ui.screen_error_label_info_2, cmd->text);
+    lv_qrcode_update(guider_ui.screen_error_qrcode_error, cmd->url, 20);
+
+    bsp_display_unlock();
 }
 
 void cmd_set_apps(cmd_set_apps_t *cmd)
@@ -104,6 +143,12 @@ void cmd_set_apps(cmd_set_apps_t *cmd)
 void cmd_set_bellapps(cmd_set_bellapps_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_BELLAPPS, frame:%d, lang:%d, menu num:%d", cmd->frame_num, cmd->lang, cmd->menu_num);
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_apps);
+    lv_obj_scroll_to_view(lv_obj_get_child(cont_bellapps, cmd->menu_num), LV_ANIM_ON);
+
+    bsp_display_unlock();
 }
 
 void message_parse_cmd(uint8_t *data, size_t len)
@@ -267,129 +312,338 @@ void message_register_handle()
     register_cmd_set_bellapps_handler(cmd_set_bellapps);
 }
 
-typedef void (*ScreenHandler)(void);
+typedef void (*ScreenHandler)(bool lang);
 
-void handle_welcome()
+const char *get_text(const char *en_text, const char *fr_text, bool lang)
+{
+    return lang ? fr_text : en_text;
+}
+
+void handle_bu_welcome(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_welcome");
     bsp_display_lock(0);
     lv_screen_load(guider_ui.screen_bu0);
     bsp_display_unlock();
 }
-void handle_loading()
+
+void handle_bu_loading(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_loading");
     bsp_display_lock(0);
     lv_screen_load(guider_ui.screen_bu1);
     bsp_display_unlock();
 }
-void handle_bell()
+
+void handle_bu_bell(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_bell");
     bsp_display_lock(0);
     lv_screen_load(guider_ui.screen_bu2);
     bsp_display_unlock();
 }
-void handle_connecting_step1()
+
+void handle_bu_connect_1(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_connecting_step1");
+
     bsp_display_lock(0);
+
     lv_screen_load(guider_ui.screen_bu3);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step1, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 0, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 0, LV_ANIM_OFF);
+    lv_label_set_text(guider_ui.screen_bu3_label_title_2,
+                      get_text("Connecting to network\n\n",
+                               "Connexion au réseau\n\n", lang));
+
     bsp_display_unlock();
 }
-void handle_connecting_step2()
+
+void handle_bu_authenticating_2(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_connecting_step2");
+
     bsp_display_lock(0);
+
     lv_screen_load(guider_ui.screen_bu3);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step1, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 0, LV_ANIM_OFF);
+    lv_label_set_text(guider_ui.screen_bu3_label_title_2,
+                      get_text("Authenticating\n\n",
+                               "Authentification\n\n", lang));
+
     bsp_display_unlock();
 }
-void handle_connecting_step3()
+
+void handle_bu_configuring_3(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_connecting_step3");
+
     bsp_display_lock(0);
+
     lv_screen_load(guider_ui.screen_bu3);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step1, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
+    lv_label_set_text(guider_ui.screen_bu3_label_title_2,
+                      get_text("Configuring services\n\n",
+                               "Configuration des services\n\n", lang));
+
     bsp_display_unlock();
 }
-void handle_connecting_auth_step3()
+
+void handle_bu_authenticating_3(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_connecting_auth_step3");
+
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_bu3);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step1, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
+    lv_label_set_text(guider_ui.screen_bu3_label_title_2,
+                      get_text("Authenticating\n\n",
+                               "Authentification\n\n", lang));
+
+    bsp_display_unlock();
 }
-void handle_connecting_config_step3()
+
+void handle_bu_configuring_services_3(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_connecting_config_step3");
+
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_bu3);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step1, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
+    lv_label_set_text(guider_ui.screen_bu3_label_title_2,
+                      get_text("Configuring services\n",
+                               "Configuration des services\n", lang));
+
+    bsp_display_unlock();
 }
-void handle_connecting_wifi_step3()
+
+void handle_bu_configuring_wifi_3(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_connecting_wifi_step3");
+
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_bu3);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step1, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
+    lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
+    lv_label_set_text(guider_ui.screen_bu3_label_title_2,
+                      get_text("Configuring Wi-Fi\n",
+                               "Configuration du Wi-Fi\n", lang));
+
+    bsp_display_unlock();
 }
 
-void handle_upgrading()
+void handle_fu_upgrading(bool lang)
 {
-    ESP_LOGI(TAG, "screen_num_fu_upgrading");
-}
-void handle_restart()
-{
-    printf("Handling SCREEN_NUM_FU_RESTART\n");
+    ESP_LOGI(TAG, "fu_upgrading");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_restart);
+    lv_label_set_text(guider_ui.screen_restart_label_1,
+                      get_text("Firmware Upgrade\n\n",
+                               "Mise à niveau du firmware\n\n", lang));
+    lv_label_set_text(guider_ui.screen_restart_label_loading,
+                      get_text("Firmware upgrading\n\n",
+                               "Mise à niveau du firmware\n\n", lang));
+
+    bsp_display_unlock();
 }
 
-void handle_stb_pairing()
+void handle_fu_restart(bool lang)
 {
-    printf("Handling SCREEN_NUM_STB\n");
-}
-void handle_wpsd_pairing()
-{
-    printf("Handling SCREEN_NUM_WPSD\n");
+    ESP_LOGI(TAG, "fu_restart");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_restart);
+    lv_label_set_text(guider_ui.screen_restart_label_1,
+                      get_text("Firmware Upgrade\n\n",
+                               "Mise à niveau du firmware\n\n", lang));
+    lv_label_set_text(guider_ui.screen_restart_label_loading,
+                      get_text("Modem will now restart\n\n",
+                               "Le modem va maintenant redémarrer\n\n", lang));
+
+    bsp_display_unlock();
 }
 
-void handle_factory_reset_select()
+void handle_stb_pairing(bool lang)
 {
-    printf("Handling SCREEN_NUM_FR_SELECT\n");
-}
-void handle_factory_reset_confirm()
-{
-    printf("Handling SCREEN_NUM_FR_CONFIRM\n");
-}
-void handle_factory_reset_restart()
-{
-    printf("Handling SCREEN_NUM_FR_RESTART\n");
+    ESP_LOGI(TAG, "stb_pairing");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_STB1);
+    lv_label_set_text(guider_ui.screen_STB1_label_connect_to,
+                      get_text("Connect a Fibe TV wireless receiver\n\n",
+                               "Connectez un récepteur sans fil Fibe TV\n\n", lang));
+    lv_label_set_text(guider_ui.screen_STB1_label_1,
+                      get_text("Connect Fibe TV receiver",
+                               "Connectez le récepteur Fibe TV", lang));
+    lv_label_set_text(guider_ui.screen_STB1_btn_3_label,
+                      get_text("Press Ok to cancel",
+                               "Appuyez sur OK pour annuler", lang));
+
+    bsp_display_unlock();
 }
 
-void handle_speed_test()
+void handle_wpsd_pairing(bool lang)
 {
-    printf("Handling SCREEN_NUM_ST_TESTING\n");
+    ESP_LOGI(TAG, "wpsd_pairing");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_STB1);
+    lv_label_set_text(guider_ui.screen_STB1_label_connect_to,
+                      get_text("Connect a Wi-Fi device using WPS\n\n",
+                               "Connectez un appareil Wi-Fi en utilisant WPS\n\n", lang));
+    lv_label_set_text(guider_ui.screen_STB1_label_1,
+                      get_text("Connect Wi-Fi device (WPS)",
+                               "Connectez l'appareil Wi-Fi (WPS)", lang));
+    lv_label_set_text(guider_ui.screen_STB1_btn_3_label,
+                      get_text("Press Ok to cancel",
+                               "Appuyez sur OK pour annuler", lang));
+
+    bsp_display_unlock();
 }
 
-void handle_restart_modem_confirm()
+void handle_factory_reset_select(bool lang)
 {
-    printf("Handling SCREEN_NUM_RBM_CONFIRM\n");
+    ESP_LOGI(TAG, "factory_reset_select");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_select);
+    lv_label_set_text(guider_ui.screen_select_label_2,
+                      get_text("Reset to factory default\n\n",
+                               "Réinitialiser aux paramètres d'usine\n\n", lang));
+    lv_label_set_text(guider_ui.screen_select_label_3,
+                      get_text("Reset modem to factory default?\n\n",
+                               "Réinitialiser le modem aux paramètres d'usine?\n\n", lang));
+    lv_label_set_text(guider_ui.screen_select_btn_6_label,
+                      get_text("No, keep my settings",
+                               "Non, garder mes paramètres", lang));
+    lv_label_set_text(guider_ui.screen_select_btn_7_label,
+                      get_text("Yes, reset my settings",
+                               "Oui, réinitialiser mes paramètres", lang));
+
+    bsp_display_unlock();
 }
-void handle_restart_modem_restart()
+
+void handle_factory_reset_confirm(bool lang)
 {
-    printf("Handling SCREEN_NUM_RGB_RESTART\n");
+    ESP_LOGI(TAG, "factory_reset_confirm");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_select);
+    lv_label_set_text(guider_ui.screen_select_label_2,
+                      get_text("Reset to factory default\n\n",
+                               "Réinitialiser aux paramètres d'usine\n\n", lang));
+    lv_label_set_text(guider_ui.screen_select_label_3,
+                      get_text("Are you sure? All settings will be reset.\n\n",
+                               "Êtes-vous sûr? Tous les paramètres seront réinitialisés.\n\n", lang));
+    lv_label_set_text(guider_ui.screen_select_btn_6_label,
+                      get_text("No, cancel",
+                               "Non, annuler", lang));
+    lv_label_set_text(guider_ui.screen_select_btn_7_label,
+                      get_text("Yes, continue",
+                               "Oui, continuer", lang));
+
+    bsp_display_unlock();
+}
+
+void handle_factory_reset_restart(bool lang)
+{
+    ESP_LOGI(TAG, "factory_reset_restart");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_restart);
+    lv_label_set_text(guider_ui.screen_restart_label_1,
+                      get_text("Reset to factory default\n\n",
+                               "Réinitialiser aux paramètres d'usine\n\n", lang));
+    lv_label_set_text(guider_ui.screen_restart_label_loading,
+                      get_text("Resetting modem to factory default.\nYour modem will now restart\n",
+                               "Réinitialisation du modem aux paramètres d'usine.\nVotre modem va maintenant redémarrer\n", lang));
+
+    bsp_display_unlock();
+}
+
+void handle_speed_test(bool lang)
+{
+    ESP_LOGI(TAG, "speed_test");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_speedtest);
+
+    bsp_display_unlock();
+}
+
+void handle_restart_modem_confirm(bool lang)
+{
+    ESP_LOGI(TAG, "restart_modem_confirm");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_select);
+    lv_label_set_text(guider_ui.screen_select_label_2,
+                      get_text("Restart the modem\n\n",
+                               "Redémarrer le modem\n\n", lang));
+    lv_label_set_text(guider_ui.screen_select_label_3,
+                      get_text("Do you want to restart the modem?\n\n",
+                               "Voulez-vous redémarrer le modem?\n\n", lang));
+    lv_label_set_text(guider_ui.screen_select_btn_6_label,
+                      get_text("No",
+                               "Non", lang));
+    lv_label_set_text(guider_ui.screen_select_btn_7_label,
+                      get_text("Yes",
+                               "Oui", lang));
+
+    bsp_display_unlock();
+}
+
+void handle_restart_modem_restart(bool lang)
+{
+    ESP_LOGI(TAG, "restart_modem_restart");
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_restart);
+    lv_label_set_text(guider_ui.screen_restart_label_1,
+                      get_text("Restart the modem\n\n",
+                               "Redémarrer le modem\n\n", lang));
+    lv_label_set_text(guider_ui.screen_restart_label_loading,
+                      get_text("Modem will now restart\n\n",
+                               "Le modem va maintenant redémarrer\n\n", lang));
+
+    bsp_display_unlock();
 }
 
 typedef struct {
-    uint8_t type;
-    uint8_t number;
+    uint8_t screen_type;
+    uint8_t screen_number;
     ScreenHandler handler;
 } ScreenMapping;
 
-ScreenMapping screen_map[] = {
+static const ScreenMapping cmd_set_screen_map[] = {
     // SCREEN_TYPE_BOOT
-    { SCREEN_TYPE_BOOT, 0x00, handle_welcome },
-    { SCREEN_TYPE_BOOT, 0x01, handle_loading },
-    { SCREEN_TYPE_BOOT, 0x02, handle_bell },
-    { SCREEN_TYPE_BOOT, 0x03, handle_connecting_step1 },
-    { SCREEN_TYPE_BOOT, 0x04, handle_connecting_step2 },
-    { SCREEN_TYPE_BOOT, 0x05, handle_connecting_step3 },
-    { SCREEN_TYPE_BOOT, 0x07, handle_connecting_auth_step3 },
-    { SCREEN_TYPE_BOOT, 0x08, handle_connecting_config_step3 },
-    { SCREEN_TYPE_BOOT, 0x11, handle_connecting_wifi_step3 },
+    { SCREEN_TYPE_BOOT, 0x00, handle_bu_welcome },
+    { SCREEN_TYPE_BOOT, 0x01, handle_bu_loading },
+    { SCREEN_TYPE_BOOT, 0x02, handle_bu_bell },
+    { SCREEN_TYPE_BOOT, 0x03, handle_bu_connect_1 },
+    { SCREEN_TYPE_BOOT, 0x04, handle_bu_authenticating_2 },
+    { SCREEN_TYPE_BOOT, 0x05, handle_bu_configuring_3 },
+    { SCREEN_TYPE_BOOT, 0x07, handle_bu_authenticating_3 },
+    { SCREEN_TYPE_BOOT, 0x08, handle_bu_configuring_services_3 },
+    { SCREEN_TYPE_BOOT, 0x11, handle_bu_configuring_wifi_3 },
 
     // SCREEN_TYPE_FIRMWARE_UPGRADE
-    { SCREEN_TYPE_FIRMWARE_UPGRADE, 0x01, handle_upgrading },
-    { SCREEN_TYPE_FIRMWARE_UPGRADE, 0x02, handle_restart },
+    { SCREEN_TYPE_FIRMWARE_UPGRADE, 0x01, handle_fu_upgrading },
+    { SCREEN_TYPE_FIRMWARE_UPGRADE, 0x02, handle_fu_restart },
 
     // SCREEN_TYPE_WIRELESS_STB_PAIRING
     { SCREEN_TYPE_WIRELESS_STB_PAIRING, 0x01, handle_stb_pairing },
@@ -410,13 +664,13 @@ ScreenMapping screen_map[] = {
     { SCREEN_TYPE_RESTART_MODEM, 0x02, handle_restart_modem_restart },
 };
 
-void process_screen(uint8_t type, uint8_t number)
+void process_screen(uint8_t type, uint8_t number, bool lang)
 {
-    size_t map_size = sizeof(screen_map) / sizeof(ScreenMapping);
+    size_t map_size = sizeof(cmd_set_screen_map) / sizeof(ScreenMapping);
     for (size_t i = 0; i < map_size; i++) {
-        if (screen_map[i].type == type && screen_map[i].number == number) {
-            if (screen_map[i].handler) {
-                screen_map[i].handler();
+        if (cmd_set_screen_map[i].screen_type == type && cmd_set_screen_map[i].screen_number == number) {
+            if (cmd_set_screen_map[i].handler) {
+                cmd_set_screen_map[i].handler(lang);
                 return;
             }
         }

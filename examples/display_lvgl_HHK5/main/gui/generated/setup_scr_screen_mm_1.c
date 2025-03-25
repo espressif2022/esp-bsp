@@ -31,7 +31,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     //Write codes screen_mm_1_label_passwd_title
     ui->screen_mm_1_label_passwd_title = lv_label_create(ui->screen_mm_1);
     lv_obj_set_pos(ui->screen_mm_1_label_passwd_title, 248, 128);
-    lv_obj_set_size(ui->screen_mm_1_label_passwd_title, 291, 43);
+    lv_obj_set_size(ui->screen_mm_1_label_passwd_title, 330, 51);
     lv_label_set_text(ui->screen_mm_1_label_passwd_title, "Your modem password:\n\n");
     lv_label_set_long_mode(ui->screen_mm_1_label_passwd_title, LV_LABEL_LONG_WRAP);
 
@@ -39,7 +39,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_mm_1_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_mm_1_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_mm_1_label_passwd_title, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_mm_1_label_passwd_title, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_mm_1_label_passwd_title, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_mm_1_label_passwd_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_mm_1_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_mm_1_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -53,7 +53,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
 
     //Write codes screen_mm_1_label_passwd
     ui->screen_mm_1_label_passwd = lv_label_create(ui->screen_mm_1);
-    lv_obj_set_pos(ui->screen_mm_1_label_passwd, 248, 183);
+    lv_obj_set_pos(ui->screen_mm_1_label_passwd, 248, 195);
     lv_obj_set_size(ui->screen_mm_1_label_passwd, 422, 43);
     lv_label_set_text(ui->screen_mm_1_label_passwd, "[password]\n");
     lv_label_set_long_mode(ui->screen_mm_1_label_passwd, LV_LABEL_LONG_WRAP);
@@ -62,7 +62,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_mm_1_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_mm_1_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_mm_1_label_passwd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_mm_1_label_passwd, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_mm_1_label_passwd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_mm_1_label_passwd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_mm_1_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_mm_1_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -77,7 +77,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     //Write codes screen_mm_1_label_scan
     ui->screen_mm_1_label_scan = lv_label_create(ui->screen_mm_1);
     lv_obj_set_pos(ui->screen_mm_1_label_scan, 248, 253);
-    lv_obj_set_size(ui->screen_mm_1_label_scan, 217, 94);
+    lv_obj_set_size(ui->screen_mm_1_label_scan, 276, 94);
     lv_label_set_text(ui->screen_mm_1_label_scan, "Scan QR code to \naccess your modem");
     lv_label_set_long_mode(ui->screen_mm_1_label_scan, LV_LABEL_LONG_WRAP);
 
@@ -85,7 +85,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_mm_1_label_scan, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_mm_1_label_scan, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_mm_1_label_scan, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_mm_1_label_scan, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_mm_1_label_scan, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_mm_1_label_scan, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_mm_1_label_scan, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_mm_1_label_scan, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -128,7 +128,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     //Write codes screen_mm_1_label_1
     ui->screen_mm_1_label_1 = lv_label_create(ui->screen_mm_1_cont_title);
     lv_obj_set_pos(ui->screen_mm_1_label_1, 30, 52);
-    lv_obj_set_size(ui->screen_mm_1_label_1, 419, 55);
+    lv_obj_set_size(ui->screen_mm_1_label_1, 510, 55);
     lv_label_set_text(ui->screen_mm_1_label_1, "Modem management\n\n\n");
     lv_label_set_long_mode(ui->screen_mm_1_label_1, LV_LABEL_LONG_WRAP);
 
@@ -189,7 +189,7 @@ void setup_scr_screen_mm_1(lv_ui *ui)
     lv_obj_set_pos(ui->screen_mm_1_btn_2, 425, 10);
     lv_obj_set_size(ui->screen_mm_1_btn_2, 100, 50);
     ui->screen_mm_1_btn_2_label = lv_label_create(ui->screen_mm_1_btn_2);
-    lv_label_set_text(ui->screen_mm_1_btn_2_label, "Test");
+    lv_label_set_text(ui->screen_mm_1_btn_2_label, "next");
     lv_label_set_long_mode(ui->screen_mm_1_btn_2_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_mm_1_btn_2_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_mm_1_btn_2, 0, LV_STATE_DEFAULT);

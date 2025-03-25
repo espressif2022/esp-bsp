@@ -39,7 +39,7 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_network_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_network_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_network_label_ssid_title, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_ssid_title, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_ssid_title, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_network_label_ssid_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_network_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_network_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -72,7 +72,7 @@ void setup_scr_screen_network(lv_ui *ui)
     //Write codes screen_network_label_title
     ui->screen_network_label_title = lv_label_create(ui->screen_network_cont_title);
     lv_obj_set_pos(ui->screen_network_label_title, 30, 52);
-    lv_obj_set_size(ui->screen_network_label_title, 372, 43);
+    lv_obj_set_size(ui->screen_network_label_title, 510, 43);
     lv_label_set_text(ui->screen_network_label_title, "Your Wi-Fi network\n\n\n");
     lv_label_set_long_mode(ui->screen_network_label_title, LV_LABEL_LONG_WRAP);
 
@@ -133,7 +133,7 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_pos(ui->screen_network_btn_1, 425, 10);
     lv_obj_set_size(ui->screen_network_btn_1, 100, 50);
     ui->screen_network_btn_1_label = lv_label_create(ui->screen_network_btn_1);
-    lv_label_set_text(ui->screen_network_btn_1_label, "Test");
+    lv_label_set_text(ui->screen_network_btn_1_label, "next");
     lv_label_set_long_mode(ui->screen_network_btn_1_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_network_btn_1_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_network_btn_1, 0, LV_STATE_DEFAULT);
@@ -162,7 +162,7 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_network_label_ssid, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_ssid, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_ssid, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_network_label_ssid, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -185,7 +185,7 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_network_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_network_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_network_label_passwd_title, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_passwd_title, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_passwd_title, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_network_label_passwd_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_network_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_network_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -208,7 +208,7 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_network_label_passwd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_passwd, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_passwd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_network_label_passwd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -222,8 +222,8 @@ void setup_scr_screen_network(lv_ui *ui)
 
     //Write codes screen_network_label_qrcode
     ui->screen_network_label_qrcode = lv_label_create(ui->screen_network);
-    lv_obj_set_pos(ui->screen_network_label_qrcode, 567, 271);
-    lv_obj_set_size(ui->screen_network_label_qrcode, 147, 60);
+    lv_obj_set_pos(ui->screen_network_label_qrcode, 525, 255);
+    lv_obj_set_size(ui->screen_network_label_qrcode, 190, 60);
     lv_label_set_text(ui->screen_network_label_qrcode, "Scan to connect wifi");
     lv_label_set_long_mode(ui->screen_network_label_qrcode, LV_LABEL_LONG_WRAP);
 
@@ -231,7 +231,7 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_network_label_qrcode, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_qrcode, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_qrcode, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_network_label_qrcode, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);

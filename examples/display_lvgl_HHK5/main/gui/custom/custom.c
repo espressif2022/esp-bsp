@@ -34,7 +34,7 @@
  * Create a demo application
  */
 
-static const char *items[] = {
+static const char *items_main_loop[] = {
     "Service status",
     "Wi-Fi password",
     "Connect Fibe TV receiver",
@@ -47,8 +47,17 @@ static const char *items[] = {
     "Close"
 };
 
+static const char *items_bell_apps[] = {
+    "Wi-Fi App",
+    "Fibe TV app",
+    "Virtual repair tool",
+};
+
 static lv_obj_t * mask_upper_layer;
 static lv_obj_t * mask_down_layer;
+
+lv_obj_t * cont_main_loop;
+lv_obj_t * cont_bellapps;
 
 static void scroll_event_cb(lv_event_t * e)
 {
@@ -166,27 +175,26 @@ void lv_create_mask(void)
 /**
  * Translate the object as they scroll
  */
-lv_obj_t * cont_col;
 void lv_main_loop_loading(void)
 {
     /*Create a container with COLUMN flex direction*/
-    cont_col = lv_obj_create(lv_screen_active());
-    lv_obj_set_size(cont_col, lv_pct(100), 262);
-    lv_obj_align(cont_col, LV_ALIGN_TOP_MID, 0, 70);
-    lv_obj_set_scroll_snap_y(cont_col, LV_SCROLL_SNAP_CENTER);
-    lv_obj_set_flex_flow(cont_col, LV_FLEX_FLOW_COLUMN);
-    lv_obj_add_event_cb(cont_col, scroll_event_cb, LV_EVENT_ALL, NULL);
-    lv_obj_set_style_bg_opa(cont_col, LV_OPA_TRANSP, 0); // Set container background to transparent
-    lv_obj_set_style_border_width(cont_col, 0, 0); // Remove border
-    lv_obj_set_style_radius(cont_col, 0, 0); // Set corners to right angles
+    cont_main_loop = lv_obj_create(lv_screen_active());
+    lv_obj_set_size(cont_main_loop, lv_pct(100), 262);
+    lv_obj_align(cont_main_loop, LV_ALIGN_TOP_MID, 0, 70);
+    lv_obj_set_scroll_snap_y(cont_main_loop, LV_SCROLL_SNAP_CENTER);
+    lv_obj_set_flex_flow(cont_main_loop, LV_FLEX_FLOW_COLUMN);
+    lv_obj_add_event_cb(cont_main_loop, scroll_event_cb, LV_EVENT_ALL, NULL);
+    lv_obj_set_style_bg_opa(cont_main_loop, LV_OPA_TRANSP, 0); // Set container background to transparent
+    lv_obj_set_style_border_width(cont_main_loop, 0, 0); // Remove border
+    lv_obj_set_style_radius(cont_main_loop, 0, 0); // Set corners to right angles
 
     uint32_t i;
     for (i = 0; i < 10; i++) {
         lv_obj_t * obj;
         lv_obj_t * label;
 
-        /*Add items to the column*/
-        obj = lv_button_create(cont_col);
+        /*Add items_main_loop to the column*/
+        obj = lv_button_create(cont_main_loop);
         lv_obj_set_size(obj, lv_pct(90), 80);
         lv_obj_set_style_border_width(obj, 0, 0); // Remove border
         lv_obj_set_style_bg_color(obj, lv_color_hex(0x004D8F), 0); // Set button background color to blue
@@ -197,16 +205,17 @@ void lv_main_loop_loading(void)
         lv_obj_set_style_text_color(icon, lv_color_hex(0xFFFFFF), 0); // Set icon color to white
 
         label = lv_label_create(obj);
-        lv_label_set_text(label, items[i]);
+        lv_label_set_text(label, items_main_loop[i]);
+        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
         lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0); // Align label to the left middle of the button with some padding after the icon
         lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0); // Set label text color to white
         // lv_obj_set_style_text_font(label, &lv_font_montserratMedium_40, LV_PART_MAIN|LV_STATE_DEFAULT);
     }
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_col, 0), LV_ANIM_OFF);
+    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, 0), LV_ANIM_OFF);
     lv_create_mask();
 
     /*Update the buttons position manually for first*/
-    lv_obj_send_event(cont_col, LV_EVENT_SCROLL, NULL);
+    lv_obj_send_event(cont_main_loop, LV_EVENT_SCROLL, NULL);
 }
 
 static void arc_anim_cb(void * obj, int32_t v)
@@ -339,18 +348,16 @@ static void change_event_cb(lv_event_t * e)
     bool chk = lv_table_has_cell_ctrl(obj, row, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
     if (chk) {
         lv_table_clear_cell_ctrl(obj, row, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
-        lv_timer_pause(tim);        //启动定时器
+        lv_timer_pause(tim);
     } else {
         lv_table_add_cell_ctrl(obj, row, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
-        lv_timer_resume(tim);       // 挂起定时器
+        lv_timer_resume(tim);
     }
 }
 
 /**
  * A very light-weighted list created from table
  */
-// .data = buf ##name,
-// .unaligned data = buf ##name,
 void create_arc_2()
 {
     // 给bitmap透明度数组创建描述符
@@ -371,7 +378,6 @@ void create_arc_2()
     LV_DRAW_BUF_INIT_STATIC(SpinMask);
     pSpinMask = &SpinMask;
 
-    // 下面英文注释的都是没有修改的
     /*Measure memory usage*/
     lv_mem_monitor_t mon1;
     lv_mem_monitor(&mon1);
@@ -419,13 +425,12 @@ void create_arc_2()
 
     lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, -10);
 
-    // 创建定时器，用定时器去周期回调，这个就不是英文注释了
     tim = lv_timer_create(arc_anim_start_cb, 50, (void*)table);
     lv_timer_pause(tim);
 
 }
 
-void lv_example_arc_loading(void)
+void lv_create_arc_loading(uint16_t pos_x, uint16_t pos_y)
 {
     // create_arc_2();
     // return;
@@ -455,7 +460,8 @@ void lv_example_arc_loading(void)
 
     // lv_obj_add_style(arc, &style, LV_PART_INDICATOR);
 
-    lv_obj_align(arc, LV_ALIGN_TOP_LEFT, 78, 158);
+    // lv_obj_align(arc, LV_ALIGN_TOP_LEFT, 78, 158);
+    lv_obj_align(arc, LV_ALIGN_TOP_LEFT, pos_x, pos_y);
     lv_obj_set_size(arc, 80, 80);
 
     lv_anim_t a;
@@ -467,46 +473,41 @@ void lv_example_arc_loading(void)
     lv_anim_set_repeat_delay(&a, 500);
     lv_anim_set_values(&a, 0, 100);
     lv_anim_start(&a);
-
-    // create_arc_2();
 }
 
 void lv_bu_loading(void)
 {
-    // lv_obj_t * label = lv_label_create(lv_screen_active());
-    // lv_label_set_text(label, "Loading...");
-    // lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
-    printf("Loading...\n");
+    printf("Loading bu...\n");
+    lv_create_arc_loading(78, 158);
+}
 
-    lv_example_arc_loading();
+void lv_restart_loading()
+{
+    printf("Loading restart...\n");
+    lv_create_arc_loading(46, 216);
 }
 
 void lv_apps_loading(void)
 {
-    const char *items[] = {
-        "Wi-Fi App",
-        "Fibe TV app",
-        "Virtual repair tool",
-    };
-
+    printf("Loading bellapps...\n");
     /*Create a container with COLUMN flex direction*/
-    lv_obj_t * cont_col = lv_obj_create(lv_screen_active());
-    lv_obj_set_size(cont_col, lv_pct(100), 220);
-    lv_obj_align(cont_col, LV_ALIGN_TOP_MID, 0, 145);
-    lv_obj_set_scroll_snap_y(cont_col, LV_SCROLL_SNAP_CENTER);
-    lv_obj_set_flex_flow(cont_col, LV_FLEX_FLOW_COLUMN);
-    // lv_obj_add_event_cb(cont_col, scroll_event_cb, LV_EVENT_ALL, NULL);
-    lv_obj_set_style_bg_opa(cont_col, LV_OPA_TRANSP, 0); // Set container background to transparent
-    lv_obj_set_style_border_width(cont_col, 0, 0); // Remove border
-    lv_obj_set_style_radius(cont_col, 0, 0); // Set corners to right angles
+    cont_bellapps = lv_obj_create(lv_screen_active());
+    lv_obj_set_size(cont_bellapps, lv_pct(100), 220);
+    lv_obj_align(cont_bellapps, LV_ALIGN_TOP_MID, 0, 145);
+    lv_obj_set_scroll_snap_y(cont_bellapps, LV_SCROLL_SNAP_CENTER);
+    lv_obj_set_flex_flow(cont_bellapps, LV_FLEX_FLOW_COLUMN);
+    // lv_obj_add_event_cb(cont_bellapps, scroll_event_cb, LV_EVENT_ALL, NULL);
+    lv_obj_set_style_bg_opa(cont_bellapps, LV_OPA_TRANSP, 0); // Set container background to transparent
+    lv_obj_set_style_border_width(cont_bellapps, 0, 0); // Remove border
+    lv_obj_set_style_radius(cont_bellapps, 0, 0); // Set corners to right angles
 
     uint32_t i;
     for (i = 0; i < 3; i++) {
         lv_obj_t * obj;
         lv_obj_t * label;
 
-        /*Add items to the column*/
-        obj = lv_button_create(cont_col);
+        /*Add items_bell_apps to the column*/
+        obj = lv_button_create(cont_bellapps);
         lv_obj_set_size(obj, lv_pct(90), 80);
         lv_obj_set_style_border_width(obj, 0, 0); // Remove border
         // lv_obj_set_style_radius(obj, 0, 0); // Set corners to right angles
@@ -518,15 +519,16 @@ void lv_apps_loading(void)
         lv_obj_set_style_text_color(icon, lv_color_hex(0x004D8F), 0); // Set icon color to white
 
         label = lv_label_create(obj);
-        lv_label_set_text(label, items[i]);
+        lv_label_set_text(label, items_bell_apps[i]);
+        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
         lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0); // Align label to the left middle of the button with some padding after the icon
         lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0); // Set label text color to white
         // lv_obj_set_style_text_font(label, &lv_font_montserratMedium_40, LV_PART_MAIN|LV_STATE_DEFAULT);
     }
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_col, 1), LV_ANIM_OFF);
+    lv_obj_scroll_to_view(lv_obj_get_child(cont_bellapps, 1), LV_ANIM_OFF);
 
     /*Update the buttons position manually for first*/
-    lv_obj_send_event(cont_col, LV_EVENT_SCROLL, NULL);
+    lv_obj_send_event(cont_bellapps, LV_EVENT_SCROLL, NULL);
 }
 
 void custom_init(lv_ui *ui)

@@ -49,7 +49,7 @@ void setup_scr_screen_apps(lv_ui *ui)
     //Write codes screen_apps_label_1
     ui->screen_apps_label_1 = lv_label_create(ui->screen_apps_cont_1);
     lv_obj_set_pos(ui->screen_apps_label_1, 29, 52);
-    lv_obj_set_size(ui->screen_apps_label_1, 372, 43);
+    lv_obj_set_size(ui->screen_apps_label_1, 510, 43);
     lv_label_set_text(ui->screen_apps_label_1, "Bell Apps\n\n\n");
     lv_label_set_long_mode(ui->screen_apps_label_1, LV_LABEL_LONG_WRAP);
 
@@ -110,7 +110,7 @@ void setup_scr_screen_apps(lv_ui *ui)
     lv_obj_set_pos(ui->screen_apps_btn_2, 428, 11);
     lv_obj_set_size(ui->screen_apps_btn_2, 100, 50);
     ui->screen_apps_btn_2_label = lv_label_create(ui->screen_apps_btn_2);
-    lv_label_set_text(ui->screen_apps_btn_2_label, "Test");
+    lv_label_set_text(ui->screen_apps_btn_2_label, "next");
     lv_label_set_long_mode(ui->screen_apps_btn_2_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_apps_btn_2_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_apps_btn_2, 0, LV_STATE_DEFAULT);

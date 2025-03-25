@@ -31,7 +31,7 @@ void setup_scr_screen_STB1(lv_ui *ui)
     //Write codes screen_STB1_label_connect_to
     ui->screen_STB1_label_connect_to = lv_label_create(ui->screen_STB1);
     lv_obj_set_pos(ui->screen_STB1_label_connect_to, 39, 270);
-    lv_obj_set_size(ui->screen_STB1_label_connect_to, 372, 43);
+    lv_obj_set_size(ui->screen_STB1_label_connect_to, 497, 43);
     lv_label_set_text(ui->screen_STB1_label_connect_to, "Connect a Fibe TVwireless receiver\n\n");
     lv_label_set_long_mode(ui->screen_STB1_label_connect_to, LV_LABEL_LONG_WRAP);
 
@@ -39,7 +39,7 @@ void setup_scr_screen_STB1(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_STB1_label_connect_to, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_STB1_label_connect_to, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_STB1_label_connect_to, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_STB1_label_connect_to, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_STB1_label_connect_to, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_STB1_label_connect_to, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_STB1_label_connect_to, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_STB1_label_connect_to, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -53,7 +53,7 @@ void setup_scr_screen_STB1(lv_ui *ui)
 
     //Write codes screen_STB1_label_time
     ui->screen_STB1_label_time = lv_label_create(ui->screen_STB1);
-    lv_obj_set_pos(ui->screen_STB1_label_time, 42, 171);
+    lv_obj_set_pos(ui->screen_STB1_label_time, 42, 170);
     lv_obj_set_size(ui->screen_STB1_label_time, 156, 71);
     lv_label_set_text(ui->screen_STB1_label_time, "4:58\n");
     lv_label_set_long_mode(ui->screen_STB1_label_time, LV_LABEL_LONG_WRAP);
@@ -95,7 +95,7 @@ void setup_scr_screen_STB1(lv_ui *ui)
     //Write codes screen_STB1_label_1
     ui->screen_STB1_label_1 = lv_label_create(ui->screen_STB1_cont_1);
     lv_obj_set_pos(ui->screen_STB1_label_1, 30, 52);
-    lv_obj_set_size(ui->screen_STB1_label_1, 490, 43);
+    lv_obj_set_size(ui->screen_STB1_label_1, 510, 43);
     lv_label_set_text(ui->screen_STB1_label_1, "Connect Fibe TV receiver");
     lv_label_set_long_mode(ui->screen_STB1_label_1, LV_LABEL_LONG_WRAP);
 
@@ -156,7 +156,7 @@ void setup_scr_screen_STB1(lv_ui *ui)
     lv_obj_set_pos(ui->screen_STB1_btn_2, 425, 10);
     lv_obj_set_size(ui->screen_STB1_btn_2, 100, 50);
     ui->screen_STB1_btn_2_label = lv_label_create(ui->screen_STB1_btn_2);
-    lv_label_set_text(ui->screen_STB1_btn_2_label, "Test");
+    lv_label_set_text(ui->screen_STB1_btn_2_label, "next");
     lv_label_set_long_mode(ui->screen_STB1_btn_2_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_STB1_btn_2_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_STB1_btn_2, 0, LV_STATE_DEFAULT);

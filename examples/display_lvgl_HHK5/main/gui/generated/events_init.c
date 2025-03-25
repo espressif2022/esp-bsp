@@ -18,6 +18,7 @@
 extern void lv_main_loop_loading(void);
 void lv_bu_loading(void);
 void lv_apps_loading(void);
+void lv_restart_loading(void);
 
 static void screen_main_loop_event_handler (lv_event_t *e)
 {
@@ -311,6 +312,20 @@ void events_init_screen_select (lv_ui *ui)
     lv_obj_add_event_cb(ui->screen_select_btn_4, screen_select_btn_4_event_handler, LV_EVENT_ALL, ui);
 }
 
+static void screen_restart_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_SCREEN_LOADED:
+    {
+        lv_restart_loading();
+        break;
+    }
+    default:
+        break;
+    }
+}
+
 static void screen_restart_btn_1_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -327,6 +342,7 @@ static void screen_restart_btn_1_event_handler (lv_event_t *e)
 
 void events_init_screen_restart (lv_ui *ui)
 {
+    lv_obj_add_event_cb(ui->screen_restart, screen_restart_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_restart_btn_1, screen_restart_btn_1_event_handler, LV_EVENT_ALL, ui);
 }
 

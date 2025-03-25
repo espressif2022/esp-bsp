@@ -72,6 +72,7 @@ typedef struct
 	lv_obj_t *screen_notif_btn_3_label;
 	lv_obj_t *screen_notif_btn_2;
 	lv_obj_t *screen_notif_btn_2_label;
+	lv_obj_t *screen_notif_img_1;
 	lv_obj_t *screen_network;
 	bool screen_network_del;
 	lv_obj_t *screen_network_label_ssid_title;
@@ -152,12 +153,16 @@ typedef struct
 	lv_obj_t *screen_restart;
 	bool screen_restart_del;
 	lv_obj_t *screen_restart_label_loading;
-	lv_obj_t *screen_restart_img_1;
 	lv_obj_t *screen_restart_cont_1;
 	lv_obj_t *screen_restart_label_1;
 	lv_obj_t *screen_restart_line_1;
 	lv_obj_t *screen_restart_btn_1;
 	lv_obj_t *screen_restart_btn_1_label;
+	lv_obj_t *screen_null;
+	bool screen_null_del;
+	lv_obj_t *screen_null_cont_1;
+	lv_obj_t *screen_null_label_2;
+	lv_obj_t *screen_null_line_2;
 }lv_ui;
 
 typedef void (*ui_setup_scr_t)(lv_ui * ui);
@@ -199,8 +204,10 @@ void setup_scr_screen_error(lv_ui *ui);
 void setup_scr_screen_apps(lv_ui *ui);
 void setup_scr_screen_select(lv_ui *ui);
 void setup_scr_screen_restart(lv_ui *ui);
+void setup_scr_screen_null(lv_ui *ui);
 LV_IMAGE_DECLARE(_arc_RGB565A8_100x100);
 LV_IMAGE_DECLARE(_error_RGB565A8_29x35);
+LV_IMAGE_DECLARE(_icon_ok_RGB565A8_29x35);
 LV_IMAGE_DECLARE(_speed_test_RGB565A8_145x140);
 LV_IMAGE_DECLARE(_error_RGB565A8_31x40);
 
@@ -208,9 +215,9 @@ LV_FONT_DECLARE(lv_font_montserratMedium_40)
 LV_FONT_DECLARE(lv_font_montserratMedium_16)
 LV_FONT_DECLARE(lv_font_montserratMedium_12)
 LV_FONT_DECLARE(lv_font_montserratMedium_70)
-LV_FONT_DECLARE(lv_font_montserratMedium_20)
+LV_FONT_DECLARE(lv_font_montserratMedium_25)
 LV_FONT_DECLARE(lv_font_montserratMedium_35)
-LV_FONT_DECLARE(lv_font_montserratMedium_30)
+LV_FONT_DECLARE(lv_font_montserratMedium_20)
 
 
 #ifdef __cplusplus

@@ -39,7 +39,7 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_speedtest_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_speedtest_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_speedtest_label_ssid_title, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_ssid_title, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_ssid_title, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_speedtest_label_ssid_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_speedtest_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -62,7 +62,7 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_speedtest_label_down_spd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_down_spd, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_down_spd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_speedtest_label_down_spd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -85,7 +85,7 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_speedtest_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_speedtest_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_speedtest_label_passwd_title, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_passwd_title, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_passwd_title, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_speedtest_label_passwd_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_speedtest_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -108,7 +108,7 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_border_width(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_speedtest_label_up_spd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_up_spd, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_up_spd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_speedtest_label_up_spd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -122,7 +122,7 @@ void setup_scr_screen_speedtest(lv_ui *ui)
 
     //Write codes screen_speedtest_img_speed_test
     ui->screen_speedtest_img_speed_test = lv_image_create(ui->screen_speedtest);
-    lv_obj_set_pos(ui->screen_speedtest_img_speed_test, 39, 161);
+    lv_obj_set_pos(ui->screen_speedtest_img_speed_test, 37, 181);
     lv_obj_set_size(ui->screen_speedtest_img_speed_test, 145, 140);
     lv_obj_add_flag(ui->screen_speedtest_img_speed_test, LV_OBJ_FLAG_CLICKABLE);
     lv_image_set_src(ui->screen_speedtest_img_speed_test, &_speed_test_RGB565A8_145x140);
@@ -215,7 +215,7 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_pos(ui->screen_speedtest_btn_2, 425, 10);
     lv_obj_set_size(ui->screen_speedtest_btn_2, 100, 50);
     ui->screen_speedtest_btn_2_label = lv_label_create(ui->screen_speedtest_btn_2);
-    lv_label_set_text(ui->screen_speedtest_btn_2_label, "Test");
+    lv_label_set_text(ui->screen_speedtest_btn_2_label, "next");
     lv_label_set_long_mode(ui->screen_speedtest_btn_2_label, LV_LABEL_LONG_WRAP);
     lv_obj_align(ui->screen_speedtest_btn_2_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_speedtest_btn_2, 0, LV_STATE_DEFAULT);
