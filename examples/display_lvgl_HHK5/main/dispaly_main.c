@@ -24,6 +24,7 @@ static char *TAG = "app_main";
 #include "gui_guider.h"
 #include "custom.h"
 #include "i2c_slave.h"
+#include "message.h"
 
 void mem_monitor()
 {
@@ -44,7 +45,7 @@ lv_ui guider_ui;
 
 void app_main(void)
 {
-    i2c_slave_read_test_v2();
+    i2c_slave_start();
 
     /* Initialize display and LVGL */
     bsp_display_start();
@@ -78,6 +79,20 @@ void app_main(void)
         // vTaskDelay(pdMS_TO_TICKS(1000 * 10));
     }
 #endif
+
+    process_screen(SCREEN_TYPE_BOOT, 0x00);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+
+    process_screen(SCREEN_TYPE_BOOT, 0x01);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+
+    process_screen(SCREEN_TYPE_BOOT, 0x02);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+
+    process_screen(SCREEN_TYPE_BOOT, 0x03);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+
+    process_screen(SCREEN_TYPE_BOOT, 0x99); // 未匹配
 
     // goto NEXT;
 }
