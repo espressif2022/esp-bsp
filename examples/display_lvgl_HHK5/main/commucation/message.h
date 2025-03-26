@@ -105,6 +105,11 @@
 #define CMD_TYPE_INDEX          0
 #define FRAME_INDEX             1
 
+// Cmd_Set_List 0x20
+#define LIST_LANG_INDEX         2
+#define LIST_MENUS_MSB_INDEX    3
+#define LIST_MENUS_LSB_INDEX    4
+
 // Cmd_Set_Menu 0x21
 #define MENU_LANG_INDEX         2
 #define MENU_NUM_INDEX          3
@@ -140,6 +145,31 @@
 #define APPS_SCREEN_INDEX       3
 #define APPS_LABEL_LEN_INDEX    4
 #define APPS_LABEL_INDEX        5
+
+typedef struct {
+    uint8_t frame_num;
+    uint8_t lang;
+    union {
+        struct {
+            uint8_t menu_list_lsb;
+            uint8_t menu_list_msb;
+        };
+        struct {
+            uint8_t no : 1;
+            uint8_t mn1 : 1;
+            uint8_t mn2 : 1;
+            uint8_t mn3 : 1;
+            uint8_t mn4 : 1;
+            uint8_t mn5 : 1;
+            uint8_t mn6 : 1;
+            uint8_t mn7 : 1;
+            uint8_t mn8 : 1;
+            uint8_t mn9 : 1;
+            uint8_t mn10 : 1;
+            uint8_t reserved : 5;
+        };
+    };
+} cmd_set_list_t;
 
 typedef struct {
     uint8_t frame_num;

@@ -33,10 +33,8 @@
 /**
  * Create a demo application
  */
-#define MAX_MAIN_LOOP_ITEMS 10
-#define MAX_BELL_APPS_ITEMS 3
 
-const char *items_main_loop[MAX_MAIN_LOOP_ITEMS][2] = {
+const char *items_main_loop[][2] = {
     {"Service status", "Statut du service"},
     {"Wi-Fi password", "Mot de passe Wi-Fi"},
     {"Connect Fibe TV receiver", "Connecter le récepteur Fibe TV"},
@@ -49,7 +47,7 @@ const char *items_main_loop[MAX_MAIN_LOOP_ITEMS][2] = {
     {"Close", "Fermer"}
 };
 
-const char *items_bell_apps[MAX_BELL_APPS_ITEMS][2] = {
+const char *items_bell_apps[][2] = {
     {"Wi-Fi App", "Application Wi-Fi"},
     {"Fibe TV app", "Application Fibe TV"},
     {"Virtual repair tool", "Outil de réparation virtuel"},
@@ -97,7 +95,31 @@ static void scroll_event_cb(lv_event_t * e)
             }
         }
     } else if (code == LV_EVENT_DRAW_MAIN_BEGIN) {
+        // printf("LV_EVENT_DRAW_MAIN_BEGIN:%d\n", focus_index);
+
+        lv_obj_t * child;
+        lv_area_t child_focus, child_prev, child_next;
+
+        child = lv_obj_get_child(cont, focus_index - 1);
+        if (child) {
+            lv_obj_get_coords(child, &child_prev);
+            // printf("child_prev,%p:[%03d,%03d]\n", child_prev, child_prev.y1, child_prev.y2);
+        }
+
+        child = lv_obj_get_child(cont, focus_index);
+        lv_obj_get_coords(child, &child_focus);
+        if (child) {
+            // printf("child_focus,%p:[%03d,%03d]\n", child_focus, child_focus.y1, child_focus.y2);
+        }
+
+        child = lv_obj_get_child(cont, focus_index + 1);
+        if (child) {
+            lv_obj_get_coords(child, &child_next);
+            // printf("child_next,%p:[%03d,%03d]\n", child_next, child_next.y1, child_next.y2);
+        }
+
     } else if (code == LV_EVENT_DRAW_POST_END) {
+        // printf("LV_EVENT_DRAW_POST_END:%d\n", focus_index);
     }
 }
 
@@ -167,7 +189,7 @@ void lv_main_loop_loading(void)
     lv_obj_set_style_border_width(cont_main_loop, 0, 0); // Remove border
     lv_obj_set_style_radius(cont_main_loop, 0, 0); // Set corners to right angles
 
-    for (uint32_t i = 0; i < MAX_MAIN_LOOP_ITEMS; i++) {
+    for (uint32_t i = 0; i < 10; i++) {
         lv_obj_t * obj;
         lv_obj_t * label;
 
@@ -200,8 +222,218 @@ static void arc_anim_cb(void * obj, int32_t v)
     lv_arc_set_value((lv_obj_t *)obj, v);
 }
 
+#define ITEM_CNT 5
+
+lv_draw_buf_t* pSpinMask = NULL;
+lv_timer_t* tim = NULL;
+
+volatile lv_area_t sw_area = {0};
+
+uint8_t buf_SpinMask[] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 132, 140, 138, 135, 132, 129, 126, 123, 120, 117, 114, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 135, 147, 147, 142, 140, 138, 135, 132, 129, 126, 123, 120, 117, 114, 108, 96, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 153, 153, 148, 147, 146, 142, 139, 135, 132, 129, 126, 123, 119, 116, 113, 111, 108, 102, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 157, 157, 153, 151, 148, 146, 139, 135, 132, 129, 126, 123, 119, 116, 113, 113, 109, 107, 104, 102, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 161, 161, 157, 157, 153, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109, 109, 104, 102, 102, 98, 0, 0, 0, 0,
+    0, 0, 0, 165, 165, 162, 162, 157, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 92, 102, 102, 98, 98, 94, 0, 0, 0,
+    0, 0, 165, 168, 166, 166, 162, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 98, 98, 94, 94, 90, 0, 0,
+    0, 153, 172, 170, 168, 166, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 93, 93, 90, 90, 76, 0,
+    0, 172, 174, 173, 173, 148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 89, 87, 85, 83, 0,
+    162, 178, 177, 177, 173, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82, 85, 83, 83, 73,
+    178, 181, 180, 177, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82, 82, 78, 77,
+    181, 184, 183, 180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 78, 77, 74,
+    184, 187, 186, 183, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72, 75, 74, 71,
+    187, 190, 189, 186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 69, 72, 71, 68,
+    190, 193, 193, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 69, 68, 65,
+    193, 196, 196, 193, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 65, 65, 62,
+    196, 199, 199, 196, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 62, 62, 59,
+    199, 201, 202, 199, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56, 59, 59, 56,
+    201, 204, 205, 202, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 56, 56, 53,
+    204, 205, 209, 209, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 53, 53, 51,
+    191, 211, 211, 212, 209, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 50, 50, 51, 44,
+    0, 211, 212, 215, 216, 188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 46, 46, 47, 44, 0,
+    0, 193, 217, 217, 221, 221, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 40, 43, 44, 37, 0,
+    0, 0, 217, 221, 221, 225, 225, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 34, 38, 38, 40, 38, 0, 0,
+    0, 0, 0, 221, 225, 225, 230, 230, 204, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 30, 34, 34, 38, 38, 0, 0, 0,
+    0, 0, 0, 0, 225, 229, 230, 232, 237, 237, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 25, 30, 30, 34, 34, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 229, 232, 234, 237, 241, 241, 244, 247, 250, 253, 0, 5, 8, 13, 18, 21, 23, 26, 30, 30, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 229, 236, 238, 241, 244, 247, 250, 253, 253, 253, 253, 11, 14, 18, 19, 21, 26, 26, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 207, 236, 242, 245, 247, 250, 253, 253, 253, 7, 10, 13, 17, 17, 19, 20, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 221, 242, 245, 247, 250, 253, 253, 5, 7, 10, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+};
+
+static void arc_anim_start_cb(lv_timer_t* tim)  // 渐变加载回调
+{
+    uint8_t* p_arr = buf_SpinMask;
+    lv_obj_t* table = lv_timer_get_user_data(tim);
+
+    for (int i = 0; i < 900; ++i)
+        if (p_arr[i]) {
+            p_arr[i] += 10;
+            if (!p_arr[i]) {
+                p_arr[i] = 1;
+            }
+        }
+    //lv_obj_invalidate(table);     //多个
+    lv_obj_invalidate_area(table, &sw_area);    // 刷新对应的区域，在只有一个环形渐变加载器时时可以正常使用的
+    // lv_log("_2");                               // 如果需要同时多个加载器一起转，可以将上面的单个区域变量，换成数组，存储多个区域，并使能刷新
+}
+
+static void draw_event_cb(lv_event_t * e)
+{
+    lv_obj_t * obj = lv_event_get_target(e);
+
+    lv_draw_task_t * draw_task = lv_event_get_draw_task(e);
+    // lv_draw_dsc_base_t * base_dsc = (lv_draw_dsc_base_t *)(draw_task->draw_dsc);
+    lv_draw_dsc_base_t * base_dsc = lv_draw_task_get_draw_dsc(draw_task);
+
+    /*If the cells are drawn...*/
+    if (base_dsc->part == LV_PART_ITEMS && lv_draw_task_get_type(draw_task) == LV_DRAW_TASK_TYPE_FILL) {
+        /*Draw the background*/
+        bool chk = lv_table_has_cell_ctrl(obj, base_dsc->id1, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
+        if (chk) {
+            sw_area.x1 = 0;     sw_area.x2 = 29;
+            sw_area.y1 = 0;     sw_area.y2 = 29;
+
+            lv_area_t draw_task_area;
+            lv_draw_task_get_area(draw_task, &draw_task_area);
+
+            lv_area_align(&draw_task_area, &sw_area, LV_ALIGN_RIGHT_MID, -15, 0);      // 绘图区域定位
+
+            lv_layer_t* new_layer = lv_draw_layer_create(base_dsc->layer, LV_COLOR_FORMAT_L8, &sw_area);        // 创建一个新层
+            new_layer->draw_buf = lv_draw_buf_create(30, 30, LV_COLOR_FORMAT_L8, LV_DRAW_BUF_STRIDE(30, LV_COLOR_FORMAT_L8));// 给新层一个draw_buf，默认为空，
+            lv_memzero(new_layer->draw_buf->data, new_layer->draw_buf->data_size);  // 内存清0，不清0会导致图像有异常
+
+            lv_draw_arc_dsc_t arc_dsc;
+            lv_draw_arc_dsc_init(&arc_dsc);
+            arc_dsc.radius = 15;
+            arc_dsc.width = 3;
+            arc_dsc.color = lv_color_white();
+            arc_dsc.rounded = false;
+            arc_dsc.start_angle = 0;
+            arc_dsc.end_angle = 360;
+            arc_dsc.center.x = sw_area.x1 + 15;
+            arc_dsc.center.y = sw_area.y1 + 15;
+            lv_draw_arc(base_dsc->layer, &arc_dsc);       // 画一个圆环
+
+            lv_draw_image_dsc_t layer_draw_dsc;
+            lv_draw_image_dsc_init(&layer_draw_dsc);
+
+            layer_draw_dsc.pivot.x = arc_dsc.center.x;
+            layer_draw_dsc.pivot.y = arc_dsc.center.y;
+            layer_draw_dsc.opa = LV_OPA_100;
+            layer_draw_dsc.rotation = 0;
+            layer_draw_dsc.antialias = 0;
+            layer_draw_dsc.blend_mode = LV_BLEND_MODE_NORMAL;
+            // const lv_image_dsc_t * bitmap_mask_src;
+            layer_draw_dsc.bitmap_mask_src = (const lv_image_dsc_t *)pSpinMask;
+            layer_draw_dsc.image_area = sw_area;
+            layer_draw_dsc.src = new_layer;
+            lv_draw_layer(base_dsc->layer, &layer_draw_dsc, &sw_area);      // 画bitmap透明度
+
+            // lv_log("1_");
+        } else {
+            // lv_log("0_");
+        }
+    }
+}
+
+static void change_event_cb(lv_event_t * e)
+{
+    lv_obj_t * obj = lv_event_get_target(e);
+    uint32_t col;
+    uint32_t row;
+    lv_table_get_selected_cell(obj, &row, &col);
+    bool chk = lv_table_has_cell_ctrl(obj, row, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
+    if (chk) {
+        lv_table_clear_cell_ctrl(obj, row, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
+        lv_timer_pause(tim);
+    } else {
+        lv_table_add_cell_ctrl(obj, row, 0, LV_TABLE_CELL_CTRL_CUSTOM_1);
+        lv_timer_resume(tim);
+    }
+}
+
+/**
+ * A very light-weighted list created from table
+ */
+void create_arc_2()
+{
+    // 给bitmap透明度数组创建描述符
+    static lv_draw_buf_t SpinMask = { \
+                                      .header = { \
+                                                  .magic = LV_IMAGE_HEADER_MAGIC, \
+                                                  .cf = (LV_COLOR_FORMAT_L8), \
+                                                  .flags = LV_IMAGE_FLAGS_MODIFIABLE, \
+                                                  .w = (30), \
+                                                  .h = (30), \
+                                                  .stride = LV_DRAW_BUF_STRIDE(30, LV_COLOR_FORMAT_L8), \
+                                                  .reserved_2 = 0, \
+                                                }, \
+                                      .data_size = sizeof(buf_SpinMask), \
+                                      .data = buf_SpinMask, \
+                                      .unaligned_data = buf_SpinMask, \
+                                    };
+    LV_DRAW_BUF_INIT_STATIC(SpinMask);
+    pSpinMask = &SpinMask;
+
+    /*Measure memory usage*/
+    lv_mem_monitor_t mon1;
+    lv_mem_monitor(&mon1);
+
+    uint32_t t = lv_tick_get();
+
+    lv_obj_t* table = lv_table_create(lv_screen_active());
+
+    /*Set a smaller height to the table. It'll make it scrollable*/
+    lv_obj_set_size(table, LV_SIZE_CONTENT, 200);
+
+    lv_table_set_column_width(table, 0, 150);
+    lv_table_set_row_count(table, ITEM_CNT); /*Not required but avoids a lot of memory reallocation lv_table_set_set_value*/
+    lv_table_set_column_count(table, 1);
+
+    /* Set table background color to black */
+    lv_obj_set_style_bg_color(table, lv_color_hex(0x000000), 0);
+
+    /*Don't make the cell pressed, we will draw something different in the event*/
+    lv_obj_remove_style(table, NULL, LV_PART_ITEMS | LV_STATE_PRESSED);
+
+    uint32_t i;
+    for (i = 0; i < ITEM_CNT; i++) {
+        lv_table_set_cell_value_fmt(table, i, 0, "Item %"LV_PRIu32, i + 1);
+    }
+
+    lv_obj_align(table, LV_ALIGN_CENTER, 0, -20);
+
+    /*Add an event callback to to apply some custom drawing*/
+    lv_obj_add_event_cb(table, draw_event_cb, LV_EVENT_DRAW_TASK_ADDED, NULL);
+    lv_obj_add_event_cb(table, change_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_flag(table, LV_OBJ_FLAG_SEND_DRAW_TASK_EVENTS);
+
+    lv_mem_monitor_t mon2;
+    lv_mem_monitor(&mon2);
+
+    size_t mem_used = mon1.free_size - mon2.free_size;
+
+    uint32_t elaps = lv_tick_elaps(t);
+
+    lv_obj_t * label = lv_label_create(lv_screen_active());
+    lv_label_set_text_fmt(label, "%"LV_PRIu32" items were created in %"LV_PRIu32" ms\n"
+                          "using %zu bytes of memory",
+                          (uint32_t)ITEM_CNT, elaps, mem_used);
+
+    lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, -10);
+
+    tim = lv_timer_create(arc_anim_start_cb, 50, (void*)table);
+    lv_timer_pause(tim);
+
+}
+
 void lv_create_arc_loading(uint16_t pos_x, uint16_t pos_y)
 {
+    // create_arc_2();
+    // return;
+
     /*Create an Arc*/
     lv_obj_t * arc = lv_arc_create(lv_screen_active());
 
@@ -268,7 +500,7 @@ void lv_apps_loading(void)
     lv_obj_set_style_border_width(cont_bellapps, 0, 0); // Remove border
     lv_obj_set_style_radius(cont_bellapps, 0, 0); // Set corners to right angles
 
-    for (uint32_t i = 0; i < MAX_BELL_APPS_ITEMS; i++) {
+    for (uint32_t i = 0; i < 3; i++) {
         lv_obj_t * obj;
         lv_obj_t * label;
 

@@ -28,7 +28,7 @@ static char *TAG = "app_main";
 
 void mem_monitor()
 {
-    static char buffer[128];    /* Make sure buffer is enough for `sprintf` */
+    static char buffer[256];    /* Make sure buffer is enough for `sprintf` */
     sprintf(buffer, "   Biggest /     Free /    Total\n"
             "\t  SRAM : [%8d K / %8d K / %8d K]\n"
             "\t PSRAM : [%8d K / %8d K / %8d K]",

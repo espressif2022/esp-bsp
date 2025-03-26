@@ -5,10 +5,12 @@
 
 #include "bsp/esp-bsp.h"
 #include "gui_guider.h"
+#include "custom.h"
 #include "message.h"
 
 static const char *TAG = "message";
 
+typedef void (*cmd_set_list_handler_t)(cmd_set_list_t *cmd);
 typedef void (*cmd_set_menu_handler_t)(cmd_set_menu_t *cmd);
 typedef void (*cmd_set_screen_handler_t)(cmd_set_screen_t *cmd);
 typedef void (*cmd_set_notif_handler_t)(cmd_set_notif_t *cmd);
@@ -25,6 +27,7 @@ typedef struct {
     screen_type_handler handler;
 } screen_type_mapping_t;
 
+static cmd_set_list_handler_t cmd_set_list_handler = NULL;
 static cmd_set_menu_handler_t cmd_set_menu_handler = NULL;
 static cmd_set_screen_handler_t cmd_set_screen_handler = NULL;
 static cmd_set_notif_handler_t cmd_set_notif_handler = NULL;
@@ -39,6 +42,11 @@ extern lv_obj_t * cont_bellapps;
 const char *lang_pick(const char *en_text, const char *fr_text, bool lang)
 {
     return lang ? fr_text : en_text;
+}
+
+void register_cmd_set_list_handler(cmd_set_list_handler_t handler)
+{
+    cmd_set_list_handler = handler;
 }
 
 void register_cmd_set_menu_handler(cmd_set_menu_handler_t handler)
@@ -74,6 +82,45 @@ void register_cmd_set_apps_handler(cmd_set_apps_handler_t handler)
 void register_cmd_set_bellapps_handler(cmd_set_bellapps_handler_t handler)
 {
     cmd_set_bellapps_handler = handler;
+}
+
+void cmd_set_list(cmd_set_list_t *cmd)
+{
+    ESP_LOGI(TAG, "CMD_SET_LIST, frame:%d, lang:%d, menu list msb:%0X, menu list lsb:%0X",
+             cmd->frame_num, cmd->lang, cmd->menu_list_msb, cmd->menu_list_lsb);
+    bsp_display_lock(0);
+
+    lv_screen_load(guider_ui.screen_main_loop);
+
+    uint16_t menu_list = 0;
+    menu_list |= cmd->menu_list_msb;
+    menu_list <<= 8;
+    menu_list |= cmd->menu_list_lsb;
+    uint8_t count = lv_obj_get_child_count(cont_main_loop);
+
+    for (int i = 0; i < 16; i++) {
+        if ((i < count + 1) && (i != 0)) {
+
+            lv_obj_t *child_btn = lv_obj_get_child(cont_main_loop, i - 1);
+            lv_obj_t *child_label = lv_obj_get_child(child_btn, 1);
+            if (menu_list & (1 << i)) {
+                ESP_LOGI(TAG, "Show menu %d, %s", i, lv_label_get_text(child_label));
+                lv_obj_clear_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
+                if (cmd->lang == LANG_ENGLISH) {
+                    lv_label_set_text(child_label, items_main_loop[i][0]);
+                } else {
+                    lv_label_set_text(child_label, items_main_loop[i][1]);
+                }
+            } else {
+                ESP_LOGI(TAG, "Hide menu %d, %s", i, lv_label_get_text(child_label));
+                lv_obj_add_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
+            }
+        }
+    }
+
+    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, 0), LV_ANIM_OFF);
+
+    bsp_display_unlock();
 }
 
 void cmd_set_menu(cmd_set_menu_t *cmd)
@@ -130,6 +177,7 @@ void cmd_set_config(cmd_set_config_t *cmd)
     switch (cmd->config_type) {
     case CONFIG_TYPE_WIFI_NETWORK:
         lv_screen_load(guider_ui.screen_network);
+        lv_label_set_text(guider_ui.screen_network_label_title, cmd->title);
         lv_label_set_text(guider_ui.screen_network_label_ssid, cmd->text);
         // lv_label_set_text(guider_ui.screen_network_label_passwd, cmd->title);
         lv_qrcode_update(guider_ui.screen_network_qrcode_wifi, cmd->url, 20);
@@ -143,6 +191,7 @@ void cmd_set_config(cmd_set_config_t *cmd)
         break;
     case CONFIG_TYPE_DATA_CLIENT_PAIRING:
         lv_screen_load(guider_ui.screen_wpsd_2);
+        lv_label_set_text(guider_ui.screen_wpsd_2_label_2, cmd->title);
         lv_label_set_text(guider_ui.screen_wpsd_2_label_device_name, cmd->text);
 
         if (cmd->menu_indication == 1) {
@@ -153,6 +202,7 @@ void cmd_set_config(cmd_set_config_t *cmd)
         break;
     case CONFIG_TYPE_SPEED_TEST:
         lv_screen_load(guider_ui.screen_speedtest);
+        lv_label_set_text(guider_ui.screen_speedtest_label_1, cmd->title);
         lv_label_set_text(guider_ui.screen_speedtest_label_down_spd, cmd->text);
 
         if (cmd->menu_indication == 1) {
@@ -163,7 +213,7 @@ void cmd_set_config(cmd_set_config_t *cmd)
         break;
     case CONFIG_TYPE_MODEM_PASSWORD:
         lv_screen_load(guider_ui.screen_mm_1);
-        // lv_label_set_text(guider_ui.screen_mm_1_label_1, "Modem management\n\n\n");
+        lv_label_set_text(guider_ui.screen_mm_1_label_1, cmd->title);
         lv_label_set_text(guider_ui.screen_mm_1_label_passwd, cmd->text);
         lv_qrcode_update(guider_ui.screen_mm_1_qrcode_passwd, cmd->url, 20);
 
@@ -203,25 +253,25 @@ void cmd_set_apps(cmd_set_apps_t *cmd)
 
     bsp_display_lock(0);
 
-    lv_label_set_text(guider_ui.screen_app_detail_btn_back_label, 
+    lv_label_set_text(guider_ui.screen_app_detail_btn_back_label,
                       lang_pick("Back to apps", "Retour aux applications", cmd->lang));
-    lv_label_set_text(guider_ui.screen_app_detail_label_3, 
+    lv_label_set_text(guider_ui.screen_app_detail_label_3,
                       lang_pick("Bell Apps\n\n\n", "Applications Bell\n\n\n", cmd->lang));
 
     switch (cmd->screen_num) {
     case 1:
         lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
-        lv_label_set_text(guider_ui.screen_app_detail_label_passwd, 
+        lv_label_set_text(guider_ui.screen_app_detail_label_passwd,
                           lang_pick("Wi-Fi App\n", "Application Wi-Fi\n", cmd->lang));
         break;
     case 2:
         lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
-        lv_label_set_text(guider_ui.screen_app_detail_label_passwd, 
+        lv_label_set_text(guider_ui.screen_app_detail_label_passwd,
                           lang_pick("Fibe TV app\n", "Application Fibe TV\n", cmd->lang));
         break;
     case 3:
         lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
-        lv_label_set_text(guider_ui.screen_app_detail_label_passwd, 
+        lv_label_set_text(guider_ui.screen_app_detail_label_passwd,
                           lang_pick("Virtual repair tool\n", "Outil de réparation virtuelle\n", cmd->lang));
         break;
     default:
@@ -241,6 +291,17 @@ void cmd_set_bellapps(cmd_set_bellapps_t *cmd)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_apps);
+
+    uint8_t count = lv_obj_get_child_count(cont_bellapps);
+    for (int i = 0; i < count; i++) {
+        lv_obj_t *child_btn = lv_obj_get_child(cont_bellapps, i);
+        lv_obj_t *child_label = lv_obj_get_child(child_btn, 1);
+        if (cmd->lang == LANG_ENGLISH) {
+            lv_label_set_text(child_label, items_bell_apps[i][0]);
+        } else {
+            lv_label_set_text(child_label, items_bell_apps[i][1]);
+        }
+    }
     lv_obj_scroll_to_view(lv_obj_get_child(cont_bellapps, cmd->menu_num), LV_ANIM_ON);
 
     bsp_display_unlock();
@@ -275,7 +336,16 @@ void message_parse_cmd(uint8_t *data, size_t len)
         ESP_LOGI(TAG, "CMD_SET_BACKLIGHT");
         break;
     case CMD_SET_LIST:
-        ESP_LOGI(TAG, "CMD_SET_LIST");
+        if (cmd_set_menu_handler && len >= 4) {
+            cmd_set_list_t cmd;
+            cmd.frame_num = data[FRAME_INDEX];
+            cmd.lang = data[LIST_LANG_INDEX];
+            cmd.menu_list_msb = data[LIST_MENUS_MSB_INDEX];
+            cmd.menu_list_lsb = data[LIST_MENUS_LSB_INDEX];
+            cmd_set_list_handler(&cmd);
+        } else {
+            ESP_LOGW(TAG, "CMD_SET_LIST handler not registered or invalid data length");
+        }
         break;
     case CMD_SET_MENU:
         if (cmd_set_menu_handler && len >= 4) {
@@ -398,6 +468,7 @@ void message_parse_cmd(uint8_t *data, size_t len)
 
 void message_register_handle()
 {
+    register_cmd_set_list_handler(cmd_set_list);
     register_cmd_set_menu_handler(cmd_set_menu);
     register_cmd_set_screen_handler(cmd_set_screen);
     register_cmd_set_notif_handler(cmd_set_notif);

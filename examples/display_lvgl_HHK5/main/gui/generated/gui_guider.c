@@ -94,31 +94,36 @@ void setup_bottom_layer(void)
     lv_theme_apply(lv_layer_bottom());
 }
 
+#include "esp_cpu.h"
+
 void setup_ui(lv_ui *ui)
 {
     setup_bottom_layer();
     init_scr_del_flag(ui);
     init_keyboard(ui);
 
-    setup_scr_screen_main_loop(ui);
+    setup_scr_screen_app_detail(ui);
     setup_scr_screen_apps(ui);
     setup_scr_screen_bu0(ui);
     setup_scr_screen_bu1(ui);
     setup_scr_screen_bu2(ui);
     setup_scr_screen_bu3(ui);
-    setup_scr_screen_STB1(ui);
-    setup_scr_screen_notif(ui);
-    setup_scr_screen_network(ui);
-    setup_scr_screen_speedtest(ui);
-    setup_scr_screen_mm_1(ui);
     setup_scr_screen_error(ui);
-    setup_scr_screen_select(ui);
-    setup_scr_screen_restart(ui);
-    setup_scr_screen_wpsd_2(ui);
-    setup_scr_screen_app_detail(ui);
+    setup_scr_screen_main_loop(ui);
+    setup_scr_screen_mm_1(ui);
+    setup_scr_screen_network(ui);
+    setup_scr_screen_notif(ui);
     setup_scr_screen_null(ui);
+    setup_scr_screen_restart(ui);
+    setup_scr_screen_STB1(ui);
+    setup_scr_screen_select(ui);
+    setup_scr_screen_speedtest(ui);
+    setup_scr_screen_wpsd_2(ui);
 
-    lv_screen_load(ui->screen_notif);
+    lv_screen_load(ui->screen_main_loop);
+    esp_cpu_set_watchpoint(0, &ui->screen_main_loop, 4, ESP_CPU_WATCHPOINT_STORE);
+
+    printf("ui->screen_main_loop:%p\n", ui->screen_main_loop);
 }
 
 void video_play(lv_ui *ui)

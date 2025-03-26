@@ -15,6 +15,10 @@ extern "C" {
 
 #include "gui_guider.h"
 
+extern const char *items_main_loop[][2];
+
+extern const char *items_bell_apps[][2];
+
 void custom_init(lv_ui *ui);
 
 #ifdef __cplusplus
