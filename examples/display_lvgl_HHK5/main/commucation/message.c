@@ -10,6 +10,7 @@
 
 static const char *TAG = "message";
 
+typedef void (*cmd_set_bl_handler_t)(cmd_set_bl_t *cmd);
 typedef void (*cmd_set_list_handler_t)(cmd_set_list_t *cmd);
 typedef void (*cmd_set_menu_handler_t)(cmd_set_menu_t *cmd);
 typedef void (*cmd_set_screen_handler_t)(cmd_set_screen_t *cmd);
@@ -27,6 +28,7 @@ typedef struct {
     screen_type_handler handler;
 } screen_type_mapping_t;
 
+static cmd_set_bl_handler_t cmd_set_bl_handler = NULL;
 static cmd_set_list_handler_t cmd_set_list_handler = NULL;
 static cmd_set_menu_handler_t cmd_set_menu_handler = NULL;
 static cmd_set_screen_handler_t cmd_set_screen_handler = NULL;
@@ -42,6 +44,11 @@ extern lv_obj_t * cont_bellapps;
 const char *lang_pick(const char *en_text, const char *fr_text, bool lang)
 {
     return lang ? fr_text : en_text;
+}
+
+void register_cmd_set_bl_handler(cmd_set_bl_handler_t handler)
+{
+    cmd_set_bl_handler = handler;
 }
 
 void register_cmd_set_list_handler(cmd_set_list_handler_t handler)
@@ -84,9 +91,14 @@ void register_cmd_set_bellapps_handler(cmd_set_bellapps_handler_t handler)
     cmd_set_bellapps_handler = handler;
 }
 
+void cmd_set_bl(cmd_set_bl_t *cmd)
+{
+    ESP_LOGI(TAG, "CMD_SET_BL, state:%d, intensity:%d", cmd->state, cmd->intensity);
+}
+
 void cmd_set_list(cmd_set_list_t *cmd)
 {
-    ESP_LOGI(TAG, "CMD_SET_LIST, frame:%d, lang:%d, menu list msb:%0X, menu list lsb:%0X",
+    ESP_LOGI(TAG, "CMD_SET_LIST, frame:%d, lang:%d, menu list msb:%02X, menu list lsb:%02X",
              cmd->frame_num, cmd->lang, cmd->menu_list_msb, cmd->menu_list_lsb);
     bsp_display_lock(0);
 
@@ -98,23 +110,21 @@ void cmd_set_list(cmd_set_list_t *cmd)
     menu_list |= cmd->menu_list_lsb;
     uint8_t count = lv_obj_get_child_count(cont_main_loop);
 
-    for (int i = 0; i < 16; i++) {
-        if ((i < count + 1) && (i != 0)) {
+    for (int i = 1; i < count + 1; i++) {
 
-            lv_obj_t *child_btn = lv_obj_get_child(cont_main_loop, i - 1);
-            lv_obj_t *child_label = lv_obj_get_child(child_btn, 1);
-            if (menu_list & (1 << i)) {
-                ESP_LOGI(TAG, "Show menu %d, %s", i, lv_label_get_text(child_label));
-                lv_obj_clear_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
-                if (cmd->lang == LANG_ENGLISH) {
-                    lv_label_set_text(child_label, items_main_loop[i][0]);
-                } else {
-                    lv_label_set_text(child_label, items_main_loop[i][1]);
-                }
+        lv_obj_t *child_btn = lv_obj_get_child(cont_main_loop, i - 1);
+        lv_obj_t *child_label = lv_obj_get_child(child_btn, 1);
+        if (menu_list & (1 << i)) {
+            ESP_LOGI(TAG, "Show menu %d, %s", i, lv_label_get_text(child_label));
+            lv_obj_clear_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
+            if (cmd->lang == LANG_ENGLISH) {
+                lv_label_set_text(child_label, items_main_loop[i - 1][0]);
             } else {
-                ESP_LOGI(TAG, "Hide menu %d, %s", i, lv_label_get_text(child_label));
-                lv_obj_add_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
+                lv_label_set_text(child_label, items_main_loop[i - 1][1]);
             }
+        } else {
+            ESP_LOGI(TAG, "Hide menu %d, %s", i, lv_label_get_text(child_label));
+            lv_obj_add_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
         }
     }
 
@@ -333,10 +343,17 @@ void message_parse_cmd(uint8_t *data, size_t len)
         ESP_LOGI(TAG, "CMD_SEND_IMAGE");
         break;
     case CMD_SET_BACKLIGHT:
-        ESP_LOGI(TAG, "CMD_SET_BACKLIGHT");
+        if (cmd_set_bl_handler && len >= 3) {
+            cmd_set_bl_t cmd;
+            cmd.state = data[BL_STATE_INDEX];
+            cmd.intensity = data[BL_INTENSITY_INDEX];
+            cmd_set_bl_handler(&cmd);
+        } else {
+            ESP_LOGW(TAG, "CMD_SET_BL handler not registered or invalid data length");
+        }
         break;
     case CMD_SET_LIST:
-        if (cmd_set_menu_handler && len >= 4) {
+        if (cmd_set_list_handler && len >= 4) {
             cmd_set_list_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[LIST_LANG_INDEX];
@@ -468,6 +485,7 @@ void message_parse_cmd(uint8_t *data, size_t len)
 
 void message_register_handle()
 {
+    register_cmd_set_bl_handler(cmd_set_bl);
     register_cmd_set_list_handler(cmd_set_list);
     register_cmd_set_menu_handler(cmd_set_menu);
     register_cmd_set_screen_handler(cmd_set_screen);

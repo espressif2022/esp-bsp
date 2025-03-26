@@ -77,7 +77,6 @@ static bool i2c_slave_receive_cb(i2c_slave_dev_handle_t i2c_slave, const i2c_sla
 void i2c_slave_read_task(void *arg)
 {
     i2c_slave_event_t evt;
-    uint8_t read_red = 0;
     uint8_t cmd_data[10];
     uint8_t cmd_len = 0;
     uint32_t total_written = 0;
@@ -86,7 +85,6 @@ void i2c_slave_read_task(void *arg)
         if (xQueueReceive(event_queue, &evt, portMAX_DELAY) == pdTRUE) {
             if (evt == I2C_SLAVE_EVT_RX) {
                 disp_buf(temp_data, temp_len);
-                read_red = temp_data[0];
                 message_parse_cmd(temp_data, temp_len);
             } else if (evt == I2C_SLAVE_EVT_TX) {
                 switch (context.command_data) {

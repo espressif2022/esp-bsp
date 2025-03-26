@@ -105,6 +105,10 @@
 #define CMD_TYPE_INDEX          0
 #define FRAME_INDEX             1
 
+// Cmd_Set_Backlight 0x10
+#define BL_STATE_INDEX          1
+#define BL_INTENSITY_INDEX      2
+
 // Cmd_Set_List 0x20
 #define LIST_LANG_INDEX         2
 #define LIST_MENUS_MSB_INDEX    3
@@ -145,6 +149,11 @@
 #define APPS_SCREEN_INDEX       3
 #define APPS_LABEL_LEN_INDEX    4
 #define APPS_LABEL_INDEX        5
+
+typedef struct {
+    uint8_t state;
+    uint8_t intensity;
+} cmd_set_bl_t;
 
 typedef struct {
     uint8_t frame_num;
