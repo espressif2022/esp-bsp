@@ -206,7 +206,7 @@ void lv_main_loop_loading(void)
 
         label = lv_label_create(obj);
         lv_label_set_text(label, items_main_loop[i]);
-        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0); // Align label to the left middle of the button with some padding after the icon
         lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0); // Set label text color to white
         // lv_obj_set_style_text_font(label, &lv_font_montserratMedium_40, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -520,7 +520,7 @@ void lv_apps_loading(void)
 
         label = lv_label_create(obj);
         lv_label_set_text(label, items_bell_apps[i]);
-        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0); // Align label to the left middle of the button with some padding after the icon
         lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0); // Set label text color to white
         // lv_obj_set_style_text_font(label, &lv_font_montserratMedium_40, LV_PART_MAIN|LV_STATE_DEFAULT);

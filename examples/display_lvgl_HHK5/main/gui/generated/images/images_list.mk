@@ -1,1 +1,1 @@
-GEN_CSRCS += _arc_RGB565A8_100x100.c _error_RGB565A8_29x35.c _icon_ok_RGB565A8_29x35.c _speed_test_RGB565A8_145x140.c _error_RGB565A8_31x40.c
+GEN_CSRCS += _arc_RGB565A8_100x100.c _error_RGB565A8_29x35.c _icon_ok_RGB565A8_29x35.c _speed_test_RGB565A8_145x140.c _error_RGB565A8_31x40.c _icon_app_RGB565A8_109x71.c

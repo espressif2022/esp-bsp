@@ -332,7 +332,7 @@ static void screen_restart_btn_1_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_PRESSED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_main_loop, guider_ui.screen_main_loop_del, &guider_ui.screen_restart_del, setup_scr_screen_main_loop, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_wpsd_2, guider_ui.screen_wpsd_2_del, &guider_ui.screen_restart_del, setup_scr_screen_wpsd_2, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
         break;
     }
     default:
@@ -344,6 +344,63 @@ void events_init_screen_restart (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->screen_restart, screen_restart_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_restart_btn_1, screen_restart_btn_1_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void screen_wpsd_2_btn_4_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_PRESSED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_app_detail, guider_ui.screen_app_detail_del, &guider_ui.screen_wpsd_2_del, setup_scr_screen_app_detail, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_screen_wpsd_2 (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->screen_wpsd_2_btn_4, screen_wpsd_2_btn_4_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void screen_app_detail_btn_2_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_PRESSED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_null, guider_ui.screen_null_del, &guider_ui.screen_app_detail_del, setup_scr_screen_null, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_screen_app_detail (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->screen_app_detail_btn_2, screen_app_detail_btn_2_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void screen_null_btn_1_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_PRESSED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_main_loop, guider_ui.screen_main_loop_del, &guider_ui.screen_null_del, setup_scr_screen_main_loop, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_screen_null (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->screen_null_btn_1, screen_null_btn_1_event_handler, LV_EVENT_ALL, ui);
 }
 
 

@@ -48,6 +48,13 @@
 #define SCREEN_TYPE_SPEED_TEST              0x05
 #define SCREEN_TYPE_RESTART_MODEM           0x06
 
+// Cmd_Set_Config 0x41 
+// 0x30 0x41 Frame NumConfig TypeMenu Title LengthTitle Text LengthText URL LengthURL
+#define CONFIG_TYPE_WIFI_NETWORK            0x01 // BU-12
+#define CONFIG_TYPE_DATA_CLIENT_PAIRING     0x02 // WPSD-2
+#define CONFIG_TYPE_SPEED_TEST              0x03 // ST-2
+#define CONFIG_TYPE_MODEM_PASSWORD          0x04 // MM-1
+
 //SCREEN_TYPE_BOOT
 // #define SCREEN_NUM_BU_WELCOME                  0x00
 // #define SCREEN_NUM_BU_LOADING                  0x01
@@ -150,7 +157,7 @@ typedef struct {
 typedef struct {
     uint8_t frame_num;
     uint8_t notif_type;
-    uint8_t menu;
+    uint8_t menu_indication;
     uint8_t title_len;
     const char *title;
     uint8_t text_len;
@@ -160,7 +167,7 @@ typedef struct {
 typedef struct {
     uint8_t frame_num;
     uint8_t config_type;
-    uint8_t menu;
+    uint8_t menu_indication;
     uint8_t title_len;
     const char *title;
     uint8_t text_len;

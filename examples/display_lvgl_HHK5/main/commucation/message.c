@@ -17,6 +17,14 @@ typedef void (*cmd_set_error_handler_t)(cmd_set_error_t *cmd);
 typedef void (*cmd_set_apps_handler_t)(cmd_set_apps_t *cmd);
 typedef void (*cmd_set_bellapps_handler_t)(cmd_set_bellapps_t *cmd);
 
+typedef void (*screen_type_handler)(bool lang);
+
+typedef struct {
+    uint8_t screen_type;
+    uint8_t screen_number;
+    screen_type_handler handler;
+} screen_type_mapping_t;
+
 static cmd_set_menu_handler_t cmd_set_menu_handler = NULL;
 static cmd_set_screen_handler_t cmd_set_screen_handler = NULL;
 static cmd_set_notif_handler_t cmd_set_notif_handler = NULL;
@@ -27,6 +35,11 @@ static cmd_set_bellapps_handler_t cmd_set_bellapps_handler = NULL;
 
 extern lv_obj_t * cont_main_loop;
 extern lv_obj_t * cont_bellapps;
+
+const char *lang_pick(const char *en_text, const char *fr_text, bool lang)
+{
+    return lang ? fr_text : en_text;
+}
 
 void register_cmd_set_menu_handler(cmd_set_menu_handler_t handler)
 {
@@ -85,7 +98,7 @@ void cmd_set_screen(cmd_set_screen_t *cmd)
 void cmd_set_notif(cmd_set_notif_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_NOTIF, frame:%d, notif type:%d, menu:%d, title:%.*s, text:%.*s",
-             cmd->frame_num, cmd->notif_type, cmd->menu, cmd->title_len, cmd->title, cmd->text_len, cmd->text);
+             cmd->frame_num, cmd->notif_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->text_len, cmd->text);
 
     bsp_display_lock(0);
 
@@ -98,9 +111,9 @@ void cmd_set_notif(cmd_set_notif_t *cmd)
         lv_image_set_src(guider_ui.screen_notif_img_notif_type, &_icon_ok_RGB565A8_29x35);
     }
 
-    if (cmd->menu == 1) {
+    if (cmd->menu_indication == 1) {
         lv_obj_clear_flag(guider_ui.screen_notif_btn_3, LV_OBJ_FLAG_HIDDEN);
-    } else if (cmd->menu == 0) {
+    } else if (cmd->menu_indication == 0) {
         lv_obj_add_flag(guider_ui.screen_notif_btn_3, LV_OBJ_FLAG_HIDDEN);
     }
 
@@ -110,11 +123,60 @@ void cmd_set_notif(cmd_set_notif_t *cmd)
 void cmd_set_config(cmd_set_config_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_CONFIG, frame:%d, config type:%d, menu:%d, title:%.*s, text:%.*s, url:%.*s",
-             cmd->frame_num, cmd->config_type, cmd->menu, cmd->title_len, cmd->title, cmd->text_len, cmd->text, cmd->url_len, cmd->url);
+             cmd->frame_num, cmd->config_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->text_len, cmd->text, cmd->url_len, cmd->url);
 
     bsp_display_lock(0);
 
-    lv_screen_load(guider_ui.screen_network);
+    switch (cmd->config_type) {
+    case CONFIG_TYPE_WIFI_NETWORK:
+        lv_screen_load(guider_ui.screen_network);
+        lv_label_set_text(guider_ui.screen_network_label_ssid, cmd->text);
+        // lv_label_set_text(guider_ui.screen_network_label_passwd, cmd->title);
+        lv_qrcode_update(guider_ui.screen_network_qrcode_wifi, cmd->url, 20);
+
+        if (cmd->menu_indication == 1) {
+            lv_obj_clear_flag(guider_ui.screen_network_btn_back, LV_OBJ_FLAG_HIDDEN);
+        } else if (cmd->menu_indication == 0) {
+            lv_obj_add_flag(guider_ui.screen_network_btn_back, LV_OBJ_FLAG_HIDDEN);
+        }
+
+        break;
+    case CONFIG_TYPE_DATA_CLIENT_PAIRING:
+        lv_screen_load(guider_ui.screen_wpsd_2);
+        lv_label_set_text(guider_ui.screen_wpsd_2_label_device_name, cmd->text);
+
+        if (cmd->menu_indication == 1) {
+            lv_obj_clear_flag(guider_ui.screen_wpsd_2_btn_5, LV_OBJ_FLAG_HIDDEN);
+        } else if (cmd->menu_indication == 0) {
+            lv_obj_add_flag(guider_ui.screen_wpsd_2_btn_5, LV_OBJ_FLAG_HIDDEN);
+        }
+        break;
+    case CONFIG_TYPE_SPEED_TEST:
+        lv_screen_load(guider_ui.screen_speedtest);
+        lv_label_set_text(guider_ui.screen_speedtest_label_down_spd, cmd->text);
+
+        if (cmd->menu_indication == 1) {
+            lv_obj_clear_flag(guider_ui.screen_speedtest_btn_3, LV_OBJ_FLAG_HIDDEN);
+        } else if (cmd->menu_indication == 0) {
+            lv_obj_add_flag(guider_ui.screen_speedtest_btn_3, LV_OBJ_FLAG_HIDDEN);
+        }
+        break;
+    case CONFIG_TYPE_MODEM_PASSWORD:
+        lv_screen_load(guider_ui.screen_mm_1);
+        // lv_label_set_text(guider_ui.screen_mm_1_label_1, "Modem management\n\n\n");
+        lv_label_set_text(guider_ui.screen_mm_1_label_passwd, cmd->text);
+        lv_qrcode_update(guider_ui.screen_mm_1_qrcode_passwd, cmd->url, 20);
+
+        if (cmd->menu_indication == 1) {
+            lv_obj_clear_flag(guider_ui.screen_mm_1_btn_3, LV_OBJ_FLAG_HIDDEN);
+        } else if (cmd->menu_indication == 0) {
+            lv_obj_add_flag(guider_ui.screen_mm_1_btn_3, LV_OBJ_FLAG_HIDDEN);
+        }
+        break;
+    default:
+        ESP_LOGW(TAG, "Unknown config type");
+        break;
+    }
 
     bsp_display_unlock();
 }
@@ -138,6 +200,39 @@ void cmd_set_apps(cmd_set_apps_t *cmd)
 {
     ESP_LOGI(TAG, "CMD_SET_APPS, frame:%d, lang:%d, screen num:%d, text len:%d, text:%.*s, url len:%d, url:%.*s",
              cmd->frame_num, cmd->lang, cmd->screen_num, cmd->text_len, cmd->text_len, cmd->text, cmd->url_len, cmd->url_len, cmd->url);
+
+    bsp_display_lock(0);
+
+    lv_label_set_text(guider_ui.screen_app_detail_btn_back_label, 
+                      lang_pick("Back to apps", "Retour aux applications", cmd->lang));
+    lv_label_set_text(guider_ui.screen_app_detail_label_3, 
+                      lang_pick("Bell Apps\n\n\n", "Applications Bell\n\n\n", cmd->lang));
+
+    switch (cmd->screen_num) {
+    case 1:
+        lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
+        lv_label_set_text(guider_ui.screen_app_detail_label_passwd, 
+                          lang_pick("Wi-Fi App\n", "Application Wi-Fi\n", cmd->lang));
+        break;
+    case 2:
+        lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
+        lv_label_set_text(guider_ui.screen_app_detail_label_passwd, 
+                          lang_pick("Fibe TV app\n", "Application Fibe TV\n", cmd->lang));
+        break;
+    case 3:
+        lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
+        lv_label_set_text(guider_ui.screen_app_detail_label_passwd, 
+                          lang_pick("Virtual repair tool\n", "Outil de réparation virtuelle\n", cmd->lang));
+        break;
+    default:
+        ESP_LOGW(TAG, "Unknown screen number");
+        break;
+    }
+    lv_screen_load(guider_ui.screen_app_detail);
+    lv_label_set_text(guider_ui.screen_app_detail_label_passwd_title, cmd->text);
+    lv_qrcode_update(guider_ui.screen_app_detail_qrcode_wifi, cmd->url, 20);
+
+    bsp_display_unlock();
 }
 
 void cmd_set_bellapps(cmd_set_bellapps_t *cmd)
@@ -210,7 +305,7 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd_set_notif_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.notif_type = data[NOTIF_TYPE_INDEX];
-            cmd.menu = data[NOTIF_MENU_INDEX];
+            cmd.menu_indication = data[NOTIF_MENU_INDEX];
             cmd.title_len = data[NOTIF_TITLE_LEN_IDX];
             cmd.title = (const char *) &data[NOTIF_TITLE_IDX];
 
@@ -228,7 +323,7 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd_set_config_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.config_type = data[CONFIG_TYPE_INDEX];
-            cmd.menu = data[CONFIG_MENU_INDEX];
+            cmd.menu_indication = data[CONFIG_MENU_INDEX];
             cmd.title_len = data[CONFIG_TITLE_LEN_IDX];
             cmd.title = (const char *) &data[CONFIG_TITLE_IDX];
 
@@ -312,13 +407,6 @@ void message_register_handle()
     register_cmd_set_bellapps_handler(cmd_set_bellapps);
 }
 
-typedef void (*ScreenHandler)(bool lang);
-
-const char *get_text(const char *en_text, const char *fr_text, bool lang)
-{
-    return lang ? fr_text : en_text;
-}
-
 void handle_bu_welcome(bool lang)
 {
     ESP_LOGI(TAG, "screen_num_bu_welcome");
@@ -354,8 +442,8 @@ void handle_bu_connect_1(bool lang)
     lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 0, LV_ANIM_OFF);
     lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 0, LV_ANIM_OFF);
     lv_label_set_text(guider_ui.screen_bu3_label_title_2,
-                      get_text("Connecting to network\n\n",
-                               "Connexion au réseau\n\n", lang));
+                      lang_pick("Connecting to network\n\n",
+                                "Connexion au réseau\n\n", lang));
 
     bsp_display_unlock();
 }
@@ -371,8 +459,8 @@ void handle_bu_authenticating_2(bool lang)
     lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
     lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 0, LV_ANIM_OFF);
     lv_label_set_text(guider_ui.screen_bu3_label_title_2,
-                      get_text("Authenticating\n\n",
-                               "Authentification\n\n", lang));
+                      lang_pick("Authenticating\n\n",
+                                "Authentification\n\n", lang));
 
     bsp_display_unlock();
 }
@@ -388,8 +476,8 @@ void handle_bu_configuring_3(bool lang)
     lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
     lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
     lv_label_set_text(guider_ui.screen_bu3_label_title_2,
-                      get_text("Configuring services\n\n",
-                               "Configuration des services\n\n", lang));
+                      lang_pick("Configuring services\n\n",
+                                "Configuration des services\n\n", lang));
 
     bsp_display_unlock();
 }
@@ -405,8 +493,8 @@ void handle_bu_authenticating_3(bool lang)
     lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
     lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
     lv_label_set_text(guider_ui.screen_bu3_label_title_2,
-                      get_text("Authenticating\n\n",
-                               "Authentification\n\n", lang));
+                      lang_pick("Authenticating\n\n",
+                                "Authentification\n\n", lang));
 
     bsp_display_unlock();
 }
@@ -422,8 +510,8 @@ void handle_bu_configuring_services_3(bool lang)
     lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
     lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
     lv_label_set_text(guider_ui.screen_bu3_label_title_2,
-                      get_text("Configuring services\n",
-                               "Configuration des services\n", lang));
+                      lang_pick("Configuring services\n",
+                                "Configuration des services\n", lang));
 
     bsp_display_unlock();
 }
@@ -439,8 +527,8 @@ void handle_bu_configuring_wifi_3(bool lang)
     lv_bar_set_value(guider_ui.screen_bu3_bar_step2, 100, LV_ANIM_OFF);
     lv_bar_set_value(guider_ui.screen_bu3_bar_step3, 100, LV_ANIM_OFF);
     lv_label_set_text(guider_ui.screen_bu3_label_title_2,
-                      get_text("Configuring Wi-Fi\n",
-                               "Configuration du Wi-Fi\n", lang));
+                      lang_pick("Configuring Wi-Fi\n",
+                                "Configuration du Wi-Fi\n", lang));
 
     bsp_display_unlock();
 }
@@ -452,11 +540,11 @@ void handle_fu_upgrading(bool lang)
 
     lv_screen_load(guider_ui.screen_restart);
     lv_label_set_text(guider_ui.screen_restart_label_1,
-                      get_text("Firmware Upgrade\n\n",
-                               "Mise à niveau du firmware\n\n", lang));
+                      lang_pick("Firmware Upgrade\n\n",
+                                "Mise à niveau du firmware\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
-                      get_text("Firmware upgrading\n\n",
-                               "Mise à niveau du firmware\n\n", lang));
+                      lang_pick("Firmware upgrading\n\n",
+                                "Mise à niveau du firmware\n\n", lang));
 
     bsp_display_unlock();
 }
@@ -468,11 +556,11 @@ void handle_fu_restart(bool lang)
 
     lv_screen_load(guider_ui.screen_restart);
     lv_label_set_text(guider_ui.screen_restart_label_1,
-                      get_text("Firmware Upgrade\n\n",
-                               "Mise à niveau du firmware\n\n", lang));
+                      lang_pick("Firmware Upgrade\n\n",
+                                "Mise à niveau du firmware\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
-                      get_text("Modem will now restart\n\n",
-                               "Le modem va maintenant redémarrer\n\n", lang));
+                      lang_pick("Modem will now restart\n\n",
+                                "Le modem va maintenant redémarrer\n\n", lang));
 
     bsp_display_unlock();
 }
@@ -484,14 +572,14 @@ void handle_stb_pairing(bool lang)
 
     lv_screen_load(guider_ui.screen_STB1);
     lv_label_set_text(guider_ui.screen_STB1_label_connect_to,
-                      get_text("Connect a Fibe TV wireless receiver\n\n",
-                               "Connectez un récepteur sans fil Fibe TV\n\n", lang));
+                      lang_pick("Connect a Fibe TV wireless receiver\n\n",
+                                "Connectez un récepteur sans fil Fibe TV\n\n", lang));
     lv_label_set_text(guider_ui.screen_STB1_label_1,
-                      get_text("Connect Fibe TV receiver",
-                               "Connectez le récepteur Fibe TV", lang));
+                      lang_pick("Connect Fibe TV receiver",
+                                "Connectez le récepteur Fibe TV", lang));
     lv_label_set_text(guider_ui.screen_STB1_btn_3_label,
-                      get_text("Press Ok to cancel",
-                               "Appuyez sur OK pour annuler", lang));
+                      lang_pick("Press Ok to cancel",
+                                "Appuyez sur OK pour annuler", lang));
 
     bsp_display_unlock();
 }
@@ -503,14 +591,14 @@ void handle_wpsd_pairing(bool lang)
 
     lv_screen_load(guider_ui.screen_STB1);
     lv_label_set_text(guider_ui.screen_STB1_label_connect_to,
-                      get_text("Connect a Wi-Fi device using WPS\n\n",
-                               "Connectez un appareil Wi-Fi en utilisant WPS\n\n", lang));
+                      lang_pick("Connect a Wi-Fi device using WPS\n\n",
+                                "Connectez un appareil Wi-Fi en utilisant WPS\n\n", lang));
     lv_label_set_text(guider_ui.screen_STB1_label_1,
-                      get_text("Connect Wi-Fi device (WPS)",
-                               "Connectez l'appareil Wi-Fi (WPS)", lang));
+                      lang_pick("Connect Wi-Fi device (WPS)",
+                                "Connectez l'appareil Wi-Fi (WPS)", lang));
     lv_label_set_text(guider_ui.screen_STB1_btn_3_label,
-                      get_text("Press Ok to cancel",
-                               "Appuyez sur OK pour annuler", lang));
+                      lang_pick("Press Ok to cancel",
+                                "Appuyez sur OK pour annuler", lang));
 
     bsp_display_unlock();
 }
@@ -522,17 +610,17 @@ void handle_factory_reset_select(bool lang)
 
     lv_screen_load(guider_ui.screen_select);
     lv_label_set_text(guider_ui.screen_select_label_2,
-                      get_text("Reset to factory default\n\n",
-                               "Réinitialiser aux paramètres d'usine\n\n", lang));
+                      lang_pick("Reset to factory default\n\n",
+                                "Réinitialiser aux paramètres d'usine\n\n", lang));
     lv_label_set_text(guider_ui.screen_select_label_3,
-                      get_text("Reset modem to factory default?\n\n",
-                               "Réinitialiser le modem aux paramètres d'usine?\n\n", lang));
+                      lang_pick("Reset modem to factory default?\n\n",
+                                "Réinitialiser le modem aux paramètres d'usine?\n\n", lang));
     lv_label_set_text(guider_ui.screen_select_btn_6_label,
-                      get_text("No, keep my settings",
-                               "Non, garder mes paramètres", lang));
+                      lang_pick("No, keep my settings",
+                                "Non, garder mes paramètres", lang));
     lv_label_set_text(guider_ui.screen_select_btn_7_label,
-                      get_text("Yes, reset my settings",
-                               "Oui, réinitialiser mes paramètres", lang));
+                      lang_pick("Yes, reset my settings",
+                                "Oui, réinitialiser mes paramètres", lang));
 
     bsp_display_unlock();
 }
@@ -544,17 +632,17 @@ void handle_factory_reset_confirm(bool lang)
 
     lv_screen_load(guider_ui.screen_select);
     lv_label_set_text(guider_ui.screen_select_label_2,
-                      get_text("Reset to factory default\n\n",
-                               "Réinitialiser aux paramètres d'usine\n\n", lang));
+                      lang_pick("Reset to factory default\n\n",
+                                "Réinitialiser aux paramètres d'usine\n\n", lang));
     lv_label_set_text(guider_ui.screen_select_label_3,
-                      get_text("Are you sure? All settings will be reset.\n\n",
-                               "Êtes-vous sûr? Tous les paramètres seront réinitialisés.\n\n", lang));
+                      lang_pick("Are you sure? All settings will be reset.\n\n",
+                                "Êtes-vous sûr? Tous les paramètres seront réinitialisés.\n\n", lang));
     lv_label_set_text(guider_ui.screen_select_btn_6_label,
-                      get_text("No, cancel",
-                               "Non, annuler", lang));
+                      lang_pick("No, cancel",
+                                "Non, annuler", lang));
     lv_label_set_text(guider_ui.screen_select_btn_7_label,
-                      get_text("Yes, continue",
-                               "Oui, continuer", lang));
+                      lang_pick("Yes, continue",
+                                "Oui, continuer", lang));
 
     bsp_display_unlock();
 }
@@ -566,11 +654,11 @@ void handle_factory_reset_restart(bool lang)
 
     lv_screen_load(guider_ui.screen_restart);
     lv_label_set_text(guider_ui.screen_restart_label_1,
-                      get_text("Reset to factory default\n\n",
-                               "Réinitialiser aux paramètres d'usine\n\n", lang));
+                      lang_pick("Reset to factory default\n\n",
+                                "Réinitialiser aux paramètres d'usine\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
-                      get_text("Resetting modem to factory default.\nYour modem will now restart\n",
-                               "Réinitialisation du modem aux paramètres d'usine.\nVotre modem va maintenant redémarrer\n", lang));
+                      lang_pick("Resetting modem to factory default.\nYour modem will now restart\n",
+                                "Réinitialisation du modem aux paramètres d'usine.\nVotre modem va maintenant redémarrer\n", lang));
 
     bsp_display_unlock();
 }
@@ -592,17 +680,17 @@ void handle_restart_modem_confirm(bool lang)
 
     lv_screen_load(guider_ui.screen_select);
     lv_label_set_text(guider_ui.screen_select_label_2,
-                      get_text("Restart the modem\n\n",
-                               "Redémarrer le modem\n\n", lang));
+                      lang_pick("Restart the modem\n\n",
+                                "Redémarrer le modem\n\n", lang));
     lv_label_set_text(guider_ui.screen_select_label_3,
-                      get_text("Do you want to restart the modem?\n\n",
-                               "Voulez-vous redémarrer le modem?\n\n", lang));
+                      lang_pick("Do you want to restart the modem?\n\n",
+                                "Voulez-vous redémarrer le modem?\n\n", lang));
     lv_label_set_text(guider_ui.screen_select_btn_6_label,
-                      get_text("No",
-                               "Non", lang));
+                      lang_pick("No",
+                                "Non", lang));
     lv_label_set_text(guider_ui.screen_select_btn_7_label,
-                      get_text("Yes",
-                               "Oui", lang));
+                      lang_pick("Yes",
+                                "Oui", lang));
 
     bsp_display_unlock();
 }
@@ -614,22 +702,16 @@ void handle_restart_modem_restart(bool lang)
 
     lv_screen_load(guider_ui.screen_restart);
     lv_label_set_text(guider_ui.screen_restart_label_1,
-                      get_text("Restart the modem\n\n",
-                               "Redémarrer le modem\n\n", lang));
+                      lang_pick("Restart the modem\n\n",
+                                "Redémarrer le modem\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
-                      get_text("Modem will now restart\n\n",
-                               "Le modem va maintenant redémarrer\n\n", lang));
+                      lang_pick("Modem will now restart\n\n",
+                                "Le modem va maintenant redémarrer\n\n", lang));
 
     bsp_display_unlock();
 }
 
-typedef struct {
-    uint8_t screen_type;
-    uint8_t screen_number;
-    ScreenHandler handler;
-} ScreenMapping;
-
-static const ScreenMapping cmd_set_screen_map[] = {
+static const screen_type_mapping_t cmd_set_screen_map[] = {
     // SCREEN_TYPE_BOOT
     { SCREEN_TYPE_BOOT, 0x00, handle_bu_welcome },
     { SCREEN_TYPE_BOOT, 0x01, handle_bu_loading },
@@ -666,7 +748,7 @@ static const ScreenMapping cmd_set_screen_map[] = {
 
 void process_screen(uint8_t type, uint8_t number, bool lang)
 {
-    size_t map_size = sizeof(cmd_set_screen_map) / sizeof(ScreenMapping);
+    size_t map_size = sizeof(cmd_set_screen_map) / sizeof(screen_type_mapping_t);
     for (size_t i = 0; i < map_size; i++) {
         if (cmd_set_screen_map[i].screen_type == type && cmd_set_screen_map[i].screen_number == number) {
             if (cmd_set_screen_map[i].handler) {

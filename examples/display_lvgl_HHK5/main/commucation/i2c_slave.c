@@ -47,7 +47,6 @@ void disp_buf(uint8_t *buf, int len)
             printf("\n");
         }
     }
-    printf("\n");
 }
 
 static bool i2c_slave_request_cb(i2c_slave_dev_handle_t i2c_slave, const i2c_slave_request_event_data_t *evt_data, void *arg)

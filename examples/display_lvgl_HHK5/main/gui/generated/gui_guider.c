@@ -114,6 +114,9 @@ void setup_ui(lv_ui *ui)
     setup_scr_screen_error(ui);
     setup_scr_screen_select(ui);
     setup_scr_screen_restart(ui);
+    setup_scr_screen_wpsd_2(ui);
+    setup_scr_screen_app_detail(ui);
+    setup_scr_screen_null(ui);
 
     lv_screen_load(ui->screen_notif);
 }

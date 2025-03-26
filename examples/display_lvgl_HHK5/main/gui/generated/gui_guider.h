@@ -158,11 +158,37 @@ typedef struct
 	lv_obj_t *screen_restart_line_1;
 	lv_obj_t *screen_restart_btn_1;
 	lv_obj_t *screen_restart_btn_1_label;
+	lv_obj_t *screen_wpsd_2;
+	bool screen_wpsd_2_del;
+	lv_obj_t *screen_wpsd_2_label_title;
+	lv_obj_t *screen_wpsd_2_label_device_name;
+	lv_obj_t *screen_wpsd_2_cont_title;
+	lv_obj_t *screen_wpsd_2_label_2;
+	lv_obj_t *screen_wpsd_2_line_5;
+	lv_obj_t *screen_wpsd_2_btn_5;
+	lv_obj_t *screen_wpsd_2_btn_5_label;
+	lv_obj_t *screen_wpsd_2_btn_4;
+	lv_obj_t *screen_wpsd_2_btn_4_label;
+	lv_obj_t *screen_app_detail;
+	bool screen_app_detail_del;
+	lv_obj_t *screen_app_detail_cont_title;
+	lv_obj_t *screen_app_detail_label_3;
+	lv_obj_t *screen_app_detail_line_3;
+	lv_obj_t *screen_app_detail_btn_back;
+	lv_obj_t *screen_app_detail_btn_back_label;
+	lv_obj_t *screen_app_detail_btn_2;
+	lv_obj_t *screen_app_detail_btn_2_label;
+	lv_obj_t *screen_app_detail_label_passwd_title;
+	lv_obj_t *screen_app_detail_label_passwd;
+	lv_obj_t *screen_app_detail_qrcode_wifi;
+	lv_obj_t *screen_app_detail_img_2;
 	lv_obj_t *screen_null;
 	bool screen_null_del;
 	lv_obj_t *screen_null_cont_1;
 	lv_obj_t *screen_null_label_2;
 	lv_obj_t *screen_null_line_2;
+	lv_obj_t *screen_null_btn_1;
+	lv_obj_t *screen_null_btn_1_label;
 }lv_ui;
 
 typedef void (*ui_setup_scr_t)(lv_ui * ui);
@@ -204,12 +230,15 @@ void setup_scr_screen_error(lv_ui *ui);
 void setup_scr_screen_apps(lv_ui *ui);
 void setup_scr_screen_select(lv_ui *ui);
 void setup_scr_screen_restart(lv_ui *ui);
+void setup_scr_screen_wpsd_2(lv_ui *ui);
+void setup_scr_screen_app_detail(lv_ui *ui);
 void setup_scr_screen_null(lv_ui *ui);
 LV_IMAGE_DECLARE(_arc_RGB565A8_100x100);
 LV_IMAGE_DECLARE(_error_RGB565A8_29x35);
 LV_IMAGE_DECLARE(_icon_ok_RGB565A8_29x35);
 LV_IMAGE_DECLARE(_speed_test_RGB565A8_145x140);
 LV_IMAGE_DECLARE(_error_RGB565A8_31x40);
+LV_IMAGE_DECLARE(_icon_app_RGB565A8_109x71);
 
 LV_FONT_DECLARE(lv_font_montserratMedium_40)
 LV_FONT_DECLARE(lv_font_montserratMedium_16)

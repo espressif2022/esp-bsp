@@ -32,6 +32,9 @@ void events_init_screen_error(lv_ui *ui);
 void events_init_screen_apps(lv_ui *ui);
 void events_init_screen_select(lv_ui *ui);
 void events_init_screen_restart(lv_ui *ui);
+void events_init_screen_wpsd_2(lv_ui *ui);
+void events_init_screen_app_detail(lv_ui *ui);
+void events_init_screen_null(lv_ui *ui);
 
 #ifdef __cplusplus
 }
