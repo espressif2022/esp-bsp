@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: CC0-1.0
+ */
 #ifndef MESSAG_H
 #define MESSAG_H
 
@@ -11,6 +16,7 @@
 #define CMD_SET_RESET           0x02
 #define CMD_SET_IMAGE           0x03
 #define CMD_SEND_IMAGE          0x04 // To be developed further
+#define CMD_GET_STATUS          0x50
 
 // Backlight Command
 #define CMD_SET_BACKLIGHT       0x10
@@ -48,7 +54,7 @@
 #define SCREEN_TYPE_SPEED_TEST              0x05
 #define SCREEN_TYPE_RESTART_MODEM           0x06
 
-// Cmd_Set_Config 0x41 
+// Cmd_Set_Config 0x41
 // 0x30 0x41 Frame NumConfig TypeMenu Title LengthTitle Text LengthText URL LengthURL
 #define CONFIG_TYPE_WIFI_NETWORK            0x01 // BU-12
 #define CONFIG_TYPE_DATA_CLIENT_PAIRING     0x02 // WPSD-2
@@ -242,7 +248,7 @@ typedef struct {
     uint8_t menu_num;
 } cmd_set_bellapps_t;
 
-void message_parse_cmd(uint8_t *data, size_t len);
+esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t *ack_num);
 
 void message_register_handle();
 

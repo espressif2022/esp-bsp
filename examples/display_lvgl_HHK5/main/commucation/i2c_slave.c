@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: CC0-1.0
+ */
 #include <stdio.h>
 #include <string.h>
 #include "freertos/FreeRTOS.h"
@@ -16,27 +21,34 @@
 // I2C Slave Configuration
 #define I2C_SLAVE_SCL_IO        4    /*!< GPIO number for I2C slave clock */
 #define I2C_SLAVE_SDA_IO        0    /*!< GPIO number for I2C slave data */
-#define I2C_SLAVE_INT_IO        18   /*!< GPIO number for I2C slave interrupt */
+#define I2C_SLAVE_INT_IO        19   /*!< GPIO number for I2C slave interrupt */
 #define ESP_SLAVE_ADDR          0x30 /*!< ESP_I2C slave address, you can set any 7bit value */
 #define TEST_I2C_PORT           0
+
+#define I2C_INT_BUSY            0
+#define I2C_INT_IDLE            1
+
 #define DATA_LENGTH             100
 
 const char *TAG = "i2c_slave";
 
 typedef struct {
-    uint8_t command_data;
     i2c_slave_dev_handle_t handle;
+    QueueHandle_t event_queue;
+
+    uint8_t request_cmd;
+    uint8_t ack_num;
+    uint8_t *temp_data;
+    size_t temp_len;
 } i2c_slave_context_t;
 
-static QueueHandle_t event_queue;
-static uint8_t *temp_data;
-static size_t temp_len = 0;
-
-static i2c_slave_context_t context;
 typedef enum {
     I2C_SLAVE_EVT_RX,
-    I2C_SLAVE_EVT_TX
+    I2C_SLAVE_EVT_TX,
+    I2C_SLAVE_EVT_EMERGENCY,
 } i2c_slave_event_t;
+
+static i2c_slave_context_t context;
 
 void disp_buf(uint8_t *buf, int len)
 {
@@ -54,7 +66,7 @@ static bool i2c_slave_request_cb(i2c_slave_dev_handle_t i2c_slave, const i2c_sla
 {
     BaseType_t xTaskWoken;
     i2c_slave_event_t evt = I2C_SLAVE_EVT_TX;
-    xQueueSendFromISR(event_queue, &evt, &xTaskWoken);
+    xQueueSendFromISR(context.event_queue, &evt, &xTaskWoken);
     return xTaskWoken;
 }
 
@@ -64,9 +76,9 @@ static bool i2c_slave_receive_cb(i2c_slave_dev_handle_t i2c_slave, const i2c_sla
     i2c_slave_event_t evt = I2C_SLAVE_EVT_RX;
 
     if (evt_data->length <= DATA_LENGTH) {
-        memcpy(temp_data, evt_data->buffer, evt_data->length);
-        temp_len = evt_data->length;
-        xQueueSendFromISR(event_queue, &evt, &xTaskWoken);
+        memcpy(context.temp_data, evt_data->buffer, evt_data->length);
+        context.temp_len = evt_data->length;
+        xQueueSendFromISR(context.event_queue, &evt, &xTaskWoken);
     } else {
         ESP_LOGW(TAG, "Received data length exceeds buffer size");
     }
@@ -77,32 +89,56 @@ static bool i2c_slave_receive_cb(i2c_slave_dev_handle_t i2c_slave, const i2c_sla
 void i2c_slave_read_task(void *arg)
 {
     i2c_slave_event_t evt;
-    uint8_t cmd_data[10];
-    uint8_t cmd_len = 0;
+    uint8_t cmd_resp_data[10];
+    uint8_t cmd_resp_len = 0;
     uint32_t total_written = 0;
 
     while (1) {
-        if (xQueueReceive(event_queue, &evt, portMAX_DELAY) == pdTRUE) {
+        if (xQueueReceive(context.event_queue, &evt, portMAX_DELAY) == pdTRUE) {
             if (evt == I2C_SLAVE_EVT_RX) {
-                disp_buf(temp_data, temp_len);
-                message_parse_cmd(temp_data, temp_len);
+                disp_buf(context.temp_data, context.temp_len);
+                uint8_t ack_num = 0;
+                uint8_t req_cmd = 0;
+                if (message_parse_cmd(context.temp_data, context.temp_len, &req_cmd, &ack_num) == ESP_OK) {
+                    context.request_cmd = req_cmd;
+                    if (req_cmd != CMD_GET_STATUS) {
+                        context.ack_num = ack_num;
+                    }
+                    ESP_LOGI(TAG, "Parsed command, req_cmd:0x%02X, ack_num:0x%02X", req_cmd, ack_num);
+
+                    if (ack_num) {
+                        gpio_set_level(I2C_SLAVE_INT_IO, I2C_INT_BUSY);
+                    }
+                } else {
+                    ESP_LOGW(TAG, "Failed to parse command");
+                }
             } else if (evt == I2C_SLAVE_EVT_TX) {
-                switch (context.command_data) {
+                switch (context.request_cmd) {
                 case CMD_HELLO:
-                    cmd_data[0] = 0x01;
-                    cmd_len = 1;
+                    cmd_resp_data[0] = 0x01;
+                    cmd_resp_len = 1;
                     break;
                 case CMD_GET_FW_VERSION:
-                    cmd_data[0] = 0x01;
-                    cmd_data[1] = 0x02;
-                    cmd_len = 2;
+                    cmd_resp_data[0] = 0x01;
+                    cmd_resp_data[1] = 0x02;
+                    cmd_resp_len = 2;
+                    break;
+                case CMD_GET_STATUS:
+                    cmd_resp_data[0] = 0x01;//ACK type ???
+                    cmd_resp_data[1] = context.ack_num;
+                    cmd_resp_len = 2;
+                    gpio_set_level(I2C_SLAVE_INT_IO, I2C_INT_IDLE);
                     break;
                 default:
-                    ESP_LOGI(TAG, "Unknown command");
+                    printf("Unknown cmd\r\n");
                     break;
                 }
-                i2c_slave_write(context.handle, cmd_data, cmd_len, &total_written, 1000);
-                ESP_LOGI(TAG, "I2C_SLAVE_EVT_TX, reg:%02X, %d", cmd_len, total_written);
+                disp_buf(cmd_resp_data, cmd_resp_len);
+                i2c_slave_write(context.handle, cmd_resp_data, cmd_resp_len, &total_written, 1000);
+                // ESP_LOGI(TAG, "write, reg:%02X, %d", cmd_resp_len, total_written);
+            } else if (evt == I2C_SLAVE_EVT_EMERGENCY) {
+                ESP_LOGW(TAG, "I2C_SLAVE_EVT_EMERGENCY");
+                gpio_set_level(I2C_SLAVE_INT_IO, I2C_INT_BUSY);
             }
         }
     }
@@ -110,10 +146,17 @@ void i2c_slave_read_task(void *arg)
 
 void i2c_slave_start(void)
 {
-    event_queue = xQueueCreate(2, sizeof(i2c_slave_event_t));
-    assert(event_queue);
-    temp_data = malloc(DATA_LENGTH);
-    assert(temp_data);
+    context.event_queue = xQueueCreate(2, sizeof(i2c_slave_event_t));
+    if (context.event_queue == NULL) {
+        ESP_LOGE(TAG, "Failed to create event queue");
+        return;
+    }
+
+    context.temp_data = malloc(DATA_LENGTH);
+    if (context.temp_data == NULL) {
+        ESP_LOGE(TAG, "Failed to allocate memory for temp data");
+        return;
+    }
 
     gpio_config_t io_conf = {};
     io_conf.intr_type = GPIO_INTR_DISABLE;
@@ -123,7 +166,7 @@ void i2c_slave_start(void)
     io_conf.pull_up_en = 0;
     gpio_config(&io_conf);
 
-    gpio_set_level(I2C_SLAVE_INT_IO, 1);
+    gpio_set_level(I2C_SLAVE_INT_IO, I2C_INT_IDLE);
 
     i2c_slave_config_t i2c_slv_config = {
         .i2c_port = TEST_I2C_PORT,

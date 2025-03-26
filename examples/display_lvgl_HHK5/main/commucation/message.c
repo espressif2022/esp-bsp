@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: CC0-1.0
+ */
 #include <stdio.h>
 #include <string.h>
 #include "freertos/FreeRTOS.h"
@@ -10,94 +15,129 @@
 
 static const char *TAG = "message";
 
-typedef void (*cmd_set_bl_handler_t)(cmd_set_bl_t *cmd);
-typedef void (*cmd_set_list_handler_t)(cmd_set_list_t *cmd);
-typedef void (*cmd_set_menu_handler_t)(cmd_set_menu_t *cmd);
-typedef void (*cmd_set_screen_handler_t)(cmd_set_screen_t *cmd);
-typedef void (*cmd_set_notif_handler_t)(cmd_set_notif_t *cmd);
-typedef void (*cmd_set_config_handler_t)(cmd_set_config_t *cmd);
-typedef void (*cmd_set_error_handler_t)(cmd_set_error_t *cmd);
-typedef void (*cmd_set_apps_handler_t)(cmd_set_apps_t *cmd);
-typedef void (*cmd_set_bellapps_handler_t)(cmd_set_bellapps_t *cmd);
+/**
+ * @typedef cmd_set_handler_t
+ * @brief Function pointer type for handling command set operations.
+ * @param arg Pointer to arguments required by the handler.
+ */
+typedef void (*cmd_set_handler_t)(void *arg);
 
+/**
+ * @typedef screen_type_handler
+ * @brief Function pointer type for handling screen type operations.
+ * @param lang Boolean indicating the language setting (e.g., true for one language, false for another).
+ */
 typedef void (*screen_type_handler)(bool lang);
 
+/**
+ * @struct screen_type_mapping_t
+ * @brief Structure for mapping screen types to their respective handlers.
+ *
+ * @var screen_type_mapping_t::screen_type
+ * Screen type identifier (e.g., type of screen being handled).
+ *
+ * @var screen_type_mapping_t::screen_number
+ * Screen number identifier (e.g., specific screen instance).
+ *
+ * @var screen_type_mapping_t::handler
+ * Function pointer to the handler for the specified screen type.
+ */
 typedef struct {
     uint8_t screen_type;
     uint8_t screen_number;
     screen_type_handler handler;
 } screen_type_mapping_t;
 
-static cmd_set_bl_handler_t cmd_set_bl_handler = NULL;
-static cmd_set_list_handler_t cmd_set_list_handler = NULL;
-static cmd_set_menu_handler_t cmd_set_menu_handler = NULL;
-static cmd_set_screen_handler_t cmd_set_screen_handler = NULL;
-static cmd_set_notif_handler_t cmd_set_notif_handler = NULL;
-static cmd_set_config_handler_t cmd_set_config_handler = NULL;
-static cmd_set_error_handler_t cmd_set_error_handler = NULL;
-static cmd_set_apps_handler_t cmd_set_apps_handler = NULL;
-static cmd_set_bellapps_handler_t cmd_set_bellapps_handler = NULL;
+static cmd_set_handler_t cmd_set_reset_handler = NULL;
+static cmd_set_handler_t cmd_set_bl_handler = NULL;
+static cmd_set_handler_t cmd_set_list_handler = NULL;
+static cmd_set_handler_t cmd_set_menu_handler = NULL;
+static cmd_set_handler_t cmd_set_screen_handler = NULL;
+static cmd_set_handler_t cmd_set_notif_handler = NULL;
+static cmd_set_handler_t cmd_set_config_handler = NULL;
+static cmd_set_handler_t cmd_set_error_handler = NULL;
+static cmd_set_handler_t cmd_set_apps_handler = NULL;
+static cmd_set_handler_t cmd_set_bellapps_handler = NULL;
 
-extern lv_obj_t * cont_main_loop;
-extern lv_obj_t * cont_bellapps;
+extern lv_obj_t *cont_main_loop;
+extern lv_obj_t *cont_bellapps;
 
 const char *lang_pick(const char *en_text, const char *fr_text, bool lang)
 {
     return lang ? fr_text : en_text;
 }
 
-void register_cmd_set_bl_handler(cmd_set_bl_handler_t handler)
+void register_cmd_set_reset_handler(cmd_set_handler_t handler)
+{
+    cmd_set_reset_handler = handler;
+}
+
+void register_cmd_set_bl_handler(cmd_set_handler_t handler)
 {
     cmd_set_bl_handler = handler;
 }
 
-void register_cmd_set_list_handler(cmd_set_list_handler_t handler)
+void register_cmd_set_list_handler(cmd_set_handler_t handler)
 {
     cmd_set_list_handler = handler;
 }
 
-void register_cmd_set_menu_handler(cmd_set_menu_handler_t handler)
+void register_cmd_set_menu_handler(cmd_set_handler_t handler)
 {
     cmd_set_menu_handler = handler;
 }
 
-void register_cmd_set_screen_handler(cmd_set_screen_handler_t handler)
+void register_cmd_set_screen_handler(cmd_set_handler_t handler)
 {
     cmd_set_screen_handler = handler;
 }
 
-void register_cmd_set_notif_handler(cmd_set_notif_handler_t handler)
+void register_cmd_set_notif_handler(cmd_set_handler_t handler)
 {
     cmd_set_notif_handler = handler;
 }
 
-void register_cmd_set_config_handler(cmd_set_config_handler_t handler)
+void register_cmd_set_config_handler(cmd_set_handler_t handler)
 {
     cmd_set_config_handler = handler;
 }
 
-void register_cmd_set_error_handler(cmd_set_error_handler_t handler)
+void register_cmd_set_error_handler(cmd_set_handler_t handler)
 {
     cmd_set_error_handler = handler;
 }
 
-void register_cmd_set_apps_handler(cmd_set_apps_handler_t handler)
+void register_cmd_set_apps_handler(cmd_set_handler_t handler)
 {
     cmd_set_apps_handler = handler;
 }
 
-void register_cmd_set_bellapps_handler(cmd_set_bellapps_handler_t handler)
+void register_cmd_set_bellapps_handler(cmd_set_handler_t handler)
 {
     cmd_set_bellapps_handler = handler;
 }
 
-void cmd_set_bl(cmd_set_bl_t *cmd)
+void cmd_set_reset(void *arg)
 {
+    ESP_LOGI(TAG, "CMD_SET_RESET");
+    esp_restart();
+}
+
+void cmd_set_bl(void *arg)
+{
+    cmd_set_bl_t *cmd = (cmd_set_bl_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_BL, state:%d, intensity:%d", cmd->state, cmd->intensity);
 }
 
-void cmd_set_list(cmd_set_list_t *cmd)
+void cmd_set_list(void *arg)
 {
+    cmd_set_list_t *cmd = (void *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_LIST, frame:%d, lang:%d, menu list msb:%02X, menu list lsb:%02X",
              cmd->frame_num, cmd->lang, cmd->menu_list_msb, cmd->menu_list_lsb);
     bsp_display_lock(0);
@@ -133,8 +173,12 @@ void cmd_set_list(cmd_set_list_t *cmd)
     bsp_display_unlock();
 }
 
-void cmd_set_menu(cmd_set_menu_t *cmd)
+void cmd_set_menu(void *arg)
 {
+    cmd_set_menu_t *cmd = (cmd_set_menu_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_MENU, frame:%d, lang:%d, menu num:%d", cmd->frame_num, cmd->lang, cmd->menu_num);
     bsp_display_lock(0);
 
@@ -144,16 +188,24 @@ void cmd_set_menu(cmd_set_menu_t *cmd)
     bsp_display_unlock();
 }
 
-void cmd_set_screen(cmd_set_screen_t *cmd)
+void cmd_set_screen(void *arg)
 {
+    cmd_set_screen_t *cmd = (cmd_set_screen_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_SCREEN, frame:%d, lang:%d, screen type:%d, screen num:%d",
              cmd->frame_num, cmd->lang, cmd->scren_type, cmd->scren_num);
 
     process_screen(cmd->scren_type, cmd->scren_num, cmd->lang);
 }
 
-void cmd_set_notif(cmd_set_notif_t *cmd)
+void cmd_set_notif(void *arg)
 {
+    cmd_set_notif_t *cmd = (cmd_set_notif_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_NOTIF, frame:%d, notif type:%d, menu:%d, title:%.*s, text:%.*s",
              cmd->frame_num, cmd->notif_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->text_len, cmd->text);
 
@@ -177,8 +229,12 @@ void cmd_set_notif(cmd_set_notif_t *cmd)
     bsp_display_unlock();
 }
 
-void cmd_set_config(cmd_set_config_t *cmd)
+void cmd_set_config(void *arg)
 {
+    cmd_set_config_t *cmd = (cmd_set_config_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_CONFIG, frame:%d, config type:%d, menu:%d, title:%.*s, text:%.*s, url:%.*s",
              cmd->frame_num, cmd->config_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->text_len, cmd->text, cmd->url_len, cmd->url);
 
@@ -241,8 +297,12 @@ void cmd_set_config(cmd_set_config_t *cmd)
     bsp_display_unlock();
 }
 
-void cmd_set_error(cmd_set_error_t *cmd)
+void cmd_set_error(void *arg)
 {
+    cmd_set_error_t *cmd = (cmd_set_error_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, error num:%d, error len:%d, label:%s, text:%s, url:%s",
              cmd->frame_num, cmd->error_num, cmd->error_len, cmd->label, cmd->text, cmd->url);
 
@@ -256,8 +316,12 @@ void cmd_set_error(cmd_set_error_t *cmd)
     bsp_display_unlock();
 }
 
-void cmd_set_apps(cmd_set_apps_t *cmd)
+void cmd_set_apps(void *arg)
 {
+    cmd_set_apps_t *cmd = (cmd_set_apps_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_APPS, frame:%d, lang:%d, screen num:%d, text len:%d, text:%.*s, url len:%d, url:%.*s",
              cmd->frame_num, cmd->lang, cmd->screen_num, cmd->text_len, cmd->text_len, cmd->text, cmd->url_len, cmd->url_len, cmd->url);
 
@@ -295,8 +359,12 @@ void cmd_set_apps(cmd_set_apps_t *cmd)
     bsp_display_unlock();
 }
 
-void cmd_set_bellapps(cmd_set_bellapps_t *cmd)
+void cmd_set_bellapps(void *arg)
 {
+    cmd_set_bellapps_t *cmd = (cmd_set_bellapps_t *)arg;
+    if (NULL == cmd) {
+        return;
+    }
     ESP_LOGI(TAG, "CMD_SET_BELLAPPS, frame:%d, lang:%d, menu num:%d", cmd->frame_num, cmd->lang, cmd->menu_num);
     bsp_display_lock(0);
 
@@ -317,24 +385,32 @@ void cmd_set_bellapps(cmd_set_bellapps_t *cmd)
     bsp_display_unlock();
 }
 
-void message_parse_cmd(uint8_t *data, size_t len)
+esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t *ack_num)
 {
     if (len < 1) {
         ESP_LOGW(TAG, "Invalid command");
-        return;
+        return ESP_FAIL;
     }
 
+    *req_cmd = 0;  // Initialize req_cmd to 0
+    *ack_num = 0;  // Initialize ack_num to 0
+
     switch (data[CMD_TYPE_INDEX]) {
+    // SYNCHRONIZATION
     case CMD_HELLO:
         ESP_LOGI(TAG, "CMD_HELLO");
-        // context.command_data = CMD_HELLO;
+        *req_cmd = CMD_HELLO;
         break;
     case CMD_GET_FW_VERSION:
         ESP_LOGI(TAG, "CMD_GET_FW_VERSION");
-        // context.command_data = CMD_GET_FW_VERSION;
+        *req_cmd = CMD_GET_FW_VERSION;
         break;
     case CMD_SET_RESET:
-        ESP_LOGI(TAG, "CMD_SET_RESET");
+        if (cmd_set_reset_handler) {
+            cmd_set_reset_handler(NULL);
+        } else {
+            ESP_LOGW(TAG, "CMD_SET_RESET handler not registered");
+        }
         break;
     case CMD_SET_IMAGE:
         ESP_LOGI(TAG, "CMD_SET_IMAGE");
@@ -347,11 +423,13 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd_set_bl_t cmd;
             cmd.state = data[BL_STATE_INDEX];
             cmd.intensity = data[BL_INTENSITY_INDEX];
+
             cmd_set_bl_handler(&cmd);
         } else {
             ESP_LOGW(TAG, "CMD_SET_BL handler not registered or invalid data length");
         }
         break;
+    // COMMAND with acknowledgement
     case CMD_SET_LIST:
         if (cmd_set_list_handler && len >= 4) {
             cmd_set_list_t cmd;
@@ -359,7 +437,9 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.lang = data[LIST_LANG_INDEX];
             cmd.menu_list_msb = data[LIST_MENUS_MSB_INDEX];
             cmd.menu_list_lsb = data[LIST_MENUS_LSB_INDEX];
+
             cmd_set_list_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_LIST handler not registered or invalid data length");
         }
@@ -370,7 +450,9 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[MENU_LANG_INDEX];
             cmd.menu_num = data[MENU_NUM_INDEX];
+
             cmd_set_menu_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_MENU handler not registered or invalid data length");
         }
@@ -382,9 +464,11 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.lang = data[SCREEN_LANG_INDEX];
             cmd.scren_type = data[SCREEN_TYPE_INDEX];
             cmd.scren_num = data[SCREEN_NUM_INDEX];
+
             cmd_set_screen_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
-            ESP_LOGW(TAG, "CMD_SET_MENU handler not registered or invalid data length");
+            ESP_LOGW(TAG, "CMD_SET_SCREEN handler not registered or invalid data length");
         }
         break;
     case CMD_SET_NOTIF:
@@ -401,6 +485,7 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.text = (const char *) &data[text_len_idx + 1];
 
             cmd_set_notif_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_NOTIF handler not registered or invalid data length");
         }
@@ -423,6 +508,7 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.url = (const char *) &data[url_len_idx + 1];
 
             cmd_set_config_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_CONFIG handler not registered or invalid data length");
         }
@@ -444,17 +530,22 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.url = (const char *) &data[url_len_idx + 1];
 
             cmd_set_error_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_ERROR invalid data length");
         }
         break;
     case CMD_SET_BELLAPPS:
-        if (cmd_set_bellapps_handler && len >= 4) {
+        if (cmd_set_bellapps_handler && len == 4) {
             cmd_set_bellapps_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[BELLAPPS_LANG_INDEX];
             cmd.menu_num = data[BELLAPPS_MENU_INDEX];
+
             cmd_set_bellapps_handler(&cmd);
+            *ack_num = cmd.frame_num;
+        } else if (len == 1) {
+            *req_cmd = CMD_GET_STATUS;
         } else {
             ESP_LOGW(TAG, "CMD_SET_BELLAPPS invalid data length");
         }
@@ -473,18 +564,22 @@ void message_parse_cmd(uint8_t *data, size_t len)
             cmd.url = (const char *) &data[url_len_idx + 1];
 
             cmd_set_apps_handler(&cmd);
+            *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_APPS invalid data length");
         }
         break;
     default:
         ESP_LOGW(TAG, "Unknown command:%02X", data[0]);
-        break;
+        return ESP_FAIL;
     }
+
+    return ESP_OK;
 }
 
 void message_register_handle()
 {
+    register_cmd_set_reset_handler(cmd_set_reset);
     register_cmd_set_bl_handler(cmd_set_bl);
     register_cmd_set_list_handler(cmd_set_list);
     register_cmd_set_menu_handler(cmd_set_menu);
