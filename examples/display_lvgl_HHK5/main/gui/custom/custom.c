@@ -33,8 +33,6 @@
 /**
  * Create a demo application
  */
-#define MAX_MAIN_LOOP_ITEMS 10
-#define MAX_BELL_APPS_ITEMS 3
 
 const char *items_main_loop[MAX_MAIN_LOOP_ITEMS][2] = {
     {"1.Service status", "Statut du service"},
@@ -45,7 +43,7 @@ const char *items_main_loop[MAX_MAIN_LOOP_ITEMS][2] = {
     {"6.Test internet speed", "Tester la vitesse Internet"},
     {"7.Bell Apps", "Applications Bell"},
     {"8.Restart the modem", "Redémarrer le modem"},
-    {"9.Switch to English", "Passer à l'anglais"},
+    {"9.Passer à l'anglais", "Switch to English"},
     {"10.Close", "Fermer"}
 };
 
@@ -60,6 +58,8 @@ static lv_obj_t *mask_down_layer;
 
 lv_obj_t *cont_main_loop;
 lv_obj_t *cont_bellapps;
+
+main_loop_cfg_t main_loop_cfg;
 
 /* Function to calculate the total content height of the container */
 static int32_t get_content_height(lv_obj_t *cont)
@@ -83,75 +83,49 @@ static void main_loop_infinite_event_cb(lv_event_t *e)
     lv_obj_t *cont = lv_event_get_target(e);
     lv_event_code_t code = lv_event_get_code(e);
 
-    static bool is_adjusting = false;
-    static int16_t focus_index = 0;
+    // static bool is_adjusting = false;
 
     if (code == LV_EVENT_SCROLL) {
         lv_area_t cont_a;
         lv_obj_get_coords(cont, &cont_a);
         int32_t cont_y_center = cont_a.y1 + lv_area_get_height(&cont_a) / 2;
 
-        uint32_t i;
         uint32_t child_cnt = lv_obj_get_child_count(cont);
-        for (i = 0; i < child_cnt; i++) {
-            // lv_obj_t *child = lv_obj_get_child(cont, i);
-            // lv_area_t child_a;
-            // lv_obj_get_coords(child, &child_a);
+        for (int i = 0; i < child_cnt; i++) {
+            lv_obj_t *child = lv_obj_get_child(cont, i);
+            lv_area_t child_a;
+            lv_obj_get_coords(child, &child_a);
 
-            // int32_t child_y_center = child_a.y1 + lv_area_get_height(&child_a) / 2;
-            // int32_t diff_y = child_y_center - cont_y_center;
-            // diff_y = LV_ABS(diff_y);
+            int32_t child_y_center = child_a.y1 + lv_area_get_height(&child_a) / 2;
+            int32_t diff_y = child_y_center - cont_y_center;
+            diff_y = LV_ABS(diff_y);
 
-            // lv_opa_t opa = lv_map(diff_y, 0, lv_obj_get_height(cont) / 2, LV_OPA_COVER, LV_OPA_TRANSP);
-            // // printf("[%d], diff_y: %d, pos:[%03d,%03d]\n", i, diff_y, child_a.y1, child_a.y2);
+            lv_opa_t opa = lv_map(diff_y, 0, lv_obj_get_height(cont) / 2, LV_OPA_COVER, LV_OPA_TRANSP);
+            // printf("[%d], diff_y: %d, pos:[%03d,%03d]\n", i, diff_y, child_a.y1, child_a.y2);
 
-            // lv_color_t color = lv_color_mix(lv_color_black(), lv_color_hex(0x004D8F), lv_map(diff_y, 0, lv_obj_get_height(cont) / 2, 0, 255));
-            // lv_obj_set_style_bg_color(child, color, 0);
-            // // lv_obj_set_style_opa(child, opa, 0);
-
-            if (!is_adjusting) {
-                is_adjusting = true;
-                int32_t scroll_y = lv_obj_get_scroll_y(cont);
-                int32_t cont_h = lv_obj_get_height(cont);
-                int32_t content_h = get_content_height(cont);
-
-                /* Use ITEM_SIZE as vertical item height */
-                const int32_t item_height = 80;
-
-                if (scroll_y <= 0) {
-                    // printf("1: + 80, scroll_y: %d, content_h: %d, cont_h: %d, %d\n", scroll_y, content_h, cont_h, content_h - cont_h);
-                    lv_obj_t *last_child = lv_obj_get_child(cont, (int32_t)(lv_obj_get_child_count(cont) - 1));
-                    // lv_obj_move_to_index(last_child, 0);
-                    // lv_obj_scroll_to_y(cont, scroll_y + item_height, LV_ANIM_OFF);
-                    // lv_obj_scroll_to_y(cont, scroll_y, LV_ANIM_OFF);
-                } else if (scroll_y > content_h - cont_h) {
-                    // printf("2: - 80, scroll_y: %d, content_h: %d, cont_h: %d, %d\n", scroll_y, content_h, cont_h, content_h - cont_h);
-                    lv_obj_t *first_child = lv_obj_get_child(cont, 0);
-                    // lv_obj_move_to_index(first_child, (int32_t)(lv_obj_get_child_count(cont) - 1));
-                    // lv_obj_scroll_to_y(cont, scroll_y - item_height, LV_ANIM_OFF);
-                    // lv_obj_scroll_to_y(cont, scroll_y, LV_ANIM_OFF);
-                }
-                is_adjusting = false;
-                printf("scrolling, %d, min:%d, max:%d\r\n", scroll_y, (-75 + 90 * 1), (-75 + 90 * 14));
-            }
+            lv_color_t color = lv_color_mix(lv_color_black(), lv_color_hex(0x004D8F), lv_map(diff_y, 0, lv_obj_get_height(cont) / 2, 0, 255));
+            lv_obj_set_style_bg_color(child, color, 0);
 
         }
     } else if (code == LV_EVENT_DRAW_MAIN_BEGIN) {
     } else if (code == LV_EVENT_DRAW_POST_END) {
     } else if (code == LV_EVENT_SCROLL_BEGIN) {
         int32_t scroll_y = lv_obj_get_scroll_y(cont);
-        printf("start, focus: %d, scroll_y:%d\r\n", focus_index, scroll_y);
+        // printf("start, scroll_y:%d\r\n", scroll_y);
     } else if (code == LV_EVENT_SCROLL_END) {
         int32_t scroll_y = lv_obj_get_scroll_y(cont);
+        int32_t cont_h = lv_obj_get_height(cont);
+        int32_t content_h = get_content_height(cont);
+        int32_t child_cnt = lv_obj_get_child_count(cont);
 
-        printf("end, scroll_y:%d\r\n", scroll_y);
+        // printf("scroll_y: %d, content_h: %d, cont_h: %d, left:%d, cnt:%d\n", scroll_y, content_h, cont_h, content_h - cont_h, child_cnt);
 
-        if (scroll_y == (-75 + 90 * 1)) {
-            lv_obj_scroll_to_y(cont, -75 + 90 * 11, LV_ANIM_OFF);
-            printf("end, focus: %d, scroll_y:%d -> %d\r\n", focus_index, scroll_y, -75 + 90 * 11);
-        } else if (scroll_y == (-75 + 90 * 14)) {
+        if (scroll_y == (-75 + 90 * 1)) { //jump
+            lv_obj_scroll_to_y(cont, -75 + 90 * (child_cnt - 6 + 1), LV_ANIM_OFF);
+            printf("end:1, scroll_y:%d -> %d\r\n", scroll_y, -75 + 90 * (child_cnt - 6 + 1));
+        } else if (scroll_y == (-75 + 90 * (child_cnt - 2))) { //jump
             lv_obj_scroll_to_y(cont, -75 + 90 * 4, LV_ANIM_OFF);
-            printf("end, focus: %d, scroll_y:%d -> %d\r\n", focus_index, scroll_y, -75 + 90 * 4);
+            printf("end:2 , scroll_y:%d -> %d\r\n", scroll_y, -75 + 90 * 4);
         }
     }
 }
@@ -201,13 +175,11 @@ static void main_loop_scroll_event_cb(lv_event_t *e)
                     lv_obj_t *last_child = lv_obj_get_child(cont, (int32_t)(lv_obj_get_child_count(cont) - 1));
                     lv_obj_move_to_index(last_child, 0);
                     lv_obj_scroll_to_y(cont, scroll_y + item_height, LV_ANIM_OFF);
-                    // lv_obj_scroll_to_y(cont, scroll_y, LV_ANIM_OFF);
                 } else if (scroll_y > content_h - cont_h) {
                     printf("2: - 80, scroll_y: %d, content_h: %d, cont_h: %d, %d\n", scroll_y, content_h, cont_h, content_h - cont_h);
                     lv_obj_t *first_child = lv_obj_get_child(cont, 0);
                     lv_obj_move_to_index(first_child, (int32_t)(lv_obj_get_child_count(cont) - 1));
                     lv_obj_scroll_to_y(cont, scroll_y - item_height, LV_ANIM_OFF);
-                    // lv_obj_scroll_to_y(cont, scroll_y, LV_ANIM_OFF);
                 }
                 is_adjusting = false;
             }
@@ -223,7 +195,7 @@ static void main_loop_scroll_event_cb(lv_event_t *e)
     }
 }
 
-void lv_create_mask(void)
+void create_main_loop_mask(void)
 {
     static const lv_color_t mask_colors[2] = {
         LV_COLOR_MAKE(0x00, 0x00, 0x00),
@@ -272,99 +244,93 @@ void lv_create_mask(void)
     lv_obj_add_style(mask_down_layer, &mask_style_down, 0);
 }
 
-/**
- * Translate the object as they scroll
- */
+lv_obj_t *create_main_loop_item(lv_obj_t *parent, const char *text)
+{
+    lv_obj_t *btn = lv_button_create(parent);
+    lv_obj_set_size(btn, lv_pct(90), 80);
+    lv_obj_set_style_border_width(btn, 0, 0);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(0x004D8F), 0);
+
+    lv_obj_t *icon = lv_label_create(btn);
+    lv_label_set_text(icon, LV_SYMBOL_DIRECTORY);
+    lv_obj_align(icon, LV_ALIGN_LEFT_MID, 10, 0);
+    lv_obj_set_style_text_color(icon, lv_color_hex(0xFFFFFF), 0);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0);
+
+    return btn;
+}
+
+// [7 8 9] 0 1 2 3 4 5 6 7 8 9 [0 1 2]
+void add_main_loop_items(lv_obj_t *parent, uint16_t mask, uint8_t lang)
+{
+    uint16_t mask_tmp = mask;
+    mask_tmp = mask >> 1;
+
+    if ((mask == main_loop_cfg.loop_mask) && (lang == main_loop_cfg.lang)) {
+        printf("add_main_loop_items: same, mask:%04X(%04X), lang:%d(%d)\n", mask, main_loop_cfg.loop_mask, lang, main_loop_cfg.lang);
+        return;
+    } else {
+        clear_main_loop_items(parent);
+    }
+
+    for (uint32_t i = 0; i < MAX_MAIN_LOOP_ITEMS; i++) {
+        if (mask_tmp & (1 << i)) {
+            create_main_loop_item(parent, items_main_loop[i][lang]);
+        }
+    }
+    uint8_t count = lv_obj_get_child_count(parent);
+
+    for (int i = 0; i < 6; i++) {
+        lv_obj_t *copy_obj = (i < 3) ? lv_obj_get_child(parent, i) : lv_obj_get_child(parent, count - 3 + (i % 3));
+        lv_obj_t *copy_label = lv_obj_get_child(copy_obj, 1);
+        create_main_loop_item(parent, lv_label_get_text(copy_label));
+    }
+    for (int i = 0; i < 3; i++) {
+        lv_obj_t *last_child = lv_obj_get_child(parent, lv_obj_get_child_count(parent) - 1);
+        lv_obj_move_to_index(last_child, 0);
+    }
+    main_loop_cfg.loop_mask = mask;
+    main_loop_cfg.lang = lang;
+    printf("add_main_loop_items: %d, mask:%04X, lang:%d\n", count, mask, lang);
+
+    lv_obj_scroll_to_view(lv_obj_get_child(parent, 3), LV_ANIM_OFF);
+}
+
+void clear_main_loop_items(lv_obj_t *parent)
+{
+    while (lv_obj_get_child_count(parent) > 0) {
+        lv_obj_t *child_btn = lv_obj_get_child(parent, 0);
+        lv_obj_del(child_btn);
+    }
+}
 
 void lv_example_scroll_infinite()
 {
-    /*Create a container with COLUMN flex direction*/
+
+}
+
+void lv_main_loop_loading(void)
+{
+    printf("Loading main loop...\n");
+
     cont_main_loop = lv_obj_create(lv_screen_active());
     lv_obj_set_size(cont_main_loop, lv_pct(100), 262);
     lv_obj_align(cont_main_loop, LV_ALIGN_TOP_MID, 0, 70);
     lv_obj_set_scroll_snap_y(cont_main_loop, LV_SCROLL_SNAP_CENTER);
     lv_obj_set_flex_flow(cont_main_loop, LV_FLEX_FLOW_COLUMN);
     lv_obj_add_event_cb(cont_main_loop, main_loop_infinite_event_cb, LV_EVENT_ALL, NULL);
-    lv_obj_set_style_bg_opa(cont_main_loop, LV_OPA_TRANSP, 0); // Set container background to transparent
-    lv_obj_set_style_border_width(cont_main_loop, 0, 0); // Remove border
-    lv_obj_set_style_radius(cont_main_loop, 0, 0); // Set corners to right angles
+    lv_obj_set_style_bg_opa(cont_main_loop, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_width(cont_main_loop, 0, 0);
+    lv_obj_set_style_radius(cont_main_loop, 0, 0);
+    lv_obj_add_flag(cont_main_loop, LV_OBJ_FLAG_SCROLL_ONE);
 
-    for (uint32_t i = 0; i < MAX_MAIN_LOOP_ITEMS + 6; i++) {
-        lv_obj_t *obj;
-        lv_obj_t *label;
-
-        /*Add items_main_loop to the column*/
-        obj = lv_button_create(cont_main_loop);
-        lv_obj_set_size(obj, lv_pct(90), 80);
-        lv_obj_set_style_border_width(obj, 0, 0); // Remove border
-        lv_obj_set_style_bg_color(obj, lv_color_hex(0x004D8F), 0); // Set button background color to blue
-
-        lv_obj_t *icon = lv_label_create(obj);
-        // lv_label_set_text(icon, LV_SYMBOL_DIRECTORY); // Set icon to directory symbol
-
-        uint8_t show = 0;
-        if (i < 3) {
-            show = i + 7;
-        } else if (i >= MAX_MAIN_LOOP_ITEMS + 3) {
-            show = i - 13;
-        } else {
-            show = i - 3;
-        }
-        printf("create show: %d (%d)\n", i, show);
-        lv_label_set_text_fmt(icon, "%d", show + 1);
-        lv_obj_align(icon, LV_ALIGN_LEFT_MID, 10, 0); // Align icon to the left middle of the button with some padding
-        lv_obj_set_style_text_color(icon, lv_color_hex(0xFFFFFF), 0); // Set icon color to white
-
-        label = lv_label_create(obj);
-        lv_label_set_text(label, items_main_loop[show][0]);
-        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0); // Align label to the left middle of the button with some padding after the icon
-        lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0); // Set label text color to white
-    }
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, 3), LV_ANIM_OFF);
-    lv_create_mask();
-}
-
-void lv_main_loop_loading(void)
-{
-    printf("Loading main loop...\n");
-    lv_example_scroll_infinite();
-    return;
-    /*Create a container with COLUMN flex direction*/
-    cont_main_loop = lv_obj_create(lv_screen_active());
-    lv_obj_set_size(cont_main_loop, lv_pct(100), 262);
-    lv_obj_align(cont_main_loop, LV_ALIGN_TOP_MID, 0, 70);
-    lv_obj_set_scroll_snap_y(cont_main_loop, LV_SCROLL_SNAP_CENTER);
-    lv_obj_set_flex_flow(cont_main_loop, LV_FLEX_FLOW_COLUMN);
-    lv_obj_add_event_cb(cont_main_loop, main_loop_scroll_event_cb, LV_EVENT_ALL, NULL);
-    lv_obj_set_style_bg_opa(cont_main_loop, LV_OPA_TRANSP, 0); // Set container background to transparent
-    lv_obj_set_style_border_width(cont_main_loop, 0, 0); // Remove border
-    lv_obj_set_style_radius(cont_main_loop, 0, 0); // Set corners to right angles
-
-    for (uint32_t i = 0; i < MAX_MAIN_LOOP_ITEMS; i++) {
-        lv_obj_t *obj;
-        lv_obj_t *label;
-
-        /*Add items_main_loop to the column*/
-        obj = lv_button_create(cont_main_loop);
-        lv_obj_set_size(obj, lv_pct(90), 80);
-        lv_obj_set_style_border_width(obj, 0, 0); // Remove border
-        lv_obj_set_style_bg_color(obj, lv_color_hex(0x004D8F), 0); // Set button background color to blue
-
-        lv_obj_t *icon = lv_label_create(obj);
-        // lv_label_set_text(icon, LV_SYMBOL_DIRECTORY); // Set icon to directory symbol
-        lv_label_set_text_fmt(icon, "%d", i + 1);
-        lv_obj_align(icon, LV_ALIGN_LEFT_MID, 10, 0); // Align icon to the left middle of the button with some padding
-        lv_obj_set_style_text_color(icon, lv_color_hex(0xFFFFFF), 0); // Set icon color to white
-
-        label = lv_label_create(obj);
-        lv_label_set_text(label, items_main_loop[i][0]);
-        lv_obj_set_style_text_font(label, &lv_font_montserratMedium_25, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_align(label, LV_ALIGN_LEFT_MID, 40, 0); // Align label to the left middle of the button with some padding after the icon
-        lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), 0); // Set label text color to white
-    }
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, 0), LV_ANIM_OFF);
-    lv_create_mask();
+    add_main_loop_items(cont_main_loop, 0x07FE, 0);
+    create_main_loop_mask();
 
     /*Update the buttons position manually for first*/
     lv_obj_send_event(cont_main_loop, LV_EVENT_SCROLL, NULL);

@@ -144,33 +144,29 @@ void cmd_set_list(void *arg)
 
     lv_screen_load(guider_ui.screen_main_loop);
 
-    uint16_t menu_list = 0;
-    menu_list |= cmd->menu_list_msb;
-    menu_list <<= 8;
-    menu_list |= cmd->menu_list_lsb;
-    uint8_t count = lv_obj_get_child_count(cont_main_loop);
-
-    for (int i = 1; i < count + 1; i++) {
-
-        lv_obj_t *child_btn = lv_obj_get_child(cont_main_loop, i - 1);
-        lv_obj_t *child_label = lv_obj_get_child(child_btn, 1);
-        if (menu_list & (1 << i)) {
-            ESP_LOGI(TAG, "Show menu %d, %s", i, lv_label_get_text(child_label));
-            lv_obj_clear_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
-            if (cmd->lang == LANG_ENGLISH) {
-                lv_label_set_text(child_label, items_main_loop[i - 1][0]);
-            } else {
-                lv_label_set_text(child_label, items_main_loop[i - 1][1]);
-            }
-        } else {
-            ESP_LOGI(TAG, "Hide menu %d, %s", i, lv_label_get_text(child_label));
-            lv_obj_add_flag(child_btn, LV_OBJ_FLAG_HIDDEN);
-        }
-    }
-
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, 0), LV_ANIM_OFF);
+    uint16_t menu_mask = 0;
+    menu_mask |= cmd->menu_list_msb;
+    menu_mask <<= 8;
+    menu_mask |= cmd->menu_list_lsb;
+    ESP_LOGI(TAG, "menu_mask: %04X", menu_mask);
+    add_main_loop_items(cont_main_loop, menu_mask, cmd->lang);
 
     bsp_display_unlock();
+}
+
+uint8_t get_bit_pos(uint16_t mask, uint8_t frame_num)
+{
+    uint8_t valid_cn = 0;
+    for (uint8_t i = 0; i < 16; i++) {
+        if ((i == frame_num) && (mask & (1 << i))) {
+            return valid_cn;
+        }
+
+        if (mask & (1 << i)) {
+            valid_cn++;
+        }
+    }
+    return 0xFF;
 }
 
 void cmd_set_menu(void *arg)
@@ -185,26 +181,37 @@ void cmd_set_menu(void *arg)
 
     lv_screen_load(guider_ui.screen_main_loop);
 
+    add_main_loop_items(cont_main_loop, main_loop_cfg.loop_mask, cmd->lang);
+
     uint8_t count = lv_obj_get_child_count(cont_main_loop);
-    // cmd->menu_num 1-10 loop,
-    if (cmd->menu_num && (cmd->menu_num <= count)) {
-        int8_t send_num = 0;
-        if ((prev_menu_num == 10) && (cmd->menu_num == 1 || cmd->menu_num == 2)) {
-            send_num = cmd->menu_num;
-            send_num += 10;
-            send_num += (3 - 1);
-        } else if ((prev_menu_num == 1) && (cmd->menu_num == 9 || cmd->menu_num == 10)) {
-            send_num = cmd->menu_num;
-            send_num -= 10;
-            send_num += (3 - 1);
-        } else {
-            send_num = cmd->menu_num;
-            send_num += (3 - 1);
-            prev_menu_num = cmd->menu_num;
+    int extra_items = 3;
+    int total_items = (count - 6);
+
+
+    ESP_LOGI(TAG, "Total items: %d, prev_menu_num:%d", total_items, prev_menu_num);
+    ESP_LOGW(TAG, "Send menu:%d, index:%d", cmd->menu_num, get_bit_pos(main_loop_cfg.loop_mask, cmd->menu_num));
+
+    if (cmd->menu_num && (cmd->menu_num <= MAX_MAIN_LOOP_ITEMS)) {
+        uint8_t send_num = get_bit_pos(main_loop_cfg.loop_mask, cmd->menu_num);
+
+        if (prev_menu_num == (total_items - 1) && (send_num == 0 || send_num == 1)) {
+            ESP_LOGI(TAG, "1");
+            send_num += total_items + extra_items;
+        } else if (prev_menu_num == 0 && (send_num == (total_items - 2) || send_num == (total_items - 1))) {
+            ESP_LOGI(TAG, "2");
+            send_num -= total_items - extra_items;
+        } else if (send_num < count) {
+            ESP_LOGI(TAG, "3");
+            prev_menu_num = send_num;
+            send_num += extra_items;
         }
-        ESP_LOGI(TAG, "Send menu %d", send_num);
-        // lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, (cmd->menu_num -1)), LV_ANIM_ON);
-        lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, send_num), LV_ANIM_ON);
+
+        if (send_num < count) {
+            ESP_LOGI(TAG, "Send menu %d", send_num);
+            lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, send_num), LV_ANIM_ON);
+        } else {
+            ESP_LOGW(TAG, "Invalid menu number %d", cmd->menu_num);
+        }
     } else {
         ESP_LOGW(TAG, "Invalid menu number %d", cmd->menu_num);
     }

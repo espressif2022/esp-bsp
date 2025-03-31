@@ -15,11 +15,25 @@ extern "C" {
 
 #include "gui_guider.h"
 
+#define MAX_MAIN_LOOP_ITEMS 10
+#define MAX_BELL_APPS_ITEMS 3
+
+typedef struct {
+    uint16_t loop_mask;
+    uint8_t lang;
+} main_loop_cfg_t;
+
 extern const char *items_main_loop[][2];
 
 extern const char *items_bell_apps[][2];
 
+extern main_loop_cfg_t main_loop_cfg;
+
 void custom_init(lv_ui *ui);
+
+void add_main_loop_items(lv_obj_t *parent, uint16_t mask, uint8_t lang);
+
+void clear_main_loop_items(lv_obj_t *parent);
 
 #ifdef __cplusplus
 }
