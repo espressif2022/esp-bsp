@@ -233,7 +233,7 @@ void setup_scr_screen_restart(lv_ui *ui);
 void setup_scr_screen_wpsd_2(lv_ui *ui);
 void setup_scr_screen_app_detail(lv_ui *ui);
 void setup_scr_screen_null(lv_ui *ui);
-LV_IMAGE_DECLARE(_arc_RGB565A8_100x100);
+LV_IMAGE_DECLARE(_gradient_ring_RGB565A8_100x100);
 LV_IMAGE_DECLARE(_error_RGB565A8_29x35);
 LV_IMAGE_DECLARE(_icon_ok_RGB565A8_29x35);
 LV_IMAGE_DECLARE(_speed_test_RGB565A8_145x140);

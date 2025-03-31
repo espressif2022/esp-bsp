@@ -16,7 +16,7 @@
 #define CMD_SET_RESET           0x02
 #define CMD_SET_IMAGE           0x03
 #define CMD_SEND_IMAGE          0x04 // To be developed further
-#define CMD_GET_STATUS          0x50
+#define CMD_GET_STATUS          0x60
 
 // Backlight Command
 #define CMD_SET_BACKLIGHT       0x10

@@ -115,7 +115,7 @@ void i2c_slave_read_task(void *arg)
             } else if (evt == I2C_SLAVE_EVT_TX) {
                 switch (context.request_cmd) {
                 case CMD_HELLO:
-                    cmd_resp_data[0] = 0x01;
+                    cmd_resp_data[0] = 0x01;//Alive
                     cmd_resp_len = 1;
                     break;
                 case CMD_GET_FW_VERSION:

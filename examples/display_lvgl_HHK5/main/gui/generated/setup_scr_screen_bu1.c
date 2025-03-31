@@ -53,11 +53,10 @@ void setup_scr_screen_bu1(lv_ui *ui)
 
     //Write codes screen_bu1_img_1
     ui->screen_bu1_img_1 = lv_image_create(ui->screen_bu1);
-    lv_obj_set_pos(ui->screen_bu1_img_1, 430, 138);
+    lv_obj_set_pos(ui->screen_bu1_img_1, 80, 150);
     lv_obj_set_size(ui->screen_bu1_img_1, 100, 100);
-    lv_obj_add_flag(ui->screen_bu1_img_1, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui->screen_bu1_img_1, LV_OBJ_FLAG_CLICKABLE);
-    lv_image_set_src(ui->screen_bu1_img_1, &_arc_RGB565A8_100x100);
+    lv_image_set_src(ui->screen_bu1_img_1, &_gradient_ring_RGB565A8_100x100);
     lv_image_set_pivot(ui->screen_bu1_img_1, 50,50);
     lv_image_set_rotation(ui->screen_bu1_img_1, 0);
 

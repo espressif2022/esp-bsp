@@ -175,6 +175,7 @@ void cmd_set_list(void *arg)
 
 void cmd_set_menu(void *arg)
 {
+    static int prev_menu_num = 0;
     cmd_set_menu_t *cmd = (cmd_set_menu_t *)arg;
     if (NULL == cmd) {
         return;
@@ -183,7 +184,30 @@ void cmd_set_menu(void *arg)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_main_loop);
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, cmd->menu_num), LV_ANIM_ON);
+
+    uint8_t count = lv_obj_get_child_count(cont_main_loop);
+    // cmd->menu_num 1-10 loop,
+    if (cmd->menu_num && (cmd->menu_num <= count)) {
+        int8_t send_num = 0;
+        if ((prev_menu_num == 10) && (cmd->menu_num == 1 || cmd->menu_num == 2)) {
+            send_num = cmd->menu_num;
+            send_num += 10;
+            send_num += (3 - 1);
+        } else if ((prev_menu_num == 1) && (cmd->menu_num == 9 || cmd->menu_num == 10)) {
+            send_num = cmd->menu_num;
+            send_num -= 10;
+            send_num += (3 - 1);
+        } else {
+            send_num = cmd->menu_num;
+            send_num += (3 - 1);
+            prev_menu_num = cmd->menu_num;
+        }
+        ESP_LOGI(TAG, "Send menu %d", send_num);
+        // lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, (cmd->menu_num -1)), LV_ANIM_ON);
+        lv_obj_scroll_to_view(lv_obj_get_child(cont_main_loop, send_num), LV_ANIM_ON);
+    } else {
+        ESP_LOGW(TAG, "Invalid menu number %d", cmd->menu_num);
+    }
 
     bsp_display_unlock();
 }
@@ -270,6 +294,7 @@ void cmd_set_config(void *arg)
         lv_screen_load(guider_ui.screen_speedtest);
         lv_label_set_text(guider_ui.screen_speedtest_label_1, cmd->title);
         lv_label_set_text(guider_ui.screen_speedtest_label_down_spd, cmd->text);
+        // lv_label_set_text(guider_ui.screen_speedtest_label_up_spd, "-- Mbps");
 
         if (cmd->menu_indication == 1) {
             lv_obj_clear_flag(guider_ui.screen_speedtest_btn_3, LV_OBJ_FLAG_HIDDEN);
@@ -544,8 +569,6 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
 
             cmd_set_bellapps_handler(&cmd);
             *ack_num = cmd.frame_num;
-        } else if (len == 1) {
-            *req_cmd = CMD_GET_STATUS;
         } else {
             ESP_LOGW(TAG, "CMD_SET_BELLAPPS invalid data length");
         }
@@ -567,6 +590,14 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
             *ack_num = cmd.frame_num;
         } else {
             ESP_LOGW(TAG, "CMD_SET_APPS invalid data length");
+        }
+        break;
+    case CMD_GET_STATUS:
+        if (len == 1) {
+            ESP_LOGI(TAG, "CMD_GET_STATUS");
+            *req_cmd = CMD_GET_STATUS;
+        } else {
+            ESP_LOGW(TAG, "CMD_GET_STATUS invalid data length");
         }
         break;
     default:
@@ -853,6 +884,8 @@ void handle_speed_test(bool lang)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_speedtest);
+    lv_label_set_text(guider_ui.screen_speedtest_label_down_spd, "-- Mbps\n");
+    lv_label_set_text(guider_ui.screen_speedtest_label_up_spd, "-- Mbps");
 
     bsp_display_unlock();
 }
