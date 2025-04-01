@@ -80,49 +80,55 @@ void app_main(void)
     }
 #endif
 
-    return;
-    // process_screen(SCREEN_TYPE_BOOT, 0x00, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x01, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x02, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x03, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x04, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x05, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x07, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x08, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    // process_screen(SCREEN_TYPE_BOOT, 0x11, LANG_ENGLISH);
-    // vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    // return;
+    uint8_t count = 0;
+NEXT:
+    uint8_t lang = count%2 ? LANG_FRENCH : LANG_ENGLISH;
+    count++;
+    process_screen(SCREEN_TYPE_BOOT, 0x00, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x01, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x02, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x03, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x04, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x05, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x07, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x08, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_BOOT, 0x11, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-    process_screen(SCREEN_TYPE_FIRMWARE_UPGRADE, 0x1, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    process_screen(SCREEN_TYPE_FIRMWARE_UPGRADE, 0x12, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_FIRMWARE_UPGRADE, 0x1, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_FIRMWARE_UPGRADE, 0x12, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-    process_screen(SCREEN_TYPE_WIRELESS_STB_PAIRING, 0x01, LANG_FRENCH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_WIRELESS_STB_PAIRING, 0x01, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-    process_screen(SCREEN_TYPE_DATA_CLIENT_PAIRING, 0x01, LANG_FRENCH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_DATA_CLIENT_PAIRING, 0x01, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x01, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x02, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x03, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x01, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x02, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_FACTORY_RESET, 0x03, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-    process_screen(SCREEN_TYPE_SPEED_TEST, 0x01, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_SPEED_TEST, 0x01, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-    process_screen(SCREEN_TYPE_RESTART_MODEM, 0x01, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
-    process_screen(SCREEN_TYPE_RESTART_MODEM, 0x02, LANG_ENGLISH);
-    vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    process_screen(SCREEN_TYPE_RESTART_MODEM, 0x01, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+    process_screen(SCREEN_TYPE_RESTART_MODEM, 0x02, lang);
+    vTaskDelay(pdMS_TO_TICKS(1000 * 2));
+
+goto NEXT;
 }

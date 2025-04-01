@@ -53,7 +53,7 @@ void setup_scr_screen_wpsd_2(lv_ui *ui)
 
     //Write codes screen_wpsd_2_label_var1_tex
     ui->screen_wpsd_2_label_var1_tex = lv_label_create(ui->screen_wpsd_2);
-    lv_obj_set_pos(ui->screen_wpsd_2_label_var1_tex, 46, 228);
+    lv_obj_set_pos(ui->screen_wpsd_2_label_var1_tex, 38, 228);
     lv_obj_set_size(ui->screen_wpsd_2_label_var1_tex, 422, 43);
     lv_label_set_text(ui->screen_wpsd_2_label_var1_tex, "[Device name]\n");
     lv_label_set_long_mode(ui->screen_wpsd_2_label_var1_tex, LV_LABEL_LONG_WRAP);

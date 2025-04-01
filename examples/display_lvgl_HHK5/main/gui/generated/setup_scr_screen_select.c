@@ -46,28 +46,28 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_style_pad_right(ui->screen_select_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_select_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_select_label_2
-    ui->screen_select_label_2 = lv_label_create(ui->screen_select_cont_1);
-    lv_obj_set_pos(ui->screen_select_label_2, 29, 52);
-    lv_obj_set_size(ui->screen_select_label_2, 510, 43);
-    lv_label_set_text(ui->screen_select_label_2, "Restart the modem\n\n");
-    lv_label_set_long_mode(ui->screen_select_label_2, LV_LABEL_LONG_WRAP);
+    //Write codes screen_select_label_title
+    ui->screen_select_label_title = lv_label_create(ui->screen_select_cont_1);
+    lv_obj_set_pos(ui->screen_select_label_title, 29, 52);
+    lv_obj_set_size(ui->screen_select_label_title, 510, 43);
+    lv_label_set_text(ui->screen_select_label_title, "Restart the modem\n\n");
+    lv_label_set_long_mode(ui->screen_select_label_title, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_select_label_2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_select_label_2, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_label_2, &lv_font_montserratMedium_35, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_select_label_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_select_label_2, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_select_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_select_label_title, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_select_label_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_label_title, &lv_font_montserratMedium_35, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_select_label_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_select_label_title, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_select_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_select_line_2
     ui->screen_select_line_2 = lv_line_create(ui->screen_select_cont_1);
@@ -82,28 +82,28 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_style_line_opa(ui->screen_select_line_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_rounded(ui->screen_select_line_2, true, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_select_btn_5
-    ui->screen_select_btn_5 = lv_button_create(ui->screen_select_cont_1);
-    lv_obj_set_pos(ui->screen_select_btn_5, 688, 45);
-    lv_obj_set_size(ui->screen_select_btn_5, 218, 45);
-    ui->screen_select_btn_5_label = lv_label_create(ui->screen_select_btn_5);
-    lv_label_set_text(ui->screen_select_btn_5_label, "Back to menu");
-    lv_label_set_long_mode(ui->screen_select_btn_5_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_select_btn_5_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_select_btn_5, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_select_btn_5_label, LV_PCT(100));
+    //Write codes screen_select_btn_back_indication
+    ui->screen_select_btn_back_indication = lv_button_create(ui->screen_select_cont_1);
+    lv_obj_set_pos(ui->screen_select_btn_back_indication, 688, 45);
+    lv_obj_set_size(ui->screen_select_btn_back_indication, 218, 45);
+    ui->screen_select_btn_back_indication_label = lv_label_create(ui->screen_select_btn_back_indication);
+    lv_label_set_text(ui->screen_select_btn_back_indication_label, "Back to menu");
+    lv_label_set_long_mode(ui->screen_select_btn_back_indication_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_select_btn_back_indication_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_select_btn_back_indication, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_select_btn_back_indication_label, LV_PCT(100));
 
-    //Write style for screen_select_btn_5, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_select_btn_5, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_select_btn_5, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_select_btn_5, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_select_btn_5, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_select_btn_5, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_select_btn_5, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_select_btn_5, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_btn_5, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_select_btn_5, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_select_btn_5, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_select_btn_back_indication, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_select_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_select_btn_back_indication, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_select_btn_back_indication, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_select_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_select_btn_back_indication, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_select_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_select_btn_back_indication, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_btn_back_indication, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_select_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_select_btn_back_indication, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_select_btn_4
     ui->screen_select_btn_4 = lv_button_create(ui->screen_select_cont_1);
@@ -128,74 +128,74 @@ void setup_scr_screen_select(lv_ui *ui)
     lv_obj_set_style_text_opa(ui->screen_select_btn_4, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_select_btn_4, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_select_label_3
-    ui->screen_select_label_3 = lv_label_create(ui->screen_select);
-    lv_obj_set_pos(ui->screen_select_label_3, 33, 153);
-    lv_obj_set_size(ui->screen_select_label_3, 552, 43);
-    lv_label_set_text(ui->screen_select_label_3, "Do you want to restart your modem?\n\n");
-    lv_label_set_long_mode(ui->screen_select_label_3, LV_LABEL_LONG_WRAP);
+    //Write codes screen_select_label_tips
+    ui->screen_select_label_tips = lv_label_create(ui->screen_select);
+    lv_obj_set_pos(ui->screen_select_label_tips, 33, 153);
+    lv_obj_set_size(ui->screen_select_label_tips, 552, 43);
+    lv_label_set_text(ui->screen_select_label_tips, "Do you want to restart your modem?\n\n");
+    lv_label_set_long_mode(ui->screen_select_label_tips, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_select_label_3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_select_label_3, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_label_3, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_select_label_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_select_label_3, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_select_label_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_select_label_tips, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_select_label_tips, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_label_tips, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_select_label_tips, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_select_label_tips, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_select_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_select_btn_6
-    ui->screen_select_btn_6 = lv_button_create(ui->screen_select);
-    lv_obj_set_pos(ui->screen_select_btn_6, 33, 208);
-    lv_obj_set_size(ui->screen_select_btn_6, 866, 60);
-    ui->screen_select_btn_6_label = lv_label_create(ui->screen_select_btn_6);
-    lv_label_set_text(ui->screen_select_btn_6_label, "No, just go back to menu");
-    lv_label_set_long_mode(ui->screen_select_btn_6_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_select_btn_6_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_select_btn_6, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_select_btn_6_label, LV_PCT(100));
+    //Write codes screen_select_btn_no
+    ui->screen_select_btn_no = lv_button_create(ui->screen_select);
+    lv_obj_set_pos(ui->screen_select_btn_no, 33, 208);
+    lv_obj_set_size(ui->screen_select_btn_no, 866, 60);
+    ui->screen_select_btn_no_label = lv_label_create(ui->screen_select_btn_no);
+    lv_label_set_text(ui->screen_select_btn_no_label, "No, just go back to menu");
+    lv_label_set_long_mode(ui->screen_select_btn_no_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_select_btn_no_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_select_btn_no, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_select_btn_no_label, LV_PCT(100));
 
-    //Write style for screen_select_btn_6, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_select_btn_6, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_select_btn_6, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_select_btn_6, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_select_btn_6, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_select_btn_6, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_select_btn_6, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_select_btn_6, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_btn_6, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_select_btn_6, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_select_btn_6, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_select_btn_no, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_select_btn_no, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_select_btn_no, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_select_btn_no, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_select_btn_no, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_select_btn_no, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_select_btn_no, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_select_btn_no, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_btn_no, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_select_btn_no, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_select_btn_no, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_select_btn_7
-    ui->screen_select_btn_7 = lv_button_create(ui->screen_select);
-    lv_obj_set_pos(ui->screen_select_btn_7, 33, 279);
-    lv_obj_set_size(ui->screen_select_btn_7, 866, 60);
-    ui->screen_select_btn_7_label = lv_label_create(ui->screen_select_btn_7);
-    lv_label_set_text(ui->screen_select_btn_7_label, "Yes, restart my modem");
-    lv_label_set_long_mode(ui->screen_select_btn_7_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_select_btn_7_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_select_btn_7, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_select_btn_7_label, LV_PCT(100));
+    //Write codes screen_select_btn_yes
+    ui->screen_select_btn_yes = lv_button_create(ui->screen_select);
+    lv_obj_set_pos(ui->screen_select_btn_yes, 33, 279);
+    lv_obj_set_size(ui->screen_select_btn_yes, 866, 60);
+    ui->screen_select_btn_yes_label = lv_label_create(ui->screen_select_btn_yes);
+    lv_label_set_text(ui->screen_select_btn_yes_label, "Yes, restart my modem");
+    lv_label_set_long_mode(ui->screen_select_btn_yes_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_select_btn_yes_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_select_btn_yes, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_select_btn_yes_label, LV_PCT(100));
 
-    //Write style for screen_select_btn_7, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_select_btn_7, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_select_btn_7, lv_color_hex(0x35383a), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_select_btn_7, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_select_btn_7, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_select_btn_7, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_select_btn_7, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_select_btn_7, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_select_btn_7, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_select_btn_7, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_select_btn_7, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_select_btn_yes, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_select_btn_yes, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_select_btn_yes, lv_color_hex(0x35383a), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_select_btn_yes, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_select_btn_yes, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_select_btn_yes, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_select_btn_yes, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_select_btn_yes, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_select_btn_yes, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_select_btn_yes, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_select_btn_yes, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //The custom code of screen_select.
 

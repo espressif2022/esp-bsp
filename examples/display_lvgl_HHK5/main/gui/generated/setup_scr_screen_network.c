@@ -105,28 +105,28 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_line_opa(ui->screen_network_line_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_rounded(ui->screen_network_line_2, true, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_network_btn_back
-    ui->screen_network_btn_back = lv_button_create(ui->screen_network_cont_title);
-    lv_obj_set_pos(ui->screen_network_btn_back, 688, 46);
-    lv_obj_set_size(ui->screen_network_btn_back, 218, 45);
-    ui->screen_network_btn_back_label = lv_label_create(ui->screen_network_btn_back);
-    lv_label_set_text(ui->screen_network_btn_back_label, "Back to menu");
-    lv_label_set_long_mode(ui->screen_network_btn_back_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_network_btn_back_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_network_btn_back, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_network_btn_back_label, LV_PCT(100));
+    //Write codes screen_network_btn_back_indication
+    ui->screen_network_btn_back_indication = lv_button_create(ui->screen_network_cont_title);
+    lv_obj_set_pos(ui->screen_network_btn_back_indication, 688, 46);
+    lv_obj_set_size(ui->screen_network_btn_back_indication, 218, 45);
+    ui->screen_network_btn_back_indication_label = lv_label_create(ui->screen_network_btn_back_indication);
+    lv_label_set_text(ui->screen_network_btn_back_indication_label, "Back to menu");
+    lv_label_set_long_mode(ui->screen_network_btn_back_indication_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_network_btn_back_indication_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_network_btn_back_indication, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_network_btn_back_indication_label, LV_PCT(100));
 
-    //Write style for screen_network_btn_back, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_network_btn_back, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_network_btn_back, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_network_btn_back, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_network_btn_back, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_network_btn_back, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_network_btn_back, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_network_btn_back, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_btn_back, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_network_btn_back, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_network_btn_back, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_network_btn_back_indication, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_network_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_network_btn_back_indication, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_network_btn_back_indication, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_network_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_network_btn_back_indication, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_network_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_network_btn_back_indication, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_btn_back_indication, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_network_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_network_btn_back_indication, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_network_btn_1
     ui->screen_network_btn_1 = lv_button_create(ui->screen_network_cont_title);

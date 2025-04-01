@@ -54,7 +54,7 @@ void setup_scr_screen_bu3(lv_ui *ui)
     //Write codes screen_bu3_label_title_2
     ui->screen_bu3_label_title_2 = lv_label_create(ui->screen_bu3);
     lv_obj_set_pos(ui->screen_bu3_label_title_2, 67, 250);
-    lv_obj_set_size(ui->screen_bu3_label_title_2, 273, 32);
+    lv_obj_set_size(ui->screen_bu3_label_title_2, 543, 32);
     lv_label_set_text(ui->screen_bu3_label_title_2, "Configuring services\n\n");
     lv_label_set_long_mode(ui->screen_bu3_label_title_2, LV_LABEL_LONG_WRAP);
 
