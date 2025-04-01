@@ -98,12 +98,11 @@ void setup_bottom_layer(void)
 
 void setup_ui(lv_ui *ui)
 {
-    printf("setup_ui\n");
     setup_bottom_layer();
     init_scr_del_flag(ui);
     init_keyboard(ui);
-    setup_scr_screen_bu1(ui);
-    lv_screen_load(ui->screen_bu1);
+    setup_scr_screen_restart(ui);
+    lv_screen_load(ui->screen_restart);
 }
 
 void video_play(lv_ui *ui)

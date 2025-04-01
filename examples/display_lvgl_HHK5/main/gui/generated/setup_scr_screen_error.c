@@ -28,32 +28,9 @@ void setup_scr_screen_error(lv_ui *ui)
     lv_obj_set_style_bg_color(ui->screen_error, lv_color_hex(0x000000), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(ui->screen_error, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_label_info_2
-    ui->screen_error_label_info_2 = lv_label_create(ui->screen_error);
-    lv_obj_set_pos(ui->screen_error_label_info_2, 44, 182);
-    lv_obj_set_size(ui->screen_error_label_info_2, 580, 83);
-    lv_label_set_text(ui->screen_error_label_info_2, "[Typicaly two lines of error message, error\nmessage, error message.]\n\n");
-    lv_label_set_long_mode(ui->screen_error_label_info_2, LV_LABEL_LONG_WRAP);
-
-    //Write style for screen_error_label_info_2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_error_label_info_2, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_error_label_info_2, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_error_label_info_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_error_label_info_2, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_error_label_info_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-
     //Write codes screen_error_cont_title
     ui->screen_error_cont_title = lv_obj_create(ui->screen_error);
-    lv_obj_set_pos(ui->screen_error_cont_title, 2, 0);
+    lv_obj_set_pos(ui->screen_error_cont_title, 2, -1);
     lv_obj_set_size(ui->screen_error_cont_title, 960, 113);
     lv_obj_set_scrollbar_mode(ui->screen_error_cont_title, LV_SCROLLBAR_MODE_OFF);
 
@@ -69,138 +46,184 @@ void setup_scr_screen_error(lv_ui *ui)
     lv_obj_set_style_pad_right(ui->screen_error_cont_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_error_cont_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_label_brand
-    ui->screen_error_label_brand = lv_label_create(ui->screen_error_cont_title);
-    lv_obj_set_pos(ui->screen_error_label_brand, 40, 32);
-    lv_obj_set_size(ui->screen_error_label_brand, 103, 43);
-    lv_label_set_text(ui->screen_error_label_brand, "Bell");
-    lv_label_set_long_mode(ui->screen_error_label_brand, LV_LABEL_LONG_WRAP);
+    //Write codes screen_error_label_bell
+    ui->screen_error_label_bell = lv_label_create(ui->screen_error_cont_title);
+    lv_obj_set_pos(ui->screen_error_label_bell, 37, 34);
+    lv_obj_set_size(ui->screen_error_label_bell, 103, 43);
+    lv_label_set_text(ui->screen_error_label_bell, "Bell");
+    lv_label_set_long_mode(ui->screen_error_label_bell, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_error_label_brand, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_error_label_brand, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_error_label_brand, &lv_font_montserratMedium_40, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_error_label_brand, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_error_label_brand, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_error_label_brand, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_error_label_bell, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_error_label_bell, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_error_label_bell, &lv_font_montserratMedium_40, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_error_label_bell, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_error_label_bell, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_label_bell, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_btn_1
-    ui->screen_error_btn_1 = lv_button_create(ui->screen_error_cont_title);
-    lv_obj_set_pos(ui->screen_error_btn_1, 425, 10);
-    lv_obj_set_size(ui->screen_error_btn_1, 100, 50);
-    ui->screen_error_btn_1_label = lv_label_create(ui->screen_error_btn_1);
-    lv_label_set_text(ui->screen_error_btn_1_label, "next");
-    lv_label_set_long_mode(ui->screen_error_btn_1_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_error_btn_1_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_error_btn_1, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_error_btn_1_label, LV_PCT(100));
+    //Write codes screen_error_btn_next
+    ui->screen_error_btn_next = lv_button_create(ui->screen_error_cont_title);
+    lv_obj_set_pos(ui->screen_error_btn_next, 425, 10);
+    lv_obj_set_size(ui->screen_error_btn_next, 100, 50);
+    ui->screen_error_btn_next_label = lv_label_create(ui->screen_error_btn_next);
+    lv_label_set_text(ui->screen_error_btn_next_label, "next");
+    lv_label_set_long_mode(ui->screen_error_btn_next_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_error_btn_next_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_error_btn_next, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_error_btn_next_label, LV_PCT(100));
 
-    //Write style for screen_error_btn_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_error_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_error_btn_1, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_error_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_error_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_error_btn_1, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_error_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_error_btn_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_error_btn_1, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_error_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_error_btn_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_error_btn_next, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_error_btn_next, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_error_btn_next, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_error_btn_next, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_error_btn_next, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_btn_next, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_btn_next, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_error_btn_next, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_error_btn_next, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_error_btn_next, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_error_btn_next, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_label_info_3
-    ui->screen_error_label_info_3 = lv_label_create(ui->screen_error);
-    lv_obj_set_pos(ui->screen_error_label_info_3, 40, 300);
-    lv_obj_set_size(ui->screen_error_label_info_3, 606, 50);
-    lv_label_set_text(ui->screen_error_label_info_3, "Use the Bell virtual repair tool to help resolve your issue");
-    lv_label_set_long_mode(ui->screen_error_label_info_3, LV_LABEL_LONG_WRAP);
+    //Write codes screen_error_label_tips
+    ui->screen_error_label_tips = lv_label_create(ui->screen_error);
+    lv_obj_set_pos(ui->screen_error_label_tips, 37, 300);
+    lv_obj_set_size(ui->screen_error_label_tips, 606, 50);
+    lv_label_set_text(ui->screen_error_label_tips, "Use the Bell virtual repair tool to help resolve your issue");
+    lv_label_set_long_mode(ui->screen_error_label_tips, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_error_label_info_3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_error_label_info_3, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_error_label_info_3, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_error_label_info_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_error_label_info_3, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_error_label_info_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_error_label_tips, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_error_label_tips, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_error_label_tips, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_error_label_tips, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_error_label_tips, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_qrcode_error
-    ui->screen_error_qrcode_error = lv_qrcode_create(ui->screen_error);
-    lv_obj_set_pos(ui->screen_error_qrcode_error, 740, 153);
-    lv_obj_set_size(ui->screen_error_qrcode_error, 172, 172);
-    lv_qrcode_set_size(ui->screen_error_qrcode_error, 172);
-    lv_qrcode_set_dark_color(ui->screen_error_qrcode_error, lv_color_hex(0x2C3224));
-    lv_qrcode_set_light_color(ui->screen_error_qrcode_error, lv_color_hex(0xffffff));
-    const char * screen_error_qrcode_error_data = "https://www.nxp.com/";
-    lv_qrcode_update(ui->screen_error_qrcode_error, screen_error_qrcode_error_data, 20);
+    //Write codes screen_error_qrcode_url
+    ui->screen_error_qrcode_url = lv_qrcode_create(ui->screen_error);
+    lv_obj_set_pos(ui->screen_error_qrcode_url, 740, 153);
+    lv_obj_set_size(ui->screen_error_qrcode_url, 172, 172);
+    lv_qrcode_set_size(ui->screen_error_qrcode_url, 172);
+    lv_qrcode_set_dark_color(ui->screen_error_qrcode_url, lv_color_hex(0x2C3224));
+    lv_qrcode_set_light_color(ui->screen_error_qrcode_url, lv_color_hex(0xffffff));
+    const char * screen_error_qrcode_url_data = "https://www.nxp.com/";
+    lv_qrcode_update(ui->screen_error_qrcode_url, screen_error_qrcode_url_data, 20);
 
-    //Write codes screen_error_cont_1
-    ui->screen_error_cont_1 = lv_obj_create(ui->screen_error);
-    lv_obj_set_pos(ui->screen_error_cont_1, 7, 93);
-    lv_obj_set_size(ui->screen_error_cont_1, 960, 39);
-    lv_obj_set_scrollbar_mode(ui->screen_error_cont_1, LV_SCROLLBAR_MODE_OFF);
+    //Write codes screen_error_cont_error
+    ui->screen_error_cont_error = lv_obj_create(ui->screen_error);
+    lv_obj_set_pos(ui->screen_error_cont_error, 2, 93);
+    lv_obj_set_size(ui->screen_error_cont_error, 960, 39);
+    lv_obj_set_scrollbar_mode(ui->screen_error_cont_error, LV_SCROLLBAR_MODE_OFF);
 
-    //Write style for screen_error_cont_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_error_cont_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_error_cont_1, lv_color_hex(0x000000), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_error_cont_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_error_cont_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_error_cont_error, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_error_cont_error, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_error_cont_error, lv_color_hex(0x000000), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_error_cont_error, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_cont_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_label_info_1
-    ui->screen_error_label_info_1 = lv_label_create(ui->screen_error_cont_1);
-    lv_obj_set_pos(ui->screen_error_label_info_1, 77, 16);
-    lv_obj_set_size(ui->screen_error_label_info_1, 552, 43);
-    lv_label_set_text(ui->screen_error_label_info_1, "Error ### - Error name\n\n");
-    lv_label_set_long_mode(ui->screen_error_label_info_1, LV_LABEL_LONG_WRAP);
+    //Write codes screen_error_label_err_num
+    ui->screen_error_label_err_num = lv_label_create(ui->screen_error_cont_error);
+    lv_obj_set_pos(ui->screen_error_label_err_num, 64, 16);
+    lv_obj_set_size(ui->screen_error_label_err_num, 552, 43);
+    lv_label_set_text(ui->screen_error_label_err_num, "Error ### - Error name\n\n");
+    lv_label_set_long_mode(ui->screen_error_label_err_num, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_error_label_info_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_error_label_info_1, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_error_label_info_1, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_error_label_info_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_error_label_info_1, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_error_label_info_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_error_label_err_num, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_error_label_err_num, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_error_label_err_num, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_error_label_err_num, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_error_label_err_num, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_label_err_num, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_error_img_1
-    ui->screen_error_img_1 = lv_image_create(ui->screen_error_cont_1);
-    lv_obj_set_pos(ui->screen_error_img_1, 31, 10);
-    lv_obj_set_size(ui->screen_error_img_1, 31, 40);
-    lv_obj_add_flag(ui->screen_error_img_1, LV_OBJ_FLAG_CLICKABLE);
-    lv_image_set_src(ui->screen_error_img_1, &_error_RGB565A8_31x40);
-    lv_image_set_pivot(ui->screen_error_img_1, 50,50);
-    lv_image_set_rotation(ui->screen_error_img_1, 0);
+    //Write codes screen_error_img_error
+    ui->screen_error_img_error = lv_image_create(ui->screen_error_cont_error);
+    lv_obj_set_pos(ui->screen_error_img_error, 23, 10);
+    lv_obj_set_size(ui->screen_error_img_error, 31, 40);
+    lv_obj_add_flag(ui->screen_error_img_error, LV_OBJ_FLAG_CLICKABLE);
+    lv_image_set_src(ui->screen_error_img_error, &_error_RGB565A8_31x40);
+    lv_image_set_pivot(ui->screen_error_img_error, 50,50);
+    lv_image_set_rotation(ui->screen_error_img_error, 0);
 
-    //Write style for screen_error_img_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_image_recolor_opa(ui->screen_error_img_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_image_opa(ui->screen_error_img_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_error_img_error, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_image_recolor_opa(ui->screen_error_img_error, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_image_opa(ui->screen_error_img_error, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_error_label_var1_tex
+    ui->screen_error_label_var1_tex = lv_label_create(ui->screen_error);
+    lv_obj_set_pos(ui->screen_error_label_var1_tex, 37, 178);
+    lv_obj_set_size(ui->screen_error_label_var1_tex, 580, 45);
+    lv_label_set_text(ui->screen_error_label_var1_tex, "[Typicaly two lines of error message, error\n\n");
+    lv_label_set_long_mode(ui->screen_error_label_var1_tex, LV_LABEL_LONG_WRAP);
+
+    //Write style for screen_error_label_var1_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_error_label_var1_tex, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_error_label_var1_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_error_label_var1_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_error_label_var1_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_error_label_var2_tex
+    ui->screen_error_label_var2_tex = lv_label_create(ui->screen_error);
+    lv_obj_set_pos(ui->screen_error_label_var2_tex, 37, 236);
+    lv_obj_set_size(ui->screen_error_label_var2_tex, 580, 45);
+    lv_label_set_text(ui->screen_error_label_var2_tex, "message, error message.]\n\n");
+    lv_label_set_long_mode(ui->screen_error_label_var2_tex, LV_LABEL_LONG_WRAP);
+
+    //Write style for screen_error_label_var2_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_error_label_var2_tex, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_error_label_var2_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_error_label_var2_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_error_label_var2_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_error_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //The custom code of screen_error.
 

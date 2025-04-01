@@ -52,6 +52,7 @@ static i2c_slave_context_t context;
 
 void disp_buf(uint8_t *buf, int len)
 {
+    printf("HEX:");
     int i;
     for (i = 0; i < len; i++) {
         printf("%02x ", buf[i]);
@@ -124,7 +125,7 @@ void i2c_slave_read_task(void *arg)
                     cmd_resp_len = 2;
                     break;
                 case CMD_GET_STATUS:
-                    cmd_resp_data[0] = 0x01;//ACK type ???
+                    cmd_resp_data[0] = context.ack_num;
                     cmd_resp_data[1] = context.ack_num;
                     cmd_resp_len = 2;
                     gpio_set_level(I2C_SLAVE_INT_IO, I2C_INT_IDLE);

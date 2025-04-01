@@ -187,7 +187,6 @@ void cmd_set_menu(void *arg)
     int extra_items = 3;
     int total_items = (count - 6);
 
-
     ESP_LOGI(TAG, "Total items: %d, prev_menu_num:%d", total_items, prev_menu_num);
     ESP_LOGW(TAG, "Send menu:%d, index:%d", cmd->menu_num, get_bit_pos(main_loop_cfg.loop_mask, cmd->menu_num));
 
@@ -195,13 +194,10 @@ void cmd_set_menu(void *arg)
         uint8_t send_num = get_bit_pos(main_loop_cfg.loop_mask, cmd->menu_num);
 
         if (prev_menu_num == (total_items - 1) && (send_num == 0 || send_num == 1)) {
-            ESP_LOGI(TAG, "1");
             send_num += total_items + extra_items;
         } else if (prev_menu_num == 0 && (send_num == (total_items - 2) || send_num == (total_items - 1))) {
-            ESP_LOGI(TAG, "2");
             send_num -= total_items - extra_items;
         } else if (send_num < count) {
-            ESP_LOGI(TAG, "3");
             prev_menu_num = send_num;
             send_num += extra_items;
         }
@@ -237,14 +233,19 @@ void cmd_set_notif(void *arg)
     if (NULL == cmd) {
         return;
     }
-    ESP_LOGI(TAG, "CMD_SET_NOTIF, frame:%d, notif type:%d, menu:%d, title:%.*s, text:%.*s",
-             cmd->frame_num, cmd->notif_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->text_len, cmd->text);
+    ESP_LOGI(TAG, "CMD_SET_NOTIF, frame:%d, lang:%d, notif type:%d, menu_indication:%d, title:%.*s",
+             cmd->frame_num, cmd->lang, cmd->notif_type, cmd->menu_indication, cmd->title_len, cmd->title);
+
+    for (uint8_t i = 0; i < cmd->var_count; i++) {
+        ESP_LOGI(TAG, "Variable %d(%d): %.*s", i, cmd->vars[i].len, cmd->vars[i].len, cmd->vars[i].text);
+    }
 
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_notif);
-    lv_label_set_text(guider_ui.screen_notif_label_1, cmd->title);
-    lv_label_set_text(guider_ui.screen_notif_label_notify_info, cmd->text);
+    lv_label_set_text(guider_ui.screen_notif_label_title, cmd->title);
+    lv_label_set_text(guider_ui.screen_notif_label_var1_tex, cmd->vars[0].text);
+
     if (cmd->notif_type == 1) {
         lv_image_set_src(guider_ui.screen_notif_img_notif_type, &_error_RGB565A8_29x35);
     } else if (cmd->notif_type == 0) {
@@ -252,9 +253,18 @@ void cmd_set_notif(void *arg)
     }
 
     if (cmd->menu_indication == 1) {
-        lv_obj_clear_flag(guider_ui.screen_notif_btn_3, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(guider_ui.screen_notif_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
     } else if (cmd->menu_indication == 0) {
-        lv_obj_add_flag(guider_ui.screen_notif_btn_3, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(guider_ui.screen_notif_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    if (cmd->var_count > 1) {
+        lv_obj_clear_flag(guider_ui.screen_notif_cont_labels, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(guider_ui.screen_notif_label_var2_tex, cmd->vars[1].text);
+        lv_label_set_text(guider_ui.screen_notif_label_var3_tex, cmd->vars[2].text);
+        lv_label_set_text(guider_ui.screen_notif_label_var4_tex, cmd->vars[3].text);
+    } else {
+        lv_obj_add_flag(guider_ui.screen_notif_cont_labels, LV_OBJ_FLAG_HIDDEN);
     }
 
     bsp_display_unlock();
@@ -266,8 +276,12 @@ void cmd_set_config(void *arg)
     if (NULL == cmd) {
         return;
     }
-    ESP_LOGI(TAG, "CMD_SET_CONFIG, frame:%d, config type:%d, menu:%d, title:%.*s, text:%.*s, url:%.*s",
-             cmd->frame_num, cmd->config_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->text_len, cmd->text, cmd->url_len, cmd->url);
+    ESP_LOGI(TAG, "CMD_SET_CONFIG, frame:%d, lang:%d, config type:%d, menu_indication:%d, title:%.*s, url:%.*s",
+             cmd->frame_num, cmd->lang, cmd->config_type, cmd->menu_indication, cmd->title_len, cmd->title, cmd->url_len, cmd->url);
+
+    for (uint8_t i = 0; i < cmd->var_count; i++) {
+        ESP_LOGI(TAG, "Variable %d(%d): %.*s", i, cmd->vars[i].len, cmd->vars[i].len, cmd->vars[i].text);
+    }
 
     bsp_display_lock(0);
 
@@ -275,9 +289,9 @@ void cmd_set_config(void *arg)
     case CONFIG_TYPE_WIFI_NETWORK:
         lv_screen_load(guider_ui.screen_network);
         lv_label_set_text(guider_ui.screen_network_label_title, cmd->title);
-        lv_label_set_text(guider_ui.screen_network_label_ssid, cmd->text);
-        // lv_label_set_text(guider_ui.screen_network_label_passwd, cmd->title);
-        lv_qrcode_update(guider_ui.screen_network_qrcode_wifi, cmd->url, 20);
+        lv_label_set_text(guider_ui.screen_network_label_var1_tex, cmd->vars[0].text);
+        lv_label_set_text(guider_ui.screen_network_label_var2_tex, cmd->vars[1].text);
+        lv_qrcode_update(guider_ui.screen_network_qrcode_url, cmd->url, 20);
 
         if (cmd->menu_indication == 1) {
             lv_obj_clear_flag(guider_ui.screen_network_btn_back, LV_OBJ_FLAG_HIDDEN);
@@ -288,37 +302,37 @@ void cmd_set_config(void *arg)
         break;
     case CONFIG_TYPE_DATA_CLIENT_PAIRING:
         lv_screen_load(guider_ui.screen_wpsd_2);
-        lv_label_set_text(guider_ui.screen_wpsd_2_label_2, cmd->title);
-        lv_label_set_text(guider_ui.screen_wpsd_2_label_device_name, cmd->text);
+        lv_label_set_text(guider_ui.screen_wpsd_2_label_title, cmd->title);
+        lv_label_set_text(guider_ui.screen_wpsd_2_label_var1_tex, cmd->vars[0].text);
 
         if (cmd->menu_indication == 1) {
-            lv_obj_clear_flag(guider_ui.screen_wpsd_2_btn_5, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_clear_flag(guider_ui.screen_wpsd_2_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
         } else if (cmd->menu_indication == 0) {
-            lv_obj_add_flag(guider_ui.screen_wpsd_2_btn_5, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(guider_ui.screen_wpsd_2_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
         }
         break;
     case CONFIG_TYPE_SPEED_TEST:
         lv_screen_load(guider_ui.screen_speedtest);
-        lv_label_set_text(guider_ui.screen_speedtest_label_1, cmd->title);
-        lv_label_set_text(guider_ui.screen_speedtest_label_down_spd, cmd->text);
-        // lv_label_set_text(guider_ui.screen_speedtest_label_up_spd, "-- Mbps");
+        lv_label_set_text(guider_ui.screen_speedtest_label_title, cmd->title);
+        lv_label_set_text_fmt(guider_ui.screen_speedtest_label_var1_tex, "%s Mbps", cmd->vars[0].text);
+        lv_label_set_text_fmt(guider_ui.screen_speedtest_label_var2_tex, "%s Mbps", cmd->vars[1].text);
 
         if (cmd->menu_indication == 1) {
-            lv_obj_clear_flag(guider_ui.screen_speedtest_btn_3, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_clear_flag(guider_ui.screen_speedtest_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
         } else if (cmd->menu_indication == 0) {
-            lv_obj_add_flag(guider_ui.screen_speedtest_btn_3, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(guider_ui.screen_speedtest_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
         }
         break;
     case CONFIG_TYPE_MODEM_PASSWORD:
         lv_screen_load(guider_ui.screen_mm_1);
-        lv_label_set_text(guider_ui.screen_mm_1_label_1, cmd->title);
-        lv_label_set_text(guider_ui.screen_mm_1_label_passwd, cmd->text);
+        lv_label_set_text(guider_ui.screen_mm_1_label_title, cmd->title);
+        lv_label_set_text(guider_ui.screen_mm_1_label_var1_tex, cmd->vars[0].text);
         lv_qrcode_update(guider_ui.screen_mm_1_qrcode_passwd, cmd->url, 20);
 
         if (cmd->menu_indication == 1) {
-            lv_obj_clear_flag(guider_ui.screen_mm_1_btn_3, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_clear_flag(guider_ui.screen_mm_1_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
         } else if (cmd->menu_indication == 0) {
-            lv_obj_add_flag(guider_ui.screen_mm_1_btn_3, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(guider_ui.screen_mm_1_btn_back_indication, LV_OBJ_FLAG_HIDDEN);
         }
         break;
     default:
@@ -335,15 +349,20 @@ void cmd_set_error(void *arg)
     if (NULL == cmd) {
         return;
     }
-    ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, error num:%d, error len:%d, label:%s, text:%s, url:%s",
-             cmd->frame_num, cmd->error_num, cmd->error_len, cmd->label, cmd->text, cmd->url);
+    ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, lang:%d, error num:%d, error:%s, url:%s",
+             cmd->frame_num, cmd->lang, cmd->error_num, cmd->label, cmd->url);
+
+    for (uint8_t i = 0; i < cmd->var_count; i++) {
+        ESP_LOGI(TAG, "Variable %d(%d): %.*s", i, cmd->vars[i].len, cmd->vars[i].len, cmd->vars[i].text);
+    }
 
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_error);
-    lv_label_set_text_fmt(guider_ui.screen_error_label_info_1, "Error %02d - %s\n\n", cmd->error_num, cmd->label);
-    lv_label_set_text(guider_ui.screen_error_label_info_2, cmd->text);
-    lv_qrcode_update(guider_ui.screen_error_qrcode_error, cmd->url, 20);
+    lv_label_set_text_fmt(guider_ui.screen_error_label_err_num, "Error %02d - %s\n\n", cmd->error_num, cmd->label);
+    lv_label_set_text(guider_ui.screen_error_label_var1_tex, cmd->vars[0].text);
+    lv_label_set_text(guider_ui.screen_error_label_var2_tex, cmd->vars[1].text);
+    lv_qrcode_update(guider_ui.screen_error_qrcode_url, cmd->url, 20);
 
     bsp_display_unlock();
 }
@@ -359,25 +378,25 @@ void cmd_set_apps(void *arg)
 
     bsp_display_lock(0);
 
-    lv_label_set_text(guider_ui.screen_app_detail_btn_back_label,
+    lv_label_set_text(guider_ui.screen_app_detail_btn_back_indication,
                       lang_pick("Back to apps", "Retour aux applications", cmd->lang));
-    lv_label_set_text(guider_ui.screen_app_detail_label_3,
+    lv_label_set_text(guider_ui.screen_app_detail_label_title,
                       lang_pick("Bell Apps\n\n\n", "Applications Bell\n\n\n", cmd->lang));
 
     switch (cmd->screen_num) {
     case 1:
-        lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
-        lv_label_set_text(guider_ui.screen_app_detail_label_passwd,
+        lv_image_set_src(guider_ui.screen_app_detail_img_app_icon, &_icon_app_RGB565A8_109x71);
+        lv_label_set_text(guider_ui.screen_app_detail_label_app_name,
                           lang_pick("Wi-Fi App\n", "Application Wi-Fi\n", cmd->lang));
         break;
     case 2:
-        lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
-        lv_label_set_text(guider_ui.screen_app_detail_label_passwd,
+        lv_image_set_src(guider_ui.screen_app_detail_img_app_icon, &_icon_app_RGB565A8_109x71);
+        lv_label_set_text(guider_ui.screen_app_detail_label_app_name,
                           lang_pick("Fibe TV app\n", "Application Fibe TV\n", cmd->lang));
         break;
     case 3:
-        lv_image_set_src(guider_ui.screen_app_detail_img_2, &_icon_app_RGB565A8_109x71);
-        lv_label_set_text(guider_ui.screen_app_detail_label_passwd,
+        lv_image_set_src(guider_ui.screen_app_detail_img_app_icon, &_icon_app_RGB565A8_109x71);
+        lv_label_set_text(guider_ui.screen_app_detail_label_app_name,
                           lang_pick("Virtual repair tool\n", "Outil de réparation virtuelle\n", cmd->lang));
         break;
     default:
@@ -385,8 +404,8 @@ void cmd_set_apps(void *arg)
         break;
     }
     lv_screen_load(guider_ui.screen_app_detail);
-    lv_label_set_text(guider_ui.screen_app_detail_label_passwd_title, cmd->text);
-    lv_qrcode_update(guider_ui.screen_app_detail_qrcode_wifi, cmd->url, 20);
+    lv_label_set_text(guider_ui.screen_app_detail_label_title, cmd->text);
+    lv_qrcode_update(guider_ui.screen_app_detail_qrcode_url, cmd->url, 20);
 
     bsp_display_unlock();
 }
@@ -451,7 +470,7 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         ESP_LOGI(TAG, "CMD_SEND_IMAGE");
         break;
     case CMD_SET_BACKLIGHT:
-        if (cmd_set_bl_handler && len >= 3) {
+        if (cmd_set_bl_handler && len == 3) {
             cmd_set_bl_t cmd;
             cmd.state = data[BL_STATE_INDEX];
             cmd.intensity = data[BL_INTENSITY_INDEX];
@@ -463,7 +482,7 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         break;
     // COMMAND with acknowledgement
     case CMD_SET_LIST:
-        if (cmd_set_list_handler && len >= 4) {
+        if (cmd_set_list_handler && len == 5) {
             cmd_set_list_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[LIST_LANG_INDEX];
@@ -477,7 +496,7 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         }
         break;
     case CMD_SET_MENU:
-        if (cmd_set_menu_handler && len >= 4) {
+        if (cmd_set_menu_handler && len == 4) {
             cmd_set_menu_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[MENU_LANG_INDEX];
@@ -490,7 +509,7 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         }
         break;
     case CMD_SET_SCREEN:
-        if (cmd_set_screen_handler && len >= 4) {
+        if (cmd_set_screen_handler && len == 5) {
             cmd_set_screen_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[SCREEN_LANG_INDEX];
@@ -504,17 +523,36 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         }
         break;
     case CMD_SET_NOTIF:
-        if (cmd_set_notif_handler && len) {
+        if (cmd_set_notif_handler && len >= 4) {
             cmd_set_notif_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
+            cmd.lang = data[NOTIF_LANG_INDEX];
             cmd.notif_type = data[NOTIF_TYPE_INDEX];
             cmd.menu_indication = data[NOTIF_MENU_INDEX];
-            cmd.title_len = data[NOTIF_TITLE_LEN_IDX];
-            cmd.title = (const char *) &data[NOTIF_TITLE_IDX];
 
-            uint8_t text_len_idx = NOTIF_TITLE_IDX + cmd.title_len;
-            cmd.text_len = data[text_len_idx];
-            cmd.text = (const char *) &data[text_len_idx + 1];
+            cmd.title_len = data[NOTIF_TITLE_LEN_IDX];
+            if (cmd.title_len > 0 && NOTIF_TITLE_IDX + cmd.title_len <= len) {
+                cmd.title = (const char *)&data[NOTIF_TITLE_IDX];
+            } else {
+                cmd.title = NULL;
+                cmd.title_len = 0;
+            }
+
+            uint8_t offset = NOTIF_TITLE_IDX + cmd.title_len;
+            cmd.var_count = 0;
+
+            for (uint8_t i = 0; i < 4 && offset < len; i++) {
+                cmd.vars[i].len = data[offset];
+                if (offset + 1 + cmd.vars[i].len <= len) {
+                    cmd.vars[i].text = (const char *)&data[offset + 1];
+                    offset += 1 + cmd.vars[i].len;
+                    cmd.var_count++;
+                } else {
+                    cmd.vars[i].len = 0;
+                    cmd.vars[i].text = NULL;
+                    break;
+                }
+            }
 
             cmd_set_notif_handler(&cmd);
             *ack_num = cmd.frame_num;
@@ -523,22 +561,34 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         }
         break;
     case CMD_SET_CONFIG:
-        if (cmd_set_config_handler && len) {
+        if (cmd_set_config_handler && len >= 6) {
             cmd_set_config_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
+            cmd.lang = data[CONFIG_LANG_INDEX];
             cmd.config_type = data[CONFIG_TYPE_INDEX];
             cmd.menu_indication = data[CONFIG_MENU_INDEX];
             cmd.title_len = data[CONFIG_TITLE_LEN_IDX];
             cmd.title = (const char *) &data[CONFIG_TITLE_IDX];
 
-            uint8_t text_len_idx = CONFIG_TITLE_IDX + cmd.title_len;
-            cmd.text_len = data[text_len_idx];
-            cmd.text = (const char *) &data[text_len_idx + 1];
-
-            uint8_t url_len_idx = text_len_idx + 1 + cmd.text_len;
+            uint8_t url_len_idx = CONFIG_TITLE_IDX + cmd.title_len;
             cmd.url_len = data[url_len_idx];
             cmd.url = (const char *) &data[url_len_idx + 1];
 
+            uint8_t offset = url_len_idx + 1 + cmd.url_len;
+            cmd.var_count = 0;
+
+            for (uint8_t i = 0; i < 4 && offset < len; i++) {
+                cmd.vars[i].len = data[offset];
+                if (offset + 1 + cmd.vars[i].len <= len) {
+                    cmd.vars[i].text = (const char *)&data[offset + 1];
+                    offset += 1 + cmd.vars[i].len;
+                    cmd.var_count++;
+                } else {
+                    cmd.vars[i].len = 0;
+                    cmd.vars[i].text = NULL;
+                    break;
+                }
+            }
             cmd_set_config_handler(&cmd);
             *ack_num = cmd.frame_num;
         } else {
@@ -549,17 +599,30 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
         if (cmd_set_error_handler && len >= 8) {
             cmd_set_error_t cmd;
             cmd.frame_num = data[FRAME_INDEX];
+            cmd.lang = data[ERROR_LANG_INDEX];
             cmd.error_num = data[ERROR_NUM_INDEX];
             cmd.error_len = data[ERROR_LEN_INDEX];
             cmd.label = (const char *) &data[ERROR_LABEL_INDEX];
 
-            uint8_t text_len_idx = ERROR_LABEL_INDEX + cmd.error_len;
-            cmd.text_len = data[text_len_idx];
-            cmd.text = (const char *) &data[text_len_idx + 1];
-
-            uint8_t url_len_idx = text_len_idx + 1 + cmd.text_len;
+            uint8_t url_len_idx = ERROR_LABEL_INDEX + cmd.error_len;
             cmd.url_len = data[url_len_idx];
             cmd.url = (const char *) &data[url_len_idx + 1];
+
+            uint8_t offset = url_len_idx + 1 + cmd.url_len;
+            cmd.var_count = 0;
+
+            for (uint8_t i = 0; i < 4 && offset < len; i++) {
+                cmd.vars[i].len = data[offset];
+                if (offset + 1 + cmd.vars[i].len <= len) {
+                    cmd.vars[i].text = (const char *)&data[offset + 1];
+                    offset += 1 + cmd.vars[i].len;
+                    cmd.var_count++;
+                } else {
+                    cmd.vars[i].len = 0;
+                    cmd.vars[i].text = NULL;
+                    break;
+                }
+            }
 
             cmd_set_error_handler(&cmd);
             *ack_num = cmd.frame_num;
@@ -761,7 +824,7 @@ void handle_fu_upgrading(bool lang)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_restart);
-    lv_label_set_text(guider_ui.screen_restart_label_1,
+    lv_label_set_text(guider_ui.screen_restart_label_title,
                       lang_pick("Firmware Upgrade\n\n",
                                 "Mise à niveau du firmware\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
@@ -777,7 +840,7 @@ void handle_fu_restart(bool lang)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_restart);
-    lv_label_set_text(guider_ui.screen_restart_label_1,
+    lv_label_set_text(guider_ui.screen_restart_label_title,
                       lang_pick("Firmware Upgrade\n\n",
                                 "Mise à niveau du firmware\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
@@ -875,7 +938,7 @@ void handle_factory_reset_restart(bool lang)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_restart);
-    lv_label_set_text(guider_ui.screen_restart_label_1,
+    lv_label_set_text(guider_ui.screen_restart_label_title,
                       lang_pick("Reset to factory default\n\n",
                                 "Réinitialiser aux paramètres d'usine\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,
@@ -891,8 +954,8 @@ void handle_speed_test(bool lang)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_speedtest);
-    lv_label_set_text(guider_ui.screen_speedtest_label_down_spd, "-- Mbps\n");
-    lv_label_set_text(guider_ui.screen_speedtest_label_up_spd, "-- Mbps");
+    lv_label_set_text(guider_ui.screen_speedtest_label_var1_tex, "-- Mbps\n");
+    lv_label_set_text(guider_ui.screen_speedtest_label_var2_tex, "-- Mbps");
 
     bsp_display_unlock();
 }
@@ -925,7 +988,7 @@ void handle_restart_modem_restart(bool lang)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_restart);
-    lv_label_set_text(guider_ui.screen_restart_label_1,
+    lv_label_set_text(guider_ui.screen_restart_label_title,
                       lang_pick("Restart the modem\n\n",
                                 "Redémarrer le modem\n\n", lang));
     lv_label_set_text(guider_ui.screen_restart_label_loading,

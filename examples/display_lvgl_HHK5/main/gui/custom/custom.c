@@ -35,16 +35,16 @@
  */
 
 const char *items_main_loop[MAX_MAIN_LOOP_ITEMS][2] = {
-    {"1.Service status", "Statut du service"},
-    {"2.Wi-Fi password", "Mot de passe Wi-Fi"},
-    {"3.Connect Fibe TV receiver", "Connecter le récepteur Fibe TV"},
-    {"4.Connect Wi-Fi device (WPS)", "Connecter un appareil Wi-Fi (WPS)"},
-    {"5.Modem management", "Gestion du modem"},
-    {"6.Test internet speed", "Tester la vitesse Internet"},
-    {"7.Bell Apps", "Applications Bell"},
-    {"8.Restart the modem", "Redémarrer le modem"},
-    {"9.Passer à l'anglais", "Switch to English"},
-    {"10.Close", "Fermer"}
+    {"Service status", "État du service"},
+    {"Wi-Fi password", "Mot de passe Wi-Fi"},
+    {"Connect Fibe TV receiver", "Connecter un récepteur Télé Fibe"},
+    {"Connect Wi-Fi device (WPS)", "Connecter un appareil Wi-Fi (WPS)"},
+    {"Modem management", "Configuration du modem"},
+    {"Test internet speed", "Vérification de la vitesse"},
+    {"Bell Apps", "Applications Bell"},
+    {"Restart the modem", "Redémarrer le modem"},
+    {"Passer au français", "Switch to English"},
+    {"Close", "Fermer"}
 };
 
 const char *items_bell_apps[MAX_BELL_APPS_ITEMS][2] = {
@@ -127,71 +127,6 @@ static void main_loop_infinite_event_cb(lv_event_t *e)
             lv_obj_scroll_to_y(cont, -75 + 90 * 4, LV_ANIM_OFF);
             printf("end:2 , scroll_y:%d -> %d\r\n", scroll_y, -75 + 90 * 4);
         }
-    }
-}
-
-static void main_loop_scroll_event_cb(lv_event_t *e)
-{
-    lv_obj_t *cont = lv_event_get_target(e);
-    lv_event_code_t code = lv_event_get_code(e);
-
-    static bool is_adjusting = false;
-    static int16_t focus_index = 0;
-
-    if (code == LV_EVENT_SCROLL) {
-        lv_area_t cont_a;
-        lv_obj_get_coords(cont, &cont_a);
-        int32_t cont_y_center = cont_a.y1 + lv_area_get_height(&cont_a) / 2;
-
-        uint32_t i;
-        uint32_t child_cnt = lv_obj_get_child_count(cont);
-        for (i = 0; i < child_cnt; i++) {
-            lv_obj_t *child = lv_obj_get_child(cont, i);
-            lv_area_t child_a;
-            lv_obj_get_coords(child, &child_a);
-
-            int32_t child_y_center = child_a.y1 + lv_area_get_height(&child_a) / 2;
-            int32_t diff_y = child_y_center - cont_y_center;
-            diff_y = LV_ABS(diff_y);
-
-            lv_opa_t opa = lv_map(diff_y, 0, lv_obj_get_height(cont) / 2, LV_OPA_COVER, LV_OPA_TRANSP);
-            // printf("[%d], diff_y: %d, pos:[%03d,%03d]\n", i, diff_y, child_a.y1, child_a.y2);
-
-            lv_color_t color = lv_color_mix(lv_color_black(), lv_color_hex(0x004D8F), lv_map(diff_y, 0, lv_obj_get_height(cont) / 2, 0, 255));
-            lv_obj_set_style_bg_color(child, color, 0);
-            // lv_obj_set_style_opa(child, opa, 0);
-
-            if (!is_adjusting) {
-                is_adjusting = true;
-                int32_t scroll_y = lv_obj_get_scroll_y(cont);
-                int32_t cont_h = lv_obj_get_height(cont);
-                int32_t content_h = get_content_height(cont);
-
-                /* Use ITEM_SIZE as vertical item height */
-                const int32_t item_height = 80;
-
-                if (scroll_y <= 0) {
-                    printf("1: + 80, scroll_y: %d, content_h: %d, cont_h: %d, %d\n", scroll_y, content_h, cont_h, content_h - cont_h);
-                    lv_obj_t *last_child = lv_obj_get_child(cont, (int32_t)(lv_obj_get_child_count(cont) - 1));
-                    lv_obj_move_to_index(last_child, 0);
-                    lv_obj_scroll_to_y(cont, scroll_y + item_height, LV_ANIM_OFF);
-                } else if (scroll_y > content_h - cont_h) {
-                    printf("2: - 80, scroll_y: %d, content_h: %d, cont_h: %d, %d\n", scroll_y, content_h, cont_h, content_h - cont_h);
-                    lv_obj_t *first_child = lv_obj_get_child(cont, 0);
-                    lv_obj_move_to_index(first_child, (int32_t)(lv_obj_get_child_count(cont) - 1));
-                    lv_obj_scroll_to_y(cont, scroll_y - item_height, LV_ANIM_OFF);
-                }
-                is_adjusting = false;
-            }
-        }
-    } else if (code == LV_EVENT_DRAW_MAIN_BEGIN) {
-    } else if (code == LV_EVENT_DRAW_POST_END) {
-    } else if (code == LV_EVENT_SCROLL_BEGIN) {
-        int32_t scroll_y = lv_obj_get_scroll_y(cont);
-        printf("start, focus: %d, scroll_y:%d\r\n", focus_index, scroll_y);
-    } else if (code == LV_EVENT_SCROLL_END) {
-        int32_t scroll_y = lv_obj_get_scroll_y(cont);
-        printf("end, focus: %d, scroll_y:%d\r\n", focus_index, scroll_y);
     }
 }
 
@@ -307,11 +242,6 @@ void clear_main_loop_items(lv_obj_t *parent)
         lv_obj_t *child_btn = lv_obj_get_child(parent, 0);
         lv_obj_del(child_btn);
     }
-}
-
-void lv_example_scroll_infinite()
-{
-
 }
 
 void lv_main_loop_loading(void)
@@ -617,61 +547,8 @@ static void arc_anim_start_cb(lv_timer_t *tim)
     lv_obj_invalidate_area(image, &sw_area);
 }
 #else
-#include <math.h>
-#include <string.h>
-#include <stdio.h>
-
-#define WIDTH   120
-#define HEIGHT  120
-
-uint8_t temp_buf[WIDTH * HEIGHT];  // 临时缓冲区
-
-static void arc_anim_start_cb(lv_timer_t *tim)
-{
-    uint8_t *p_arr = buf_SpinMask;
-
-    lv_obj_t *image = lv_timer_get_user_data(tim);
-
-    // 复制原始数据到 temp_buf
-    memcpy(temp_buf, p_arr, sizeof(buf_SpinMask));
-
-    // 亮度增加 + 边缘检测
-    for (int i = 0; i < HEIGHT; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            int idx = i * WIDTH + j;
-            if (temp_buf[idx]) {
-                temp_buf[idx] += 20;
-                if (!temp_buf[i]) {
-                    temp_buf[i] = 1;
-                }
-            }
-        }
-    }
-
-    // 高斯模糊处理 (3×3 卷积)
-    for (int y = 1; y < HEIGHT - 1; ++y) {
-        for (int x = 1; x < WIDTH - 1; ++x) {
-            int sum = 0;
-            sum += temp_buf[(y - 1) * WIDTH + (x - 1)] * 1;
-            sum += temp_buf[(y - 1) * WIDTH + (x)] * 2;
-            sum += temp_buf[(y - 1) * WIDTH + (x + 1)] * 1;
-
-            sum += temp_buf[y * WIDTH + (x - 1)] * 2;
-            sum += temp_buf[y * WIDTH + x] * 4;
-            sum += temp_buf[y * WIDTH + (x + 1)] * 2;
-
-            sum += temp_buf[(y + 1) * WIDTH + (x - 1)] * 1;
-            sum += temp_buf[(y + 1) * WIDTH + (x)] * 2;
-            sum += temp_buf[(y + 1) * WIDTH + (x + 1)] * 1;
-
-            p_arr[y * WIDTH + x] = sum / 16;
-        }
-    }
-
-    lv_obj_invalidate_area(image, &sw_area);
-}
-
 #endif
+
 void create_arc_mask()
 {
     printf("create_arc_mask\r\n");
@@ -789,13 +666,14 @@ void lv_apps_loading(void)
     printf("Loading bellapps...\n");
     /*Create a container with COLUMN flex direction*/
     cont_bellapps = lv_obj_create(lv_screen_active());
-    lv_obj_set_size(cont_bellapps, lv_pct(100), 220);
-    lv_obj_align(cont_bellapps, LV_ALIGN_TOP_MID, 0, 145);
+    lv_obj_set_size(cont_bellapps, lv_pct(100), 262);
+    lv_obj_align(cont_bellapps, LV_ALIGN_TOP_MID, 0, 150);
     lv_obj_set_scroll_snap_y(cont_bellapps, LV_SCROLL_SNAP_CENTER);
     lv_obj_set_flex_flow(cont_bellapps, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_style_bg_opa(cont_bellapps, LV_OPA_TRANSP, 0); // Set container background to transparent
     lv_obj_set_style_border_width(cont_bellapps, 0, 0); // Remove border
     lv_obj_set_style_radius(cont_bellapps, 0, 0); // Set corners to right angles
+    lv_obj_add_flag(cont_bellapps, LV_OBJ_FLAG_SCROLL_ONE);
 
     for (uint32_t i = 0; i < MAX_BELL_APPS_ITEMS; i++) {
         lv_obj_t *obj;
@@ -846,4 +724,5 @@ void custom_init(lv_ui *ui)
     setup_scr_screen_wpsd_2(ui);
 
     lv_screen_load(guider_ui.screen_main_loop);
+    // lv_screen_load(guider_ui.screen_apps);
 }

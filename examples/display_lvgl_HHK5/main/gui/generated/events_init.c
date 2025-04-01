@@ -240,7 +240,7 @@ void events_init_screen_mm_1 (lv_ui *ui)
     lv_obj_add_event_cb(ui->screen_mm_1_btn_2, screen_mm_1_btn_2_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_error_btn_1_event_handler (lv_event_t *e)
+static void screen_error_btn_next_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
@@ -256,7 +256,7 @@ static void screen_error_btn_1_event_handler (lv_event_t *e)
 
 void events_init_screen_error (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_error_btn_1, screen_error_btn_1_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_error_btn_next, screen_error_btn_next_event_handler, LV_EVENT_ALL, ui);
 }
 
 static void screen_apps_event_handler (lv_event_t *e)

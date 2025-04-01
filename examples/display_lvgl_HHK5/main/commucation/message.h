@@ -61,39 +61,6 @@
 #define CONFIG_TYPE_SPEED_TEST              0x03 // ST-2
 #define CONFIG_TYPE_MODEM_PASSWORD          0x04 // MM-1
 
-//SCREEN_TYPE_BOOT
-// #define SCREEN_NUM_BU_WELCOME                  0x00
-// #define SCREEN_NUM_BU_LOADING                  0x01
-// #define SCREEN_NUM_BU_BELL                     0x02
-// #define SCREEN_NUM_BU_CONNECTING_STEP1         0x03
-// #define SCREEN_NUM_BU_CONNECTING_STEP2         0x04
-// #define SCREEN_NUM_BU_CONNECTING_STEP3         0x05
-// #define SCREEN_NUM_BU_CONNECTING_AUTH_STEP3    0x07
-// #define SCREEN_NUM_BU_CONNECTING_CONFIG_STEP3  0x08
-// #define SCREEN_NUM_BU_CONNECTING_WIFI_STEP3    0x11
-
-// //SCREEN_TYPE_FIRMWARE_UPGRADE
-// #define SCREEN_NUM_FU_UPGRADING             0x01
-// #define SCREEN_NUM_FU_RESTART               0x02
-
-// //SCREEN_TYPE_WIRELESS_STB_PAIRING
-// #define SCREEN_NUM_STB                      0x01
-
-// //SCREEN_TYPE_DATA_CLIENT_PAIRING
-// #define SCREEN_NUM_WPSD                     0x01
-
-// //SCREEN_TYPE_FACTORY_RESET
-// #define SCREEN_NUM_FR_SELECT                0x01
-// #define SCREEN_NUM_FR_CONFIRM               0x02
-// #define SCREEN_NUM_FR_RESTART               0x03
-
-// //SCREEN_TYPE_SPEED_TEST
-// #define SCREEN_NUM_ST_TESTING               0x01
-
-// //SCREEN_TYPE_RESTART_MODEM
-// #define SCREEN_NUM_RBM_CONFIRM              0x01
-// #define SCREEN_NUM_RGB_RESTAER              0x02
-
 // Cmd_Set_BellApps 0x50
 // 0x30 0x50 Frame Num Language Menu Num
 #define SCREEN_NUM_APPS_WIFI_APP                   0x01
@@ -130,21 +97,24 @@
 #define SCREEN_NUM_INDEX        4
 
 //Cmd_Set_Notif 0x40
-#define NOTIF_TYPE_INDEX        2
-#define NOTIF_MENU_INDEX        3
-#define NOTIF_TITLE_LEN_IDX     4
-#define NOTIF_TITLE_IDX         5
+#define NOTIF_LANG_INDEX        2
+#define NOTIF_TYPE_INDEX        3
+#define NOTIF_MENU_INDEX        4
+#define NOTIF_TITLE_LEN_IDX     5
+#define NOTIF_TITLE_IDX         6
 
 //Cmd_Set_Config 0x41
-#define CONFIG_TYPE_INDEX       2
-#define CONFIG_MENU_INDEX       3
-#define CONFIG_TITLE_LEN_IDX    4
-#define CONFIG_TITLE_IDX        5
+#define CONFIG_LANG_INDEX       2
+#define CONFIG_TYPE_INDEX       3
+#define CONFIG_MENU_INDEX       4
+#define CONFIG_TITLE_LEN_IDX    5
+#define CONFIG_TITLE_IDX        6
 
 //Cmd_Set_Error 0x42
-#define ERROR_NUM_INDEX         2
-#define ERROR_LEN_INDEX         3
-#define ERROR_LABEL_INDEX       4
+#define ERROR_LANG_INDEX        2
+#define ERROR_NUM_INDEX         3
+#define ERROR_LEN_INDEX         4
+#define ERROR_LABEL_INDEX       5
 
 // Cmd_Set_BellApps 0x50
 #define BELLAPPS_LANG_INDEX     2
@@ -197,39 +167,54 @@ typedef struct {
     uint8_t lang;
     uint8_t scren_type;
     uint8_t scren_num;
-
 } cmd_set_screen_t;
+
 typedef struct {
     uint8_t frame_num;
+    uint8_t lang;
     uint8_t notif_type;
     uint8_t menu_indication;
     uint8_t title_len;
     const char *title;
-    uint8_t text_len;
-    const char *text;
+
+    uint8_t var_count;
+    struct {
+        uint8_t len;
+        const char *text;
+    } vars[4];
 } cmd_set_notif_t;
 
 typedef struct {
     uint8_t frame_num;
+    uint8_t lang;
     uint8_t config_type;
     uint8_t menu_indication;
     uint8_t title_len;
     const char *title;
-    uint8_t text_len;
-    const char *text;
     uint8_t url_len;
     const char *url;
+
+    uint8_t var_count;
+    struct {
+        uint8_t len;
+        const char *text;
+    } vars[4];
 } cmd_set_config_t;
 
 typedef struct {
     uint8_t frame_num;
+    uint8_t lang;
     uint8_t error_num;
     uint8_t error_len;
     const char *label;
-    uint8_t text_len;
-    const char *text;
     uint8_t url_len;
     const char *url;
+
+    uint8_t var_count;
+    struct {
+        uint8_t len;
+        const char *text;
+    } vars[4];
 } cmd_set_error_t;
 
 typedef struct {

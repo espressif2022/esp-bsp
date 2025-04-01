@@ -28,51 +28,51 @@ void setup_scr_screen_wpsd_2(lv_ui *ui)
     lv_obj_set_style_bg_color(ui->screen_wpsd_2, lv_color_hex(0x000000), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(ui->screen_wpsd_2, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_wpsd_2_label_title
-    ui->screen_wpsd_2_label_title = lv_label_create(ui->screen_wpsd_2);
-    lv_obj_set_pos(ui->screen_wpsd_2_label_title, 38, 166);
-    lv_obj_set_size(ui->screen_wpsd_2_label_title, 330, 51);
-    lv_label_set_text(ui->screen_wpsd_2_label_title, "Connected:\n\n");
-    lv_label_set_long_mode(ui->screen_wpsd_2_label_title, LV_LABEL_LONG_WRAP);
+    //Write codes screen_wpsd_2_label_connnect
+    ui->screen_wpsd_2_label_connnect = lv_label_create(ui->screen_wpsd_2);
+    lv_obj_set_pos(ui->screen_wpsd_2_label_connnect, 38, 166);
+    lv_obj_set_size(ui->screen_wpsd_2_label_connnect, 330, 51);
+    lv_label_set_text(ui->screen_wpsd_2_label_connnect, "Connected:\n\n");
+    lv_label_set_long_mode(ui->screen_wpsd_2_label_connnect, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_wpsd_2_label_title, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_wpsd_2_label_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_wpsd_2_label_title, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_wpsd_2_label_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_wpsd_2_label_title, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_wpsd_2_label_connnect, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_wpsd_2_label_connnect, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_wpsd_2_label_connnect, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_wpsd_2_label_connnect, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_wpsd_2_label_connnect, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_label_connnect, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_wpsd_2_label_device_name
-    ui->screen_wpsd_2_label_device_name = lv_label_create(ui->screen_wpsd_2);
-    lv_obj_set_pos(ui->screen_wpsd_2_label_device_name, 38, 228);
-    lv_obj_set_size(ui->screen_wpsd_2_label_device_name, 422, 43);
-    lv_label_set_text(ui->screen_wpsd_2_label_device_name, "[Device name]\n");
-    lv_label_set_long_mode(ui->screen_wpsd_2_label_device_name, LV_LABEL_LONG_WRAP);
+    //Write codes screen_wpsd_2_label_var1_tex
+    ui->screen_wpsd_2_label_var1_tex = lv_label_create(ui->screen_wpsd_2);
+    lv_obj_set_pos(ui->screen_wpsd_2_label_var1_tex, 46, 228);
+    lv_obj_set_size(ui->screen_wpsd_2_label_var1_tex, 422, 43);
+    lv_label_set_text(ui->screen_wpsd_2_label_var1_tex, "[Device name]\n");
+    lv_label_set_long_mode(ui->screen_wpsd_2_label_var1_tex, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_wpsd_2_label_device_name, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_wpsd_2_label_device_name, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_wpsd_2_label_device_name, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_wpsd_2_label_device_name, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_wpsd_2_label_device_name, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_label_device_name, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_wpsd_2_label_var1_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_wpsd_2_label_var1_tex, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_wpsd_2_label_var1_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_wpsd_2_label_var1_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_wpsd_2_label_var1_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_wpsd_2_cont_title
     ui->screen_wpsd_2_cont_title = lv_obj_create(ui->screen_wpsd_2);
@@ -92,28 +92,28 @@ void setup_scr_screen_wpsd_2(lv_ui *ui)
     lv_obj_set_style_pad_right(ui->screen_wpsd_2_cont_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_wpsd_2_cont_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_wpsd_2_label_2
-    ui->screen_wpsd_2_label_2 = lv_label_create(ui->screen_wpsd_2_cont_title);
-    lv_obj_set_pos(ui->screen_wpsd_2_label_2, 30, 52);
-    lv_obj_set_size(ui->screen_wpsd_2_label_2, 602, 55);
-    lv_label_set_text(ui->screen_wpsd_2_label_2, "Connenct Wi-Fi device (WPS)\n\n\n");
-    lv_label_set_long_mode(ui->screen_wpsd_2_label_2, LV_LABEL_LONG_WRAP);
+    //Write codes screen_wpsd_2_label_title
+    ui->screen_wpsd_2_label_title = lv_label_create(ui->screen_wpsd_2_cont_title);
+    lv_obj_set_pos(ui->screen_wpsd_2_label_title, 30, 52);
+    lv_obj_set_size(ui->screen_wpsd_2_label_title, 602, 55);
+    lv_label_set_text(ui->screen_wpsd_2_label_title, "Connenct Wi-Fi device (WPS)\n\n\n");
+    lv_label_set_long_mode(ui->screen_wpsd_2_label_title, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_wpsd_2_label_2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_wpsd_2_label_2, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_wpsd_2_label_2, &lv_font_montserratMedium_35, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_wpsd_2_label_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_wpsd_2_label_2, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_label_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_wpsd_2_label_title, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_wpsd_2_label_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_wpsd_2_label_title, &lv_font_montserratMedium_35, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_wpsd_2_label_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_wpsd_2_label_title, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_wpsd_2_line_5
     ui->screen_wpsd_2_line_5 = lv_line_create(ui->screen_wpsd_2_cont_title);
@@ -128,28 +128,28 @@ void setup_scr_screen_wpsd_2(lv_ui *ui)
     lv_obj_set_style_line_opa(ui->screen_wpsd_2_line_5, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_rounded(ui->screen_wpsd_2_line_5, true, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_wpsd_2_btn_5
-    ui->screen_wpsd_2_btn_5 = lv_button_create(ui->screen_wpsd_2_cont_title);
-    lv_obj_set_pos(ui->screen_wpsd_2_btn_5, 688, 45);
-    lv_obj_set_size(ui->screen_wpsd_2_btn_5, 218, 45);
-    ui->screen_wpsd_2_btn_5_label = lv_label_create(ui->screen_wpsd_2_btn_5);
-    lv_label_set_text(ui->screen_wpsd_2_btn_5_label, "Press ok to cancel");
-    lv_label_set_long_mode(ui->screen_wpsd_2_btn_5_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_wpsd_2_btn_5_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_wpsd_2_btn_5, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_wpsd_2_btn_5_label, LV_PCT(100));
+    //Write codes screen_wpsd_2_btn_back_indication
+    ui->screen_wpsd_2_btn_back_indication = lv_button_create(ui->screen_wpsd_2_cont_title);
+    lv_obj_set_pos(ui->screen_wpsd_2_btn_back_indication, 688, 45);
+    lv_obj_set_size(ui->screen_wpsd_2_btn_back_indication, 218, 45);
+    ui->screen_wpsd_2_btn_back_indication_label = lv_label_create(ui->screen_wpsd_2_btn_back_indication);
+    lv_label_set_text(ui->screen_wpsd_2_btn_back_indication_label, "Press ok to cancel");
+    lv_label_set_long_mode(ui->screen_wpsd_2_btn_back_indication_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_wpsd_2_btn_back_indication_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_wpsd_2_btn_back_indication, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_wpsd_2_btn_back_indication_label, LV_PCT(100));
 
-    //Write style for screen_wpsd_2_btn_5, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_btn_5, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_wpsd_2_btn_5, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_wpsd_2_btn_5, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_wpsd_2_btn_5, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_wpsd_2_btn_5, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_btn_5, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_wpsd_2_btn_5, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_wpsd_2_btn_5, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_wpsd_2_btn_5, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_wpsd_2_btn_5, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_wpsd_2_btn_back_indication, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_wpsd_2_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_wpsd_2_btn_back_indication, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_wpsd_2_btn_back_indication, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_wpsd_2_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_wpsd_2_btn_back_indication, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_wpsd_2_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_wpsd_2_btn_back_indication, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_wpsd_2_btn_back_indication, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_wpsd_2_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_wpsd_2_btn_back_indication, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_wpsd_2_btn_4
     ui->screen_wpsd_2_btn_4 = lv_button_create(ui->screen_wpsd_2_cont_title);

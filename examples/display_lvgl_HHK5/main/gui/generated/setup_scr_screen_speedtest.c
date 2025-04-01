@@ -51,28 +51,28 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_pad_left(ui->screen_speedtest_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_speedtest_label_ssid_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_speedtest_label_down_spd
-    ui->screen_speedtest_label_down_spd = lv_label_create(ui->screen_speedtest);
-    lv_obj_set_pos(ui->screen_speedtest_label_down_spd, 344, 294);
-    lv_obj_set_size(ui->screen_speedtest_label_down_spd, 146, 43);
-    lv_label_set_text(ui->screen_speedtest_label_down_spd, "75 Mbps\n");
-    lv_label_set_long_mode(ui->screen_speedtest_label_down_spd, LV_LABEL_LONG_WRAP);
+    //Write codes screen_speedtest_label_var1_tex
+    ui->screen_speedtest_label_var1_tex = lv_label_create(ui->screen_speedtest);
+    lv_obj_set_pos(ui->screen_speedtest_label_var1_tex, 344, 294);
+    lv_obj_set_size(ui->screen_speedtest_label_var1_tex, 146, 43);
+    lv_label_set_text(ui->screen_speedtest_label_var1_tex, "75 Mbps\n");
+    lv_label_set_long_mode(ui->screen_speedtest_label_var1_tex, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_speedtest_label_down_spd, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_speedtest_label_down_spd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_down_spd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_speedtest_label_down_spd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_speedtest_label_down_spd, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_speedtest_label_down_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_speedtest_label_var1_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_speedtest_label_var1_tex, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_var1_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_speedtest_label_var1_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_speedtest_label_var1_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_speedtest_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_speedtest_label_passwd_title
     ui->screen_speedtest_label_passwd_title = lv_label_create(ui->screen_speedtest);
@@ -97,32 +97,32 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_pad_left(ui->screen_speedtest_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_speedtest_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_speedtest_label_up_spd
-    ui->screen_speedtest_label_up_spd = lv_label_create(ui->screen_speedtest);
-    lv_obj_set_pos(ui->screen_speedtest_label_up_spd, 634, 294);
-    lv_obj_set_size(ui->screen_speedtest_label_up_spd, 172, 43);
-    lv_label_set_text(ui->screen_speedtest_label_up_spd, "12 Mbps");
-    lv_label_set_long_mode(ui->screen_speedtest_label_up_spd, LV_LABEL_LONG_WRAP);
+    //Write codes screen_speedtest_label_var2_tex
+    ui->screen_speedtest_label_var2_tex = lv_label_create(ui->screen_speedtest);
+    lv_obj_set_pos(ui->screen_speedtest_label_var2_tex, 634, 294);
+    lv_obj_set_size(ui->screen_speedtest_label_var2_tex, 172, 43);
+    lv_label_set_text(ui->screen_speedtest_label_var2_tex, "12 Mbps");
+    lv_label_set_long_mode(ui->screen_speedtest_label_var2_tex, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_speedtest_label_up_spd, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_speedtest_label_up_spd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_up_spd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_speedtest_label_up_spd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_speedtest_label_up_spd, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_speedtest_label_up_spd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_speedtest_label_var2_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_speedtest_label_var2_tex, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_var2_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_speedtest_label_var2_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_speedtest_label_var2_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_speedtest_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_speedtest_img_speed_test
     ui->screen_speedtest_img_speed_test = lv_image_create(ui->screen_speedtest);
-    lv_obj_set_pos(ui->screen_speedtest_img_speed_test, 37, 181);
+    lv_obj_set_pos(ui->screen_speedtest_img_speed_test, 37, 180);
     lv_obj_set_size(ui->screen_speedtest_img_speed_test, 145, 140);
     lv_obj_add_flag(ui->screen_speedtest_img_speed_test, LV_OBJ_FLAG_CLICKABLE);
     lv_image_set_src(ui->screen_speedtest_img_speed_test, &_speed_test_RGB565A8_145x140);
@@ -151,28 +151,28 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_pad_right(ui->screen_speedtest_cont_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_speedtest_cont_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_speedtest_label_1
-    ui->screen_speedtest_label_1 = lv_label_create(ui->screen_speedtest_cont_title);
-    lv_obj_set_pos(ui->screen_speedtest_label_1, 30, 52);
-    lv_obj_set_size(ui->screen_speedtest_label_1, 372, 43);
-    lv_label_set_text(ui->screen_speedtest_label_1, "Speed test\n\n\n");
-    lv_label_set_long_mode(ui->screen_speedtest_label_1, LV_LABEL_LONG_WRAP);
+    //Write codes screen_speedtest_label_title
+    ui->screen_speedtest_label_title = lv_label_create(ui->screen_speedtest_cont_title);
+    lv_obj_set_pos(ui->screen_speedtest_label_title, 30, 52);
+    lv_obj_set_size(ui->screen_speedtest_label_title, 372, 43);
+    lv_label_set_text(ui->screen_speedtest_label_title, "Speed test\n\n\n");
+    lv_label_set_long_mode(ui->screen_speedtest_label_title, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_speedtest_label_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_speedtest_label_1, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_label_1, &lv_font_montserratMedium_35, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_speedtest_label_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_speedtest_label_1, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_speedtest_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_speedtest_label_title, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_speedtest_label_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_label_title, &lv_font_montserratMedium_35, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_speedtest_label_title, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_speedtest_label_title, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_speedtest_label_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_speedtest_line_4
     ui->screen_speedtest_line_4 = lv_line_create(ui->screen_speedtest_cont_title);
@@ -187,28 +187,28 @@ void setup_scr_screen_speedtest(lv_ui *ui)
     lv_obj_set_style_line_opa(ui->screen_speedtest_line_4, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_rounded(ui->screen_speedtest_line_4, true, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_speedtest_btn_3
-    ui->screen_speedtest_btn_3 = lv_button_create(ui->screen_speedtest_cont_title);
-    lv_obj_set_pos(ui->screen_speedtest_btn_3, 688, 45);
-    lv_obj_set_size(ui->screen_speedtest_btn_3, 218, 45);
-    ui->screen_speedtest_btn_3_label = lv_label_create(ui->screen_speedtest_btn_3);
-    lv_label_set_text(ui->screen_speedtest_btn_3_label, "Back to menu");
-    lv_label_set_long_mode(ui->screen_speedtest_btn_3_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_speedtest_btn_3_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_speedtest_btn_3, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_speedtest_btn_3_label, LV_PCT(100));
+    //Write codes screen_speedtest_btn_back_indication
+    ui->screen_speedtest_btn_back_indication = lv_button_create(ui->screen_speedtest_cont_title);
+    lv_obj_set_pos(ui->screen_speedtest_btn_back_indication, 688, 45);
+    lv_obj_set_size(ui->screen_speedtest_btn_back_indication, 218, 45);
+    ui->screen_speedtest_btn_back_indication_label = lv_label_create(ui->screen_speedtest_btn_back_indication);
+    lv_label_set_text(ui->screen_speedtest_btn_back_indication_label, "Back to menu");
+    lv_label_set_long_mode(ui->screen_speedtest_btn_back_indication_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_speedtest_btn_back_indication_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_speedtest_btn_back_indication, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_speedtest_btn_back_indication_label, LV_PCT(100));
 
-    //Write style for screen_speedtest_btn_3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_speedtest_btn_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->screen_speedtest_btn_3, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->screen_speedtest_btn_3, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_speedtest_btn_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_speedtest_btn_3, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_speedtest_btn_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_speedtest_btn_3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_speedtest_btn_3, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_speedtest_btn_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_speedtest_btn_3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_speedtest_btn_back_indication, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_speedtest_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->screen_speedtest_btn_back_indication, lv_color_hex(0x004D8F), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->screen_speedtest_btn_back_indication, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_speedtest_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_speedtest_btn_back_indication, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_speedtest_btn_back_indication, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_speedtest_btn_back_indication, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_speedtest_btn_back_indication, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_speedtest_btn_back_indication, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_speedtest_btn_back_indication, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_speedtest_btn_2
     ui->screen_speedtest_btn_2 = lv_button_create(ui->screen_speedtest_cont_title);

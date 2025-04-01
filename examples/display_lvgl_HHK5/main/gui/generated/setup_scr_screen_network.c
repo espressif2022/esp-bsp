@@ -107,7 +107,7 @@ void setup_scr_screen_network(lv_ui *ui)
 
     //Write codes screen_network_btn_back
     ui->screen_network_btn_back = lv_button_create(ui->screen_network_cont_title);
-    lv_obj_set_pos(ui->screen_network_btn_back, 688, 45);
+    lv_obj_set_pos(ui->screen_network_btn_back, 688, 46);
     lv_obj_set_size(ui->screen_network_btn_back, 218, 45);
     ui->screen_network_btn_back_label = lv_label_create(ui->screen_network_btn_back);
     lv_label_set_text(ui->screen_network_btn_back_label, "Back to menu");
@@ -151,28 +151,28 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_text_opa(ui->screen_network_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_network_btn_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_network_label_ssid
-    ui->screen_network_label_ssid = lv_label_create(ui->screen_network);
-    lv_obj_set_pos(ui->screen_network_label_ssid, 49, 184);
-    lv_obj_set_size(ui->screen_network_label_ssid, 422, 43);
-    lv_label_set_text(ui->screen_network_label_ssid, "[SSID]\n");
-    lv_label_set_long_mode(ui->screen_network_label_ssid, LV_LABEL_LONG_WRAP);
+    //Write codes screen_network_label_var1_tex
+    ui->screen_network_label_var1_tex = lv_label_create(ui->screen_network);
+    lv_obj_set_pos(ui->screen_network_label_var1_tex, 49, 184);
+    lv_obj_set_size(ui->screen_network_label_var1_tex, 422, 43);
+    lv_label_set_text(ui->screen_network_label_var1_tex, "[SSID]\n");
+    lv_label_set_long_mode(ui->screen_network_label_var1_tex, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_network_label_ssid, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_network_label_ssid, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_ssid, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_network_label_ssid, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_network_label_ssid, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_network_label_ssid, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_network_label_var1_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_network_label_var1_tex, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_var1_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_network_label_var1_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_network_label_var1_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_network_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes screen_network_label_passwd_title
     ui->screen_network_label_passwd_title = lv_label_create(ui->screen_network);
@@ -197,61 +197,61 @@ void setup_scr_screen_network(lv_ui *ui)
     lv_obj_set_style_pad_left(ui->screen_network_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->screen_network_label_passwd_title, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_network_label_passwd
-    ui->screen_network_label_passwd = lv_label_create(ui->screen_network);
-    lv_obj_set_pos(ui->screen_network_label_passwd, 49, 282);
-    lv_obj_set_size(ui->screen_network_label_passwd, 436, 43);
-    lv_label_set_text(ui->screen_network_label_passwd, "[password]\n");
-    lv_label_set_long_mode(ui->screen_network_label_passwd, LV_LABEL_LONG_WRAP);
+    //Write codes screen_network_label_var2_tex
+    ui->screen_network_label_var2_tex = lv_label_create(ui->screen_network);
+    lv_obj_set_pos(ui->screen_network_label_var2_tex, 49, 282);
+    lv_obj_set_size(ui->screen_network_label_var2_tex, 436, 43);
+    lv_label_set_text(ui->screen_network_label_var2_tex, "[password]\n");
+    lv_label_set_long_mode(ui->screen_network_label_var2_tex, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_network_label_passwd, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_network_label_passwd, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_passwd, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_network_label_passwd, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_network_label_passwd, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_network_label_passwd, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_network_label_var2_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_network_label_var2_tex, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_var2_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_network_label_var2_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_network_label_var2_tex, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_network_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_network_label_qrcode
-    ui->screen_network_label_qrcode = lv_label_create(ui->screen_network);
-    lv_obj_set_pos(ui->screen_network_label_qrcode, 525, 255);
-    lv_obj_set_size(ui->screen_network_label_qrcode, 190, 60);
-    lv_label_set_text(ui->screen_network_label_qrcode, "Scan to connect wifi");
-    lv_label_set_long_mode(ui->screen_network_label_qrcode, LV_LABEL_LONG_WRAP);
+    //Write codes screen_network_label_tips
+    ui->screen_network_label_tips = lv_label_create(ui->screen_network);
+    lv_obj_set_pos(ui->screen_network_label_tips, 529, 255);
+    lv_obj_set_size(ui->screen_network_label_tips, 190, 60);
+    lv_label_set_text(ui->screen_network_label_tips, "Scan to connect wifi");
+    lv_label_set_long_mode(ui->screen_network_label_tips, LV_LABEL_LONG_WRAP);
 
-    //Write style for screen_network_label_qrcode, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_border_width(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_network_label_qrcode, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_network_label_qrcode, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_network_label_qrcode, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_network_label_qrcode, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_network_label_qrcode, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for screen_network_label_tips, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_network_label_tips, lv_color_hex(0xFFFFFF), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_network_label_tips, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_network_label_tips, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_network_label_tips, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_network_label_tips, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes screen_network_qrcode_wifi
-    ui->screen_network_qrcode_wifi = lv_qrcode_create(ui->screen_network);
-    lv_obj_set_pos(ui->screen_network_qrcode_wifi, 754, 138);
-    lv_obj_set_size(ui->screen_network_qrcode_wifi, 172, 172);
-    lv_qrcode_set_size(ui->screen_network_qrcode_wifi, 172);
-    lv_qrcode_set_dark_color(ui->screen_network_qrcode_wifi, lv_color_hex(0x2C3224));
-    lv_qrcode_set_light_color(ui->screen_network_qrcode_wifi, lv_color_hex(0xffffff));
-    const char * screen_network_qrcode_wifi_data = "https://www.nxp.com/";
-    lv_qrcode_update(ui->screen_network_qrcode_wifi, screen_network_qrcode_wifi_data, 20);
+    //Write codes screen_network_qrcode_url
+    ui->screen_network_qrcode_url = lv_qrcode_create(ui->screen_network);
+    lv_obj_set_pos(ui->screen_network_qrcode_url, 754, 138);
+    lv_obj_set_size(ui->screen_network_qrcode_url, 172, 172);
+    lv_qrcode_set_size(ui->screen_network_qrcode_url, 172);
+    lv_qrcode_set_dark_color(ui->screen_network_qrcode_url, lv_color_hex(0x2C3224));
+    lv_qrcode_set_light_color(ui->screen_network_qrcode_url, lv_color_hex(0xffffff));
+    const char * screen_network_qrcode_url_data = "https://www.nxp.com/";
+    lv_qrcode_update(ui->screen_network_qrcode_url, screen_network_qrcode_url_data, 20);
 
     //The custom code of screen_network.
 
