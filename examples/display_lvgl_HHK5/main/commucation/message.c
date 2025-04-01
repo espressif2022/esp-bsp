@@ -359,6 +359,7 @@ void cmd_set_error(void *arg)
     bsp_display_lock(0);
 
     lv_screen_load(guider_ui.screen_error);
+
     lv_label_set_text_fmt(guider_ui.screen_error_label_err_num, "Error %02d - %s\n\n", cmd->error_num, cmd->label);
     lv_label_set_text(guider_ui.screen_error_label_var1_tex, cmd->vars[0].text);
     lv_label_set_text(guider_ui.screen_error_label_var2_tex, cmd->vars[1].text);
@@ -373,13 +374,18 @@ void cmd_set_apps(void *arg)
     if (NULL == cmd) {
         return;
     }
-    ESP_LOGI(TAG, "CMD_SET_APPS, frame:%d, lang:%d, screen num:%d, text len:%d, text:%.*s, url len:%d, url:%.*s",
-             cmd->frame_num, cmd->lang, cmd->screen_num, cmd->text_len, cmd->text_len, cmd->text, cmd->url_len, cmd->url_len, cmd->url);
+    ESP_LOGI(TAG, "CMD_SET_APPS, frame:%d, lang:%d, screen num:%d, url len:%d, url:%.*s",
+             cmd->frame_num, cmd->lang, cmd->screen_num, cmd->url_len, cmd->url_len, cmd->url);
+
+    for (uint8_t i = 0; i < cmd->var_count; i++) {
+        ESP_LOGI(TAG, "Variable %d(%d): %.*s", i, cmd->vars[i].len, cmd->vars[i].len, cmd->vars[i].text);
+    }
 
     bsp_display_lock(0);
 
-    lv_label_set_text(guider_ui.screen_app_detail_btn_back_indication,
-                      lang_pick("Back to apps", "Retour aux applications", cmd->lang));
+    lv_screen_load(guider_ui.screen_app_detail);
+    // lv_label_set_text(guider_ui.screen_app_detail_btn_back_indication,
+    //                   lang_pick("Back to apps", "Retour aux applications", cmd->lang));
     lv_label_set_text(guider_ui.screen_app_detail_label_title,
                       lang_pick("Bell Apps\n\n\n", "Applications Bell\n\n\n", cmd->lang));
 
@@ -403,8 +409,8 @@ void cmd_set_apps(void *arg)
         ESP_LOGW(TAG, "Unknown screen number");
         break;
     }
-    lv_screen_load(guider_ui.screen_app_detail);
-    lv_label_set_text(guider_ui.screen_app_detail_label_title, cmd->text);
+    lv_label_set_text(guider_ui.screen_app_detail_label_var1_tex, cmd->vars[0].text);
+    lv_label_set_text(guider_ui.screen_app_detail_label_var2_tex, cmd->vars[1].text);
     lv_qrcode_update(guider_ui.screen_app_detail_qrcode_url, cmd->url, 20);
 
     bsp_display_unlock();
@@ -649,12 +655,24 @@ esp_err_t message_parse_cmd(uint8_t *data, size_t len, uint8_t *req_cmd, uint8_t
             cmd.frame_num = data[FRAME_INDEX];
             cmd.lang = data[APPS_LANG_INDEX];
             cmd.screen_num = data[APPS_SCREEN_INDEX];
-            cmd.text_len = data[APPS_LABEL_LEN_INDEX];
-            cmd.text = (const char *) &data[APPS_LABEL_INDEX];
+            cmd.url_len = data[APPS_LABEL_LEN_INDEX];
+            cmd.url = (const char *) &data[APPS_LABEL_LEN_INDEX + 1];
 
-            uint8_t url_len_idx = APPS_LABEL_INDEX + cmd.text_len;
-            cmd.url_len = data[url_len_idx];
-            cmd.url = (const char *) &data[url_len_idx + 1];
+            uint8_t offset = APPS_LABEL_LEN_INDEX + 1 + cmd.url_len;
+            cmd.var_count = 0;
+
+            for (uint8_t i = 0; i < 4 && offset < len; i++) {
+                cmd.vars[i].len = data[offset];
+                if (offset + 1 + cmd.vars[i].len <= len) {
+                    cmd.vars[i].text = (const char *)&data[offset + 1];
+                    offset += 1 + cmd.vars[i].len;
+                    cmd.var_count++;
+                } else {
+                    cmd.vars[i].len = 0;
+                    cmd.vars[i].text = NULL;
+                    break;
+                }
+            }
 
             cmd_set_apps_handler(&cmd);
             *ack_num = cmd.frame_num;

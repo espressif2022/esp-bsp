@@ -221,10 +221,14 @@ typedef struct {
     uint8_t frame_num;
     uint8_t lang;
     uint8_t screen_num;
-    uint8_t text_len;
-    const char *text;
     uint8_t url_len;
     const char *url;
+
+    uint8_t var_count;
+    struct {
+        uint8_t len;
+        const char *text;
+    } vars[4];
 } cmd_set_apps_t;
 
 typedef struct {
