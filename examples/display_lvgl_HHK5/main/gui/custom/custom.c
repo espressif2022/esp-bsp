@@ -1,11 +1,9 @@
 /*
-* Copyright 2024 NXP
-* NXP Proprietary. This software is owned or controlled by NXP and may only be used strictly in
-* accordance with the applicable license terms. By expressly accepting such terms or by downloading, installing,
-* activating and/or otherwise using the software, you are agreeing that you have read, and that you agree to
-* comply with and are bound by, such license terms.  If you do not agree to be bound by the applicable license
-* terms, then you may not retain, install, activate or otherwise use the software.
-*/
+ * SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: CC0-1.0
+ */
+
 
 /*********************
  *      INCLUDES
@@ -247,6 +245,7 @@ void clear_main_loop_items(lv_obj_t *parent)
 void lv_main_loop_loading(void)
 {
     printf("Loading main loop...\n");
+    lv_obj_set_parent(guider_ui.screen_title_cont_bell, lv_screen_active());
 
     cont_main_loop = lv_obj_create(lv_screen_active());
     lv_obj_set_size(cont_main_loop, lv_pct(100), 262);
@@ -316,24 +315,24 @@ void lv_create_arc_loading(uint16_t pos_x, uint16_t pos_y)
 void lv_bu_loading(void)
 {
     printf("Loading bu...\n");
-
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
+
     lv_create_arc_loading(78, 158);
 }
 
 void lv_restart_loading()
 {
     printf("Loading restart...\n");
-
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
+
     lv_create_arc_loading(46, 216);
 }
 
 void lv_apps_loading(void)
 {
     printf("Loading bellapps...\n");
-
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
+
     cont_bellapps = lv_obj_create(lv_screen_active());
     lv_obj_set_size(cont_bellapps, lv_pct(100), 262);
     lv_obj_align(cont_bellapps, LV_ALIGN_TOP_MID, 0, 150);
@@ -375,7 +374,7 @@ void lv_wpsd_loading(void)
 {
     printf("Loading wpsd...\n");
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
-    
+
 }
 void lv_app_detail_loading(void)
 {
@@ -390,7 +389,7 @@ void lv_select_loading(void)
 void lv_error_loading(void)
 {
     printf("Loading error...\n");
-    lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
+    lv_obj_set_parent(guider_ui.screen_title_cont_bell, lv_screen_active());
 }
 void lv_mm_loading(void)
 {

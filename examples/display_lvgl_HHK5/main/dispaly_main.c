@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2021-2023 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2021-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: CC0-1.0
  */
@@ -80,10 +80,10 @@ void app_main(void)
     }
 #endif
 
-    // return;
+    return;
     uint8_t count = 0;
 NEXT:
-    uint8_t lang = count%2 ? LANG_FRENCH : LANG_ENGLISH;
+    uint8_t lang = count % 2 ? LANG_FRENCH : LANG_ENGLISH;
     count++;
     process_screen(SCREEN_TYPE_BOOT, 0x00, lang);
     vTaskDelay(pdMS_TO_TICKS(1000 * 2));
@@ -130,5 +130,5 @@ NEXT:
     process_screen(SCREEN_TYPE_RESTART_MODEM, 0x02, lang);
     vTaskDelay(pdMS_TO_TICKS(1000 * 2));
 
-goto NEXT;
+    goto NEXT;
 }
