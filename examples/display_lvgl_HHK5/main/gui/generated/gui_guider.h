@@ -22,44 +22,27 @@ typedef struct
 	lv_obj_t *screen_main_loop;
 	bool screen_main_loop_del;
 	lv_obj_t *screen_main_loop_label_1;
-	lv_obj_t *screen_main_loop_btn_1;
-	lv_obj_t *screen_main_loop_btn_1_label;
 	lv_obj_t *screen_bu0;
 	bool screen_bu0_del;
 	lv_obj_t *screen_bu0_label_welcome;
-	lv_obj_t *screen_bu0_btn_1;
-	lv_obj_t *screen_bu0_btn_1_label;
 	lv_obj_t *screen_bu1;
 	bool screen_bu1_del;
 	lv_obj_t *screen_bu1_label_loading;
 	lv_obj_t *screen_bu1_img_1;
-	lv_obj_t *screen_bu1_btn_1;
-	lv_obj_t *screen_bu1_btn_1_label;
 	lv_obj_t *screen_bu2;
 	bool screen_bu2_del;
 	lv_obj_t *screen_bu2_label_brand;
-	lv_obj_t *screen_bu2_btn_1;
-	lv_obj_t *screen_bu2_btn_1_label;
 	lv_obj_t *screen_bu3;
 	bool screen_bu3_del;
 	lv_obj_t *screen_bu3_label_title_1;
-	lv_obj_t *screen_bu3_label_title_2;
+	lv_obj_t *screen_bu3_label_conf_step;
 	lv_obj_t *screen_bu3_bar_step1;
 	lv_obj_t *screen_bu3_bar_step2;
 	lv_obj_t *screen_bu3_bar_step3;
-	lv_obj_t *screen_bu3_btn_1;
-	lv_obj_t *screen_bu3_btn_1_label;
 	lv_obj_t *screen_STB1;
 	bool screen_STB1_del;
 	lv_obj_t *screen_STB1_label_connect_to;
 	lv_obj_t *screen_STB1_label_time;
-	lv_obj_t *screen_STB1_cont_1;
-	lv_obj_t *screen_STB1_label_title;
-	lv_obj_t *screen_STB1_line_1;
-	lv_obj_t *screen_STB1_btn_back_indication;
-	lv_obj_t *screen_STB1_btn_back_indication_label;
-	lv_obj_t *screen_STB1_btn_next;
-	lv_obj_t *screen_STB1_btn_next_label;
 	lv_obj_t *screen_notif;
 	bool screen_notif_del;
 	lv_obj_t *screen_notif_cont_notify;
@@ -70,27 +53,9 @@ typedef struct
 	lv_obj_t *screen_notif_label_var4_tex;
 	lv_obj_t *screen_notif_label_var3_tex;
 	lv_obj_t *screen_notif_label_var2_tex;
-	lv_obj_t *screen_notif_cont_bell;
-	lv_obj_t *screen_notif_label_bell;
-	lv_obj_t *screen_notif_btn_next;
-	lv_obj_t *screen_notif_btn_next_label;
-	lv_obj_t *screen_notif_cont_title;
-	lv_obj_t *screen_notif_label_title;
-	lv_obj_t *screen_notif_line_2;
-	lv_obj_t *screen_notif_btn_back_indication;
-	lv_obj_t *screen_notif_btn_back_indication_label;
-	lv_obj_t *screen_notif_btn_2;
-	lv_obj_t *screen_notif_btn_2_label;
 	lv_obj_t *screen_network;
 	bool screen_network_del;
 	lv_obj_t *screen_network_label_ssid_title;
-	lv_obj_t *screen_network_cont_title;
-	lv_obj_t *screen_network_label_title;
-	lv_obj_t *screen_network_line_2;
-	lv_obj_t *screen_network_btn_back_indication;
-	lv_obj_t *screen_network_btn_back_indication_label;
-	lv_obj_t *screen_network_btn_1;
-	lv_obj_t *screen_network_btn_1_label;
 	lv_obj_t *screen_network_label_var1_tex;
 	lv_obj_t *screen_network_label_passwd_title;
 	lv_obj_t *screen_network_label_var2_tex;
@@ -103,32 +68,14 @@ typedef struct
 	lv_obj_t *screen_speedtest_label_passwd_title;
 	lv_obj_t *screen_speedtest_label_var2_tex;
 	lv_obj_t *screen_speedtest_img_speed_test;
-	lv_obj_t *screen_speedtest_cont_title;
-	lv_obj_t *screen_speedtest_label_title;
-	lv_obj_t *screen_speedtest_line_4;
-	lv_obj_t *screen_speedtest_btn_back_indication;
-	lv_obj_t *screen_speedtest_btn_back_indication_label;
-	lv_obj_t *screen_speedtest_btn_2;
-	lv_obj_t *screen_speedtest_btn_2_label;
 	lv_obj_t *screen_mm_1;
 	bool screen_mm_1_del;
 	lv_obj_t *screen_mm_1_label_passwd_title;
 	lv_obj_t *screen_mm_1_label_var1_tex;
 	lv_obj_t *screen_mm_1_label_tips;
 	lv_obj_t *screen_mm_1_qrcode_passwd;
-	lv_obj_t *screen_mm_1_cont_title;
-	lv_obj_t *screen_mm_1_label_title;
-	lv_obj_t *screen_mm_1_line_4;
-	lv_obj_t *screen_mm_1_btn_back_indication;
-	lv_obj_t *screen_mm_1_btn_back_indication_label;
-	lv_obj_t *screen_mm_1_btn_2;
-	lv_obj_t *screen_mm_1_btn_2_label;
 	lv_obj_t *screen_error;
 	bool screen_error_del;
-	lv_obj_t *screen_error_cont_title;
-	lv_obj_t *screen_error_label_bell;
-	lv_obj_t *screen_error_btn_next;
-	lv_obj_t *screen_error_btn_next_label;
 	lv_obj_t *screen_error_label_tips;
 	lv_obj_t *screen_error_qrcode_url;
 	lv_obj_t *screen_error_cont_error;
@@ -138,22 +85,8 @@ typedef struct
 	lv_obj_t *screen_error_label_var2_tex;
 	lv_obj_t *screen_apps;
 	bool screen_apps_del;
-	lv_obj_t *screen_apps_cont_1;
-	lv_obj_t *screen_apps_label_title;
-	lv_obj_t *screen_apps_line_1;
-	lv_obj_t *screen_apps_btn_back_indication;
-	lv_obj_t *screen_apps_btn_back_indication_label;
-	lv_obj_t *screen_apps_btn_2;
-	lv_obj_t *screen_apps_btn_2_label;
 	lv_obj_t *screen_select;
 	bool screen_select_del;
-	lv_obj_t *screen_select_cont_1;
-	lv_obj_t *screen_select_label_title;
-	lv_obj_t *screen_select_line_2;
-	lv_obj_t *screen_select_btn_back_indication;
-	lv_obj_t *screen_select_btn_back_indication_label;
-	lv_obj_t *screen_select_btn_4;
-	lv_obj_t *screen_select_btn_4_label;
 	lv_obj_t *screen_select_label_tips;
 	lv_obj_t *screen_select_btn_no;
 	lv_obj_t *screen_select_btn_no_label;
@@ -162,43 +95,26 @@ typedef struct
 	lv_obj_t *screen_restart;
 	bool screen_restart_del;
 	lv_obj_t *screen_restart_label_loading;
-	lv_obj_t *screen_restart_cont_1;
-	lv_obj_t *screen_restart_label_title;
-	lv_obj_t *screen_restart_line_1;
-	lv_obj_t *screen_restart_btn_1;
-	lv_obj_t *screen_restart_btn_1_label;
 	lv_obj_t *screen_wpsd_2;
 	bool screen_wpsd_2_del;
 	lv_obj_t *screen_wpsd_2_label_connnect;
 	lv_obj_t *screen_wpsd_2_label_var1_tex;
-	lv_obj_t *screen_wpsd_2_cont_title;
-	lv_obj_t *screen_wpsd_2_label_title;
-	lv_obj_t *screen_wpsd_2_line_5;
-	lv_obj_t *screen_wpsd_2_btn_back_indication;
-	lv_obj_t *screen_wpsd_2_btn_back_indication_label;
-	lv_obj_t *screen_wpsd_2_btn_4;
-	lv_obj_t *screen_wpsd_2_btn_4_label;
 	lv_obj_t *screen_app_detail;
 	bool screen_app_detail_del;
-	lv_obj_t *screen_app_detail_cont_title;
-	lv_obj_t *screen_app_detail_label_title;
-	lv_obj_t *screen_app_detail_line_3;
-	lv_obj_t *screen_app_detail_btn_back_indication;
-	lv_obj_t *screen_app_detail_btn_back_indication_label;
-	lv_obj_t *screen_app_detail_btn_2;
-	lv_obj_t *screen_app_detail_btn_2_label;
 	lv_obj_t *screen_app_detail_label_var1_tex;
 	lv_obj_t *screen_app_detail_label_app_name;
 	lv_obj_t *screen_app_detail_qrcode_url;
 	lv_obj_t *screen_app_detail_img_app_icon;
 	lv_obj_t *screen_app_detail_label_var2_tex;
-	lv_obj_t *screen_null;
-	bool screen_null_del;
-	lv_obj_t *screen_null_cont_1;
-	lv_obj_t *screen_null_label_title;
-	lv_obj_t *screen_null_line_2;
-	lv_obj_t *screen_null_btn_1;
-	lv_obj_t *screen_null_btn_1_label;
+	lv_obj_t *screen_title;
+	bool screen_title_del;
+	lv_obj_t *screen_title_cont_title;
+	lv_obj_t *screen_title_label_title;
+	lv_obj_t *screen_title_line_splite;
+	lv_obj_t *screen_title_btn_back_indication;
+	lv_obj_t *screen_title_btn_back_indication_label;
+	lv_obj_t *screen_title_cont_bell;
+	lv_obj_t *screen_title_label_bell;
 }lv_ui;
 
 typedef void (*ui_setup_scr_t)(lv_ui * ui);
@@ -242,7 +158,7 @@ void setup_scr_screen_select(lv_ui *ui);
 void setup_scr_screen_restart(lv_ui *ui);
 void setup_scr_screen_wpsd_2(lv_ui *ui);
 void setup_scr_screen_app_detail(lv_ui *ui);
-void setup_scr_screen_null(lv_ui *ui);
+void setup_scr_screen_title(lv_ui *ui);
 LV_IMAGE_DECLARE(_gradient_ring_RGB565A8_100x100);
 LV_IMAGE_DECLARE(_error_RGB565A8_29x35);
 LV_IMAGE_DECLARE(_icon_ok_RGB565A8_29x35);
@@ -252,12 +168,12 @@ LV_IMAGE_DECLARE(_icon_app_RGB565A8_109x71);
 
 LV_FONT_DECLARE(lv_font_montserratMedium_40)
 LV_FONT_DECLARE(lv_font_montserratMedium_16)
-LV_FONT_DECLARE(lv_font_montserratMedium_12)
 LV_FONT_DECLARE(lv_font_montserratMedium_70)
 LV_FONT_DECLARE(lv_font_montserratMedium_25)
-LV_FONT_DECLARE(lv_font_montserratMedium_35)
-LV_FONT_DECLARE(lv_font_montserratMedium_20)
 LV_FONT_DECLARE(lv_font_montserratMedium_22)
+LV_FONT_DECLARE(lv_font_montserratMedium_20)
+LV_FONT_DECLARE(lv_font_montserratMedium_12)
+LV_FONT_DECLARE(lv_font_montserratMedium_35)
 
 
 #ifdef __cplusplus

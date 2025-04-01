@@ -19,10 +19,7 @@ extern "C" {
 void events_init(lv_ui *ui);
 
 void events_init_screen_main_loop(lv_ui *ui);
-void events_init_screen_bu0(lv_ui *ui);
 void events_init_screen_bu1(lv_ui *ui);
-void events_init_screen_bu2(lv_ui *ui);
-void events_init_screen_bu3(lv_ui *ui);
 void events_init_screen_STB1(lv_ui *ui);
 void events_init_screen_notif(lv_ui *ui);
 void events_init_screen_network(lv_ui *ui);
@@ -34,7 +31,6 @@ void events_init_screen_select(lv_ui *ui);
 void events_init_screen_restart(lv_ui *ui);
 void events_init_screen_wpsd_2(lv_ui *ui);
 void events_init_screen_app_detail(lv_ui *ui);
-void events_init_screen_null(lv_ui *ui);
 
 #ifdef __cplusplus
 }

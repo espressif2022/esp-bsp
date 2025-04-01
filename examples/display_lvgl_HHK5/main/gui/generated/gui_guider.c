@@ -88,7 +88,7 @@ void init_scr_del_flag(lv_ui *ui)
     ui->screen_restart_del = true;
     ui->screen_wpsd_2_del = true;
     ui->screen_app_detail_del = true;
-    ui->screen_null_del = true;
+    ui->screen_title_del = true;
 }
 
 void setup_bottom_layer(void)
@@ -101,8 +101,8 @@ void setup_ui(lv_ui *ui)
     setup_bottom_layer();
     init_scr_del_flag(ui);
     init_keyboard(ui);
-    setup_scr_screen_bu3(ui);
-    lv_screen_load(ui->screen_bu3);
+    setup_scr_screen_main_loop(ui);
+    lv_screen_load(ui->screen_main_loop);
 }
 
 void video_play(lv_ui *ui)

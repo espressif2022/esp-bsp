@@ -17,8 +17,16 @@
 
 extern void lv_main_loop_loading(void);
 void lv_bu_loading(void);
-void lv_apps_loading(void);
-void lv_restart_loading(void);
+extern void lv_notif_loading(void);
+extern void lv_network_loading(void);
+extern void lv_speed_test_loading(void);
+extern void lv_mm_loading(void);
+extern void lv_error_loading(void);
+extern void lv_apps_loading(void);
+extern void lv_select_loading(void);
+extern void lv_restart_loading(void);
+extern void lv_wpsd_loading(void);
+extern void lv_app_detail_loading(void);
 
 static void screen_main_loop_event_handler (lv_event_t *e)
 {
@@ -34,43 +42,9 @@ static void screen_main_loop_event_handler (lv_event_t *e)
     }
 }
 
-static void screen_main_loop_btn_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_bu0, guider_ui.screen_bu0_del, &guider_ui.screen_main_loop_del, setup_scr_screen_bu0, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 void events_init_screen_main_loop (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->screen_main_loop, screen_main_loop_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_main_loop_btn_1, screen_main_loop_btn_1_event_handler, LV_EVENT_ALL, ui);
-}
-
-static void screen_bu0_btn_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_bu1, guider_ui.screen_bu1_del, &guider_ui.screen_bu0_del, setup_scr_screen_bu1, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void events_init_screen_bu0 (lv_ui *ui)
-{
-    lv_obj_add_event_cb(ui->screen_bu0_btn_1, screen_bu0_btn_1_event_handler, LV_EVENT_ALL, ui);
 }
 
 static void screen_bu1_event_handler (lv_event_t *e)
@@ -87,71 +61,18 @@ static void screen_bu1_event_handler (lv_event_t *e)
     }
 }
 
-static void screen_bu1_btn_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_bu2, guider_ui.screen_bu2_del, &guider_ui.screen_bu1_del, setup_scr_screen_bu2, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 void events_init_screen_bu1 (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->screen_bu1, screen_bu1_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_bu1_btn_1, screen_bu1_btn_1_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_bu2_btn_1_event_handler (lv_event_t *e)
+static void screen_STB1_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_bu3, guider_ui.screen_bu3_del, &guider_ui.screen_bu2_del, setup_scr_screen_bu3, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
 
-void events_init_screen_bu2 (lv_ui *ui)
-{
-    lv_obj_add_event_cb(ui->screen_bu2_btn_1, screen_bu2_btn_1_event_handler, LV_EVENT_ALL, ui);
-}
-
-static void screen_bu3_btn_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_STB1, guider_ui.screen_STB1_del, &guider_ui.screen_bu3_del, setup_scr_screen_STB1, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void events_init_screen_bu3 (lv_ui *ui)
-{
-    lv_obj_add_event_cb(ui->screen_bu3_btn_1, screen_bu3_btn_1_event_handler, LV_EVENT_ALL, ui);
-}
-
-static void screen_STB1_btn_next_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_notif, guider_ui.screen_notif_del, &guider_ui.screen_STB1_del, setup_scr_screen_notif, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
         break;
     }
     default:
@@ -161,16 +82,16 @@ static void screen_STB1_btn_next_event_handler (lv_event_t *e)
 
 void events_init_screen_STB1 (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_STB1_btn_next, screen_STB1_btn_next_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_STB1, screen_STB1_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_notif_btn_2_event_handler (lv_event_t *e)
+static void screen_notif_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_network, guider_ui.screen_network_del, &guider_ui.screen_notif_del, setup_scr_screen_network, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_notif_loading();
         break;
     }
     default:
@@ -180,16 +101,16 @@ static void screen_notif_btn_2_event_handler (lv_event_t *e)
 
 void events_init_screen_notif (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_notif_btn_2, screen_notif_btn_2_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_notif, screen_notif_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_network_btn_1_event_handler (lv_event_t *e)
+static void screen_network_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_speedtest, guider_ui.screen_speedtest_del, &guider_ui.screen_network_del, setup_scr_screen_speedtest, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_network_loading();
         break;
     }
     default:
@@ -199,16 +120,16 @@ static void screen_network_btn_1_event_handler (lv_event_t *e)
 
 void events_init_screen_network (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_network_btn_1, screen_network_btn_1_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_network, screen_network_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_speedtest_btn_2_event_handler (lv_event_t *e)
+static void screen_speedtest_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_mm_1, guider_ui.screen_mm_1_del, &guider_ui.screen_speedtest_del, setup_scr_screen_mm_1, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_speed_test_loading();
         break;
     }
     default:
@@ -218,16 +139,16 @@ static void screen_speedtest_btn_2_event_handler (lv_event_t *e)
 
 void events_init_screen_speedtest (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_speedtest_btn_2, screen_speedtest_btn_2_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_speedtest, screen_speedtest_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_mm_1_btn_2_event_handler (lv_event_t *e)
+static void screen_mm_1_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_error, guider_ui.screen_error_del, &guider_ui.screen_mm_1_del, setup_scr_screen_error, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_mm_loading();
         break;
     }
     default:
@@ -237,16 +158,16 @@ static void screen_mm_1_btn_2_event_handler (lv_event_t *e)
 
 void events_init_screen_mm_1 (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_mm_1_btn_2, screen_mm_1_btn_2_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_mm_1, screen_mm_1_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_error_btn_next_event_handler (lv_event_t *e)
+static void screen_error_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_apps, guider_ui.screen_apps_del, &guider_ui.screen_error_del, setup_scr_screen_apps, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_error_loading();
         break;
     }
     default:
@@ -256,7 +177,7 @@ static void screen_error_btn_next_event_handler (lv_event_t *e)
 
 void events_init_screen_error (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_error_btn_next, screen_error_btn_next_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_error, screen_error_event_handler, LV_EVENT_ALL, ui);
 }
 
 static void screen_apps_event_handler (lv_event_t *e)
@@ -273,33 +194,18 @@ static void screen_apps_event_handler (lv_event_t *e)
     }
 }
 
-static void screen_apps_btn_2_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_select, guider_ui.screen_select_del, &guider_ui.screen_apps_del, setup_scr_screen_select, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 void events_init_screen_apps (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->screen_apps, screen_apps_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_apps_btn_2, screen_apps_btn_2_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_select_btn_4_event_handler (lv_event_t *e)
+static void screen_select_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_restart, guider_ui.screen_restart_del, &guider_ui.screen_select_del, setup_scr_screen_restart, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_select_loading();
         break;
     }
     default:
@@ -309,7 +215,7 @@ static void screen_select_btn_4_event_handler (lv_event_t *e)
 
 void events_init_screen_select (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_select_btn_4, screen_select_btn_4_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_select, screen_select_event_handler, LV_EVENT_ALL, ui);
 }
 
 static void screen_restart_event_handler (lv_event_t *e)
@@ -326,33 +232,18 @@ static void screen_restart_event_handler (lv_event_t *e)
     }
 }
 
-static void screen_restart_btn_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_wpsd_2, guider_ui.screen_wpsd_2_del, &guider_ui.screen_restart_del, setup_scr_screen_wpsd_2, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 void events_init_screen_restart (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->screen_restart, screen_restart_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_restart_btn_1, screen_restart_btn_1_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_wpsd_2_btn_4_event_handler (lv_event_t *e)
+static void screen_wpsd_2_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_app_detail, guider_ui.screen_app_detail_del, &guider_ui.screen_wpsd_2_del, setup_scr_screen_app_detail, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_wpsd_loading();
         break;
     }
     default:
@@ -362,16 +253,16 @@ static void screen_wpsd_2_btn_4_event_handler (lv_event_t *e)
 
 void events_init_screen_wpsd_2 (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_wpsd_2_btn_4, screen_wpsd_2_btn_4_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_wpsd_2, screen_wpsd_2_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_app_detail_btn_2_event_handler (lv_event_t *e)
+static void screen_app_detail_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_PRESSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_null, guider_ui.screen_null_del, &guider_ui.screen_app_detail_del, setup_scr_screen_null, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+        lv_app_detail_loading();
         break;
     }
     default:
@@ -381,26 +272,7 @@ static void screen_app_detail_btn_2_event_handler (lv_event_t *e)
 
 void events_init_screen_app_detail (lv_ui *ui)
 {
-    lv_obj_add_event_cb(ui->screen_app_detail_btn_2, screen_app_detail_btn_2_event_handler, LV_EVENT_ALL, ui);
-}
-
-static void screen_null_btn_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_main_loop, guider_ui.screen_main_loop_del, &guider_ui.screen_null_del, setup_scr_screen_main_loop, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void events_init_screen_null (lv_ui *ui)
-{
-    lv_obj_add_event_cb(ui->screen_null_btn_1, screen_null_btn_1_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_app_detail, screen_app_detail_event_handler, LV_EVENT_ALL, ui);
 }
 
 
