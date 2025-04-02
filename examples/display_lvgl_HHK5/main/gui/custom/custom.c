@@ -242,35 +242,12 @@ void clear_main_loop_items(lv_obj_t *parent)
     }
 }
 
-void lv_main_loop_loading(void)
-{
-    printf("Loading main loop...\n");
-    lv_obj_set_parent(guider_ui.screen_title_cont_bell, lv_screen_active());
-
-    cont_main_loop = lv_obj_create(lv_screen_active());
-    lv_obj_set_size(cont_main_loop, lv_pct(100), 262);
-    lv_obj_align(cont_main_loop, LV_ALIGN_TOP_MID, 0, 70);
-    lv_obj_set_scroll_snap_y(cont_main_loop, LV_SCROLL_SNAP_CENTER);
-    lv_obj_set_flex_flow(cont_main_loop, LV_FLEX_FLOW_COLUMN);
-    lv_obj_add_event_cb(cont_main_loop, main_loop_infinite_event_cb, LV_EVENT_ALL, NULL);
-    lv_obj_set_style_bg_opa(cont_main_loop, LV_OPA_TRANSP, 0);
-    lv_obj_set_style_border_width(cont_main_loop, 0, 0);
-    lv_obj_set_style_radius(cont_main_loop, 0, 0);
-    lv_obj_add_flag(cont_main_loop, LV_OBJ_FLAG_SCROLL_ONE);
-
-    add_main_loop_items(cont_main_loop, 0x07FE, 0);
-    create_main_loop_mask();
-
-    /*Update the buttons position manually for first*/
-    lv_obj_send_event(cont_main_loop, LV_EVENT_SCROLL, NULL);
-}
-
 static void arc_anim_cb(void *obj, int32_t v)
 {
     lv_arc_set_value((lv_obj_t *)obj, v);
 }
 
-void lv_create_arc_loading(uint16_t pos_x, uint16_t pos_y)
+void create_arc_loading(uint16_t pos_x, uint16_t pos_y)
 {
     /*Create an Arc*/
     lv_obj_t *arc = lv_arc_create(lv_screen_active());
@@ -297,7 +274,6 @@ void lv_create_arc_loading(uint16_t pos_x, uint16_t pos_y)
 
     // lv_obj_add_style(arc, &style, LV_PART_INDICATOR);
 
-    // lv_obj_align(arc, LV_ALIGN_TOP_LEFT, 78, 158);
     lv_obj_align(arc, LV_ALIGN_TOP_LEFT, pos_x, pos_y);
     lv_obj_set_size(arc, 80, 80);
 
@@ -312,12 +288,35 @@ void lv_create_arc_loading(uint16_t pos_x, uint16_t pos_y)
     lv_anim_start(&a);
 }
 
+void lv_main_loop_loading(void)
+{
+    printf("Loading main loop...\n");
+    lv_obj_set_parent(guider_ui.screen_title_cont_bell, lv_screen_active());
+
+    cont_main_loop = lv_obj_create(lv_screen_active());
+    lv_obj_set_size(cont_main_loop, lv_pct(100), 262);
+    lv_obj_align(cont_main_loop, LV_ALIGN_TOP_MID, 0, 70);
+    lv_obj_set_scroll_snap_y(cont_main_loop, LV_SCROLL_SNAP_CENTER);
+    lv_obj_set_flex_flow(cont_main_loop, LV_FLEX_FLOW_COLUMN);
+    lv_obj_add_event_cb(cont_main_loop, main_loop_infinite_event_cb, LV_EVENT_ALL, NULL);
+    lv_obj_set_style_bg_opa(cont_main_loop, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_width(cont_main_loop, 0, 0);
+    lv_obj_set_style_radius(cont_main_loop, 0, 0);
+    lv_obj_add_flag(cont_main_loop, LV_OBJ_FLAG_SCROLL_ONE);
+
+    add_main_loop_items(cont_main_loop, 0x07FE, 0);
+    create_main_loop_mask();
+
+    /*Update the buttons position manually for first*/
+    lv_obj_send_event(cont_main_loop, LV_EVENT_SCROLL, NULL);
+}
+
 void lv_bu_loading(void)
 {
     printf("Loading bu...\n");
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
 
-    lv_create_arc_loading(78, 158);
+    create_arc_loading(78, 158);
 }
 
 void lv_restart_loading()
@@ -325,7 +324,7 @@ void lv_restart_loading()
     printf("Loading restart...\n");
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
 
-    lv_create_arc_loading(46, 216);
+    create_arc_loading(46, 216);
 }
 
 void lv_apps_loading(void)
@@ -410,6 +409,7 @@ void lv_notif_loading(void)
 {
     printf("Loading notif...\n");
     lv_obj_set_parent(guider_ui.screen_title_cont_title, lv_screen_active());
+    lv_obj_set_parent(guider_ui.screen_title_cont_bell, lv_screen_active());
 }
 
 void custom_init(lv_ui *ui)

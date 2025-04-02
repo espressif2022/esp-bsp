@@ -38,7 +38,7 @@ void setup_scr_screen_app_detail(lv_ui *ui)
     //Write style for screen_app_detail_label_var1_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->screen_app_detail_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_app_detail_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_app_detail_label_var1_tex, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_app_detail_label_var1_tex, lv_color_hex(0x9d9d9d), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui->screen_app_detail_label_var1_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_app_detail_label_var1_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_app_detail_label_var1_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -107,7 +107,7 @@ void setup_scr_screen_app_detail(lv_ui *ui)
     //Write style for screen_app_detail_label_var2_tex, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->screen_app_detail_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->screen_app_detail_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_app_detail_label_var2_tex, lv_color_hex(0x4d4949), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_app_detail_label_var2_tex, lv_color_hex(0x9d9d9d), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui->screen_app_detail_label_var2_tex, &lv_font_montserratMedium_25, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->screen_app_detail_label_var2_tex, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_app_detail_label_var2_tex, 0, LV_PART_MAIN|LV_STATE_DEFAULT);

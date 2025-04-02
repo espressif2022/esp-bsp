@@ -52,7 +52,7 @@ static i2c_slave_context_t context;
 
 void disp_buf(uint8_t *buf, int len)
 {
-    printf("HEX:");
+    printf("HEX:\r\n");
     int i;
     for (i = 0; i < len; i++) {
         printf("%02x ", buf[i]);
@@ -87,6 +87,21 @@ static bool i2c_slave_receive_cb(i2c_slave_dev_handle_t i2c_slave, const i2c_sla
     return xTaskWoken == pdTRUE;
 }
 
+void i2c_send_test_cmd(uint8_t *cmd, uint16_t len)
+{
+    i2c_slave_event_t evt = I2C_SLAVE_EVT_RX;
+
+    if (len > DATA_LENGTH) {
+        ESP_LOGW(TAG, "Data length exceeds buffer size");
+        return;
+    } else {
+        disp_buf(cmd, len);
+        memcpy(context.temp_data, cmd, len);
+        context.temp_len = len;
+        xQueueSend(context.event_queue, &evt, portMAX_DELAY);
+    }
+}
+
 void i2c_slave_read_task(void *arg)
 {
     i2c_slave_event_t evt;
@@ -97,7 +112,7 @@ void i2c_slave_read_task(void *arg)
     while (1) {
         if (xQueueReceive(context.event_queue, &evt, portMAX_DELAY) == pdTRUE) {
             if (evt == I2C_SLAVE_EVT_RX) {
-                disp_buf(context.temp_data, context.temp_len);
+                // disp_buf(context.temp_data, context.temp_len);
                 uint8_t ack_num = 0;
                 uint8_t req_cmd = 0;
                 if (message_parse_cmd(context.temp_data, context.temp_len, &req_cmd, &ack_num) == ESP_OK) {
@@ -134,7 +149,7 @@ void i2c_slave_read_task(void *arg)
                     printf("Unknown cmd\r\n");
                     break;
                 }
-                disp_buf(cmd_resp_data, cmd_resp_len);
+                // disp_buf(cmd_resp_data, cmd_resp_len);
                 i2c_slave_write(context.handle, cmd_resp_data, cmd_resp_len, &total_written, 1000);
                 // ESP_LOGI(TAG, "write, reg:%02X, %d", cmd_resp_len, total_written);
             } else if (evt == I2C_SLAVE_EVT_EMERGENCY) {

@@ -21,7 +21,6 @@ typedef struct
   
 	lv_obj_t *screen_main_loop;
 	bool screen_main_loop_del;
-	lv_obj_t *screen_main_loop_label_1;
 	lv_obj_t *screen_bu0;
 	bool screen_bu0_del;
 	lv_obj_t *screen_bu0_label_welcome;
@@ -81,8 +80,8 @@ typedef struct
 	lv_obj_t *screen_error_cont_error;
 	lv_obj_t *screen_error_label_err_num;
 	lv_obj_t *screen_error_img_error;
-	lv_obj_t *screen_error_label_var1_tex;
 	lv_obj_t *screen_error_label_var2_tex;
+	lv_obj_t *screen_error_label_var1_tex;
 	lv_obj_t *screen_apps;
 	bool screen_apps_del;
 	lv_obj_t *screen_select;
@@ -166,9 +165,9 @@ LV_IMAGE_DECLARE(_speed_test_RGB565A8_145x140);
 LV_IMAGE_DECLARE(_error_RGB565A8_31x40);
 LV_IMAGE_DECLARE(_icon_app_RGB565A8_109x71);
 
-LV_FONT_DECLARE(lv_font_montserratMedium_40)
-LV_FONT_DECLARE(lv_font_montserratMedium_16)
 LV_FONT_DECLARE(lv_font_montserratMedium_70)
+LV_FONT_DECLARE(lv_font_montserratMedium_16)
+LV_FONT_DECLARE(lv_font_montserratMedium_40)
 LV_FONT_DECLARE(lv_font_montserratMedium_25)
 LV_FONT_DECLARE(lv_font_montserratMedium_22)
 LV_FONT_DECLARE(lv_font_montserratMedium_20)

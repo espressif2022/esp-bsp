@@ -178,7 +178,6 @@ void cmd_set_list(void *arg)
     menu_mask |= cmd->menu_list_msb;
     menu_mask <<= 8;
     menu_mask |= cmd->menu_list_lsb;
-    ESP_LOGI(TAG, "menu_mask: %04X", menu_mask);
     add_main_loop_items(cont_main_loop, menu_mask, cmd->lang);
 
     bsp_display_unlock();
@@ -280,8 +279,13 @@ void cmd_set_notif(void *arg)
         lv_label_set_text(guider_ui.screen_notif_label_var2_tex, cmd->vars[1].text);
         lv_label_set_text(guider_ui.screen_notif_label_var3_tex, cmd->vars[2].text);
         lv_label_set_text(guider_ui.screen_notif_label_var4_tex, cmd->vars[3].text);
+
+        lv_obj_clear_flag(guider_ui.screen_title_cont_bell, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(guider_ui.screen_title_cont_title, LV_OBJ_FLAG_HIDDEN);
     } else {
         lv_obj_add_flag(guider_ui.screen_notif_cont_labels, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(guider_ui.screen_title_cont_title, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(guider_ui.screen_title_cont_bell, LV_OBJ_FLAG_HIDDEN);
     }
 
     bsp_display_unlock();
@@ -346,8 +350,8 @@ void cmd_set_error(void *arg)
     if (NULL == cmd) {
         return;
     }
-    ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, lang:%d, error num:%d, error:%s, url:%s",
-             cmd->frame_num, cmd->lang, cmd->error_num, cmd->label, cmd->url);
+    ESP_LOGI(TAG, "CMD_SET_ERROR, frame:%d, lang:%d, error num:%d, error:%s, url(%d):%s",
+             cmd->frame_num, cmd->lang, cmd->error_num, cmd->label, cmd->url_len, cmd->url);
 
     for (uint8_t i = 0; i < cmd->var_count; i++) {
         ESP_LOGI(TAG, "Variable %d(%d): %.*s", i, cmd->vars[i].len, cmd->vars[i].len, cmd->vars[i].text);
@@ -357,10 +361,20 @@ void cmd_set_error(void *arg)
 
     lv_screen_load(guider_ui.screen_error);
 
+    if (cmd->url_len > 1) {
+        lv_obj_clear_flag(guider_ui.screen_error_qrcode_url, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(guider_ui.screen_error_label_tips, LV_OBJ_FLAG_HIDDEN);
+        lv_qrcode_update(guider_ui.screen_error_qrcode_url, cmd->url, 20);
+        lv_obj_set_pos(guider_ui.screen_error_cont_error, 2, 93);
+    } else {
+        lv_obj_add_flag(guider_ui.screen_error_qrcode_url, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(guider_ui.screen_error_label_tips, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_pos(guider_ui.screen_error_cont_error, 2, 150);
+    }
+
     lv_label_set_text_fmt(guider_ui.screen_error_label_err_num, "Error %02d - %s", cmd->error_num, cmd->label);
     lv_label_set_text(guider_ui.screen_error_label_var1_tex, cmd->vars[0].text);
     lv_label_set_text(guider_ui.screen_error_label_var2_tex, cmd->vars[1].text);
-    lv_qrcode_update(guider_ui.screen_error_qrcode_url, cmd->url, 20);
 
     bsp_display_unlock();
 }
@@ -438,7 +452,11 @@ void cmd_set_bellapps(void *arg)
             lv_label_set_text(child_label, items_bell_apps[i][1]);
         }
     }
-    lv_obj_scroll_to_view(lv_obj_get_child(cont_bellapps, cmd->menu_num), LV_ANIM_ON);
+    if ( (cmd->menu_num - 1) < count) {
+        lv_obj_scroll_to_view(lv_obj_get_child(cont_bellapps, (cmd->menu_num - 1)), LV_ANIM_ON);
+    } else {
+        ESP_LOGW(TAG, "Invalid menu number %d", cmd->menu_num);
+    }
 
     bsp_display_unlock();
 }
