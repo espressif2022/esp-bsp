@@ -76,7 +76,6 @@ void init_mmap_filesystem()
         .partition_label = "factory",
         .max_files = MMAP_SPIFFS_ASSETS_FILES,
         .checksum = MMAP_SPIFFS_ASSETS_CHECKSUM,
-        .start_offset = MMAP_SPIFFS_ASSETS_OFFSET,
         .flags = {
             .mmap_enable = true,
             .app_bin_check = false,
@@ -94,7 +93,7 @@ void init_mmap_filesystem()
     esp_lv_fs_desc_init(&fs_drive_cfg, &fs_drive_a_handle);
 
     int stored_files = mmap_assets_get_stored_files(asset_handle);
-    ESP_LOGI(TAG, "offfset:0x%X, stored_files:%d", MMAP_SPIFFS_ASSETS_OFFSET, stored_files);
+    ESP_LOGI(TAG, "stored_files:%d", stored_files);
 
     for (int i = 0; i < stored_files; i++) {
         const char *name = mmap_assets_get_name(asset_handle, i);
@@ -141,8 +140,8 @@ void app_main(void)
     lv_obj_set_style_text_font(main_label, my_font, 0);
     lv_obj_align(main_label, LV_ALIGN_CENTER, 0, 0);
 
-    // lv_label_set_text(main_label, "mmap 单分区测试 全字体 徐新");
-    lv_label_set_text(main_label, "T");
+    lv_label_set_text(main_label, "mmap 单分区测试 全字体 徐新");
+    // lv_label_set_text(main_label, "T");
 
     bsp_display_unlock();
     /* Create a FreeRTOS timer */

@@ -101,9 +101,8 @@ void lv_draw_swm341_dma2d_ctx_deinit(lv_disp_drv_t * drv, lv_draw_ctx_t * draw_c
 void lv_draw_swm341_dma2d_blend(lv_draw_ctx_t * draw_ctx, const lv_draw_sw_blend_dsc_t * dsc)
 {
     lv_area_t blend_area;
-    if(!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area)) {
+    if(!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area))
         return;
-    }
 
     bool done = false;
 
@@ -130,9 +129,7 @@ void lv_draw_swm341_dma2d_blend(lv_draw_ctx_t * draw_ctx, const lv_draw_sw_blend
         }
     }
 
-    if(!done) {
-        lv_draw_sw_blend_basic(draw_ctx, dsc);
-    }
+    if(!done) lv_draw_sw_blend_basic(draw_ctx, dsc);
 }
 
 static void lv_draw_swm341_dma2d_img_decoded(lv_draw_ctx_t * draw_ctx, const lv_draw_img_dsc_t * dsc,

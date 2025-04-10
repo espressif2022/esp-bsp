@@ -184,9 +184,7 @@ void lv_spangroup_set_overflow(lv_obj_t * obj, lv_span_overflow_t overflow)
 {
     LV_ASSERT_OBJ(obj, MY_CLASS);
     lv_spangroup_t * spans = (lv_spangroup_t *)obj;
-    if(spans->overflow == overflow) {
-        return;
-    }
+    if(spans->overflow == overflow) return;
 
     spans->overflow = overflow;
     lv_obj_invalidate(obj);
@@ -196,9 +194,7 @@ void lv_spangroup_set_indent(lv_obj_t * obj, lv_coord_t indent)
 {
     LV_ASSERT_OBJ(obj, MY_CLASS);
     lv_spangroup_t * spans = (lv_spangroup_t *)obj;
-    if(spans->indent == indent) {
-        return;
-    }
+    if(spans->indent == indent) return;
 
     spans->indent = indent;
 
@@ -431,9 +427,7 @@ lv_coord_t lv_spangroup_get_expand_height(lv_obj_t * obj, lv_coord_t width)
             /* switch to the next span when current is end */
             if(cur_txt[cur_txt_ofs] == '\0') {
                 cur_span = _lv_ll_get_next(&spans->child_ll, cur_span);
-                if(cur_span == NULL) {
-                    break;
-                }
+                if(cur_span == NULL) break;
                 cur_txt = cur_span->txt;
                 span_text_check(&cur_txt);
                 cur_txt_ofs = 0;
@@ -539,9 +533,7 @@ static void lv_spangroup_event(const lv_obj_class_t * class_p, lv_event_t * e)
     LV_UNUSED(class_p);
 
     /* Call the ancestor's event handler */
-    if(lv_obj_event_base(MY_CLASS, e) != LV_RES_OK) {
-        return;
-    }
+    if(lv_obj_event_base(MY_CLASS, e) != LV_RES_OK) return;
 
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
@@ -777,9 +769,7 @@ static void lv_draw_span(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
 
     /* return if no draw area */
     lv_area_t clip_area;
-    if(!_lv_area_intersect(&clip_area, &coords, draw_ctx->clip_area)) {
-        return;
-    }
+    if(!_lv_area_intersect(&clip_area, &coords, draw_ctx->clip_area))  return;
     const lv_area_t * clip_area_ori = draw_ctx->clip_area;
     draw_ctx->clip_area = &clip_area;
 
@@ -820,9 +810,7 @@ static void lv_draw_span(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
             /* switch to the next span when current is end */
             if(cur_txt[cur_txt_ofs] == '\0') {
                 cur_span = _lv_ll_get_next(&spans->child_ll, cur_span);
-                if(cur_span == NULL) {
-                    break;
-                }
+                if(cur_span == NULL) break;
                 cur_txt = cur_span->txt;
                 span_text_check(&cur_txt);
                 cur_txt_ofs = 0;
@@ -893,11 +881,11 @@ static void lv_draw_span(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
             if(last_snippet->txt[last_snippet->bytes] == '\0') {
                 next_line_h = 0;
                 lv_span_t * next_span = _lv_ll_get_next(&spans->child_ll, last_snippet->span);
-                if(next_span) {  /* have the next line */
+                if(next_span) { /* have the next line */
                     next_line_h = lv_font_get_line_height(lv_span_get_style_text_font(obj, next_span)) + line_space;
                 }
             }
-            if(txt_pos.y + max_line_h + next_line_h - line_space > coords.y2 + 1) {  /* for overflow if is end line. */
+            if(txt_pos.y + max_line_h + next_line_h - line_space > coords.y2 + 1) { /* for overflow if is end line. */
                 if(last_snippet->txt[last_snippet->bytes] != '\0') {
                     last_snippet->bytes = strlen(last_snippet->txt);
                     last_snippet->txt_w = lv_txt_get_width(last_snippet->txt, last_snippet->bytes, last_snippet->font,

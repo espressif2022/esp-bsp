@@ -106,20 +106,12 @@ static void * fs_open(lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
     LV_UNUSED(drv);
     uint8_t flags = 0;
 
-    if(mode == LV_FS_MODE_WR) {
-        flags = FA_WRITE | FA_OPEN_ALWAYS;
-    }
-    else if(mode == LV_FS_MODE_RD) {
-        flags = FA_READ;
-    }
-    else if(mode == (LV_FS_MODE_WR | LV_FS_MODE_RD)) {
-        flags = FA_READ | FA_WRITE | FA_OPEN_ALWAYS;
-    }
+    if(mode == LV_FS_MODE_WR) flags = FA_WRITE | FA_OPEN_ALWAYS;
+    else if(mode == LV_FS_MODE_RD) flags = FA_READ;
+    else if(mode == (LV_FS_MODE_WR | LV_FS_MODE_RD)) flags = FA_READ | FA_WRITE | FA_OPEN_ALWAYS;
 
     FIL * f = lv_mem_alloc(sizeof(FIL));
-    if(f == NULL) {
-        return NULL;
-    }
+    if(f == NULL) return NULL;
 
     FRESULT res = f_open(f, path, flags);
     if(res == FR_OK) {
@@ -160,12 +152,8 @@ static lv_fs_res_t fs_read(lv_fs_drv_t * drv, void * file_p, void * buf, uint32_
 {
     LV_UNUSED(drv);
     FRESULT res = f_read(file_p, buf, btr, (UINT *)br);
-    if(res == FR_OK) {
-        return LV_FS_RES_OK;
-    }
-    else {
-        return LV_FS_RES_UNKNOWN;
-    }
+    if(res == FR_OK) return LV_FS_RES_OK;
+    else return LV_FS_RES_UNKNOWN;
 }
 
 /**
@@ -181,12 +169,8 @@ static lv_fs_res_t fs_write(lv_fs_drv_t * drv, void * file_p, const void * buf, 
 {
     LV_UNUSED(drv);
     FRESULT res = f_write(file_p, buf, btw, (UINT *)bw);
-    if(res == FR_OK) {
-        return LV_FS_RES_OK;
-    }
-    else {
-        return LV_FS_RES_UNKNOWN;
-    }
+    if(res == FR_OK) return LV_FS_RES_OK;
+    else return LV_FS_RES_UNKNOWN;
 }
 
 /**
@@ -242,9 +226,7 @@ static void * fs_dir_open(lv_fs_drv_t * drv, const char * path)
 {
     LV_UNUSED(drv);
     DIR * d = lv_mem_alloc(sizeof(DIR));
-    if(d == NULL) {
-        return NULL;
-    }
+    if(d == NULL) return NULL;
 
     FRESULT res = f_opendir(d, path);
     if(res != FR_OK) {
@@ -271,17 +253,13 @@ static lv_fs_res_t fs_dir_read(lv_fs_drv_t * drv, void * dir_p, char * fn)
 
     do {
         res = f_readdir(dir_p, &fno);
-        if(res != FR_OK) {
-            return LV_FS_RES_UNKNOWN;
-        }
+        if(res != FR_OK) return LV_FS_RES_UNKNOWN;
 
         if(fno.fattrib & AM_DIR) {
             fn[0] = '/';
             strcpy(&fn[1], fno.fname);
         }
-        else {
-            strcpy(fn, fno.fname);
-        }
+        else strcpy(fn, fno.fname);
 
     } while(strcmp(fn, "/.") == 0 || strcmp(fn, "/..") == 0);
 

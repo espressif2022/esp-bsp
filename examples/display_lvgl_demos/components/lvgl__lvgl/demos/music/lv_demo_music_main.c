@@ -295,9 +295,7 @@ lv_obj_t * _lv_demo_music_main_create(lv_obj_t * parent)
 
 void _lv_demo_music_main_close(void)
 {
-    if(stop_start_anim_timer) {
-        lv_timer_del(stop_start_anim_timer);
-    }
+    if(stop_start_anim_timer) lv_timer_del(stop_start_anim_timer);
     lv_timer_del(sec_counter_timer);
 }
 
@@ -306,9 +304,7 @@ void _lv_demo_music_album_next(bool next)
     uint32_t id = track_id;
     if(next) {
         id++;
-        if(id >= ACTIVE_TRACK_CNT) {
-            id = 0;
-        }
+        if(id >= ACTIVE_TRACK_CNT) id = 0;
     }
     else {
         if(id == 0) {
@@ -665,13 +661,9 @@ static void track_load(uint32_t id)
     lv_slider_set_value(slider_obj, 0, LV_ANIM_OFF);
     lv_label_set_text(time_obj, "0:00");
 
-    if(id == track_id) {
-        return;
-    }
+    if(id == track_id) return;
     bool next = false;
-    if((track_id + 1) % ACTIVE_TRACK_CNT == id) {
-        next = true;
-    }
+    if((track_id + 1) % ACTIVE_TRACK_CNT == id) next = true;
 
     _lv_demo_music_list_btn_check(track_id, false);
 
@@ -778,9 +770,7 @@ static void spectrum_draw_event_cb(lv_event_t * e)
         lv_draw_ctx_t * draw_ctx = lv_event_get_draw_ctx(e);
 
         lv_opa_t opa = lv_obj_get_style_opa_recursive(obj, LV_PART_MAIN);
-        if(opa < LV_OPA_MIN) {
-            return;
-        }
+        if(opa < LV_OPA_MIN) return;
 
         lv_point_t poly[4];
         lv_point_t center;
@@ -801,9 +791,7 @@ static void spectrum_draw_event_cb(lv_event_t * e)
         lv_coord_t r_in = 160;
 #endif
         r_in = (r_in * lv_img_get_zoom(album_img_obj)) >> 8;
-        for(i = 0; i < BAR_CNT; i++) {
-            r[i] = r_in + min_a;
-        }
+        for(i = 0; i < BAR_CNT; i++) r[i] = r_in + min_a;
 
         uint32_t s;
         for(s = 0; s < 4; s++) {
@@ -829,21 +817,15 @@ static void spectrum_draw_event_cb(lv_event_t * e)
                 uint32_t ampl_main = spectrum[spectrum_i][s];
                 int32_t ampl_mod = get_cos(f * 360 / band_w + 180, 180) + 180;
                 int32_t t = BAR_PER_BAND_CNT * s - band_w / 2 + f;
-                if(t < 0) {
-                    t = BAR_CNT + t;
-                }
-                if(t >= BAR_CNT) {
-                    t = t - BAR_CNT;
-                }
+                if(t < 0) t = BAR_CNT + t;
+                if(t >= BAR_CNT) t = t - BAR_CNT;
                 r[t] += (ampl_main * ampl_mod) >> 9;
             }
         }
 
         uint32_t amax = 20;
         int32_t animv = spectrum_i - spectrum_lane_ofs_start;
-        if(animv > amax) {
-            animv = amax;
-        }
+        if(animv > amax) animv = amax;
         for(i = 0; i < BAR_CNT; i++) {
             uint32_t deg_space = 1;
             uint32_t deg = i * DEG_STEP + 90;
@@ -854,17 +836,11 @@ static void spectrum_draw_event_cb(lv_event_t * e)
             if(start_anim) {
                 v = r_in + start_anim_values[i];
                 deg_space = v >> 7;
-                if(deg_space < 1) {
-                    deg_space = 1;
-                }
+                if(deg_space < 1) deg_space = 1;
             }
 
-            if(v < BAR_COLOR1_STOP) {
-                draw_dsc.bg_color = BAR_COLOR1;
-            }
-            else if(v > BAR_COLOR3_STOP) {
-                draw_dsc.bg_color = BAR_COLOR3;
-            }
+            if(v < BAR_COLOR1_STOP) draw_dsc.bg_color = BAR_COLOR1;
+            else if(v > BAR_COLOR3_STOP) draw_dsc.bg_color = BAR_COLOR3;
             else if(v > BAR_COLOR2_STOP) draw_dsc.bg_color = lv_color_mix(BAR_COLOR3, BAR_COLOR2,
                                                                               ((v - BAR_COLOR2_STOP) * 255) / (BAR_COLOR3_STOP - BAR_COLOR2_STOP));
             else draw_dsc.bg_color = lv_color_mix(BAR_COLOR2, BAR_COLOR1,
@@ -925,9 +901,7 @@ static void spectrum_anim_cb(void * a, int32_t v)
             }
         }
     }
-    if(spectrum[spectrum_i][0] < 4) {
-        bar_rot += dir;
-    }
+    if(spectrum[spectrum_i][0] < 4) bar_rot += dir;
 
     lv_img_set_zoom(album_img_obj, LV_IMG_ZOOM_NONE + spectrum[spectrum_i][0]);
 }
@@ -978,12 +952,8 @@ static lv_obj_t * album_img_create(lv_obj_t * parent)
 static void album_gesture_event_cb(lv_event_t * e)
 {
     lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
-    if(dir == LV_DIR_LEFT) {
-        _lv_demo_music_album_next(true);
-    }
-    if(dir == LV_DIR_RIGHT) {
-        _lv_demo_music_album_next(false);
-    }
+    if(dir == LV_DIR_LEFT) _lv_demo_music_album_next(true);
+    if(dir == LV_DIR_RIGHT) _lv_demo_music_album_next(false);
 }
 
 static void play_event_click_cb(lv_event_t * e)

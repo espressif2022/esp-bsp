@@ -15,7 +15,6 @@
 
 #define MMAP_SPIFFS_ASSETS_FILES           3
 #define MMAP_SPIFFS_ASSETS_CHECKSUM        0xAAB6
-#define MMAP_SPIFFS_ASSETS_OFFSET          0x7ED30
 
 enum MMAP_SPIFFS_ASSETS_LISTS {
     MMAP_SPIFFS_ASSETS_APPEND_FILE_BIN = 0,        /*!< append_file.bin */

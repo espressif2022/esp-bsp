@@ -160,9 +160,7 @@ void lv_calendar_set_showed_date(lv_obj_t * obj, uint32_t year, uint32_t month)
     uint32_t child_cnt = lv_obj_get_child_cnt(obj);
     for(i = 0; i < child_cnt; i++) {
         lv_obj_t * child = lv_obj_get_child(obj, i);
-        if(child == calendar->btnm) {
-            continue;
-        }
+        if(child == calendar->btnm) continue;
         lv_event_send(child, LV_EVENT_VALUE_CHANGED, obj);
     }
 }
@@ -225,12 +223,8 @@ lv_res_t lv_calendar_get_pressed_date(const lv_obj_t * obj, lv_calendar_date_t *
 
     const char * txt = lv_btnmatrix_get_btn_text(calendar->btnm, lv_btnmatrix_get_selected_btn(calendar->btnm));
 
-    if(txt[1] == 0) {
-        date->day = txt[0] - '0';
-    }
-    else {
-        date->day = (txt[0] - '0') * 10 + (txt[1] - '0');
-    }
+    if(txt[1] == 0) date->day = txt[0] - '0';
+    else date->day = (txt[0] - '0') * 10 + (txt[1] - '0');
 
     date->year = calendar->showed_date.year;
     date->month = calendar->showed_date.month;

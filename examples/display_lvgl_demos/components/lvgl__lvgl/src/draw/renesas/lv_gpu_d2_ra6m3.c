@@ -338,9 +338,8 @@ void lv_draw_ra6m3_g2d_init(void)
 
     _d2_handle = d2_opendevice(0);
 
-    if(_d2_handle == NULL) {
+    if(_d2_handle == NULL)
         return;
-    }
 
     /* set blocksize for default displaylist */
     if(d2_setdlistblocksize(_d2_handle, 25) != D2_OK) {
@@ -369,9 +368,8 @@ void lv_draw_ra6m3_g2d_init(void)
 
 static void lv_port_gpu_hw_deinit(void)
 {
-    if(_d2_handle == NULL) {
+    if(_d2_handle == NULL)
         return;
-    }
 
     D2_EXEC(d2_freerenderbuffer(_d2_handle, renderbuffer));
     D2_EXEC(d2_closedevice(_d2_handle));
@@ -655,9 +653,7 @@ void lv_port_ra_gpu_blit(lv_color_t * dst, const lv_area_t * dst_area, lv_coord_
 void lv_draw_ra6m3_2d_blend(lv_draw_ctx_t * draw_ctx, const lv_draw_sw_blend_dsc_t * dsc)
 {
     lv_area_t blend_area;
-    if(!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area)) {
-        return;
-    }
+    if(!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area)) return;
 
     bool done = false;
 
@@ -686,9 +682,7 @@ void lv_draw_ra6m3_2d_blend(lv_draw_ctx_t * draw_ctx, const lv_draw_sw_blend_dsc
         }
     }
 
-    if(!done) {
-        lv_draw_sw_blend_basic(draw_ctx, dsc);
-    }
+    if(!done) lv_draw_sw_blend_basic(draw_ctx, dsc);
 }
 
 static void lv_port_gpu_img_decoded(lv_draw_ctx_t * draw_ctx, const lv_draw_img_dsc_t * dsc,
@@ -721,9 +715,7 @@ void lv_draw_stm32_dma2d_ctx_deinit(lv_disp_t * disp, lv_draw_ctx_t * draw_ctx)
 static void invalidate_cache(void)
 {
     lv_disp_t * disp = _lv_refr_get_disp_refreshing();
-    if(disp->driver->clean_dcache_cb) {
-        disp->driver->clean_dcache_cb(disp->driver);
-    }
+    if(disp->driver->clean_dcache_cb) disp->driver->clean_dcache_cb(disp->driver);
 }
 
 #ifdef LOG_ERRORS

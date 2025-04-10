@@ -74,15 +74,11 @@ lv_obj_t * lv_msgbox_create(lv_obj_t * parent, const char * title, const char * 
 
     lv_obj_t * obj = lv_obj_class_create_obj(&lv_msgbox_class, parent);
     LV_ASSERT_MALLOC(obj);
-    if(obj == NULL) {
-        return NULL;
-    }
+    if(obj == NULL) return NULL;
     lv_obj_class_init_obj(obj);
     lv_msgbox_t * mbox = (lv_msgbox_t *)obj;
 
-    if(auto_parent) {
-        lv_obj_add_flag(obj, LV_MSGBOX_FLAG_AUTO_PARENT);
-    }
+    if(auto_parent) lv_obj_add_flag(obj, LV_MSGBOX_FLAG_AUTO_PARENT);
 
     lv_obj_set_flex_flow(obj, LV_FLEX_FLOW_ROW_WRAP);
 
@@ -93,12 +89,8 @@ lv_obj_t * lv_msgbox_create(lv_obj_t * parent, const char * title, const char * 
         mbox->title = lv_label_create(obj);
         lv_label_set_text(mbox->title, has_title ? title : "");
         lv_label_set_long_mode(mbox->title, LV_LABEL_LONG_SCROLL_CIRCULAR);
-        if(add_close_btn) {
-            lv_obj_set_flex_grow(mbox->title, 1);
-        }
-        else {
-            lv_obj_set_width(mbox->title, LV_PCT(100));
-        }
+        if(add_close_btn) lv_obj_set_flex_grow(mbox->title, 1);
+        else lv_obj_set_width(mbox->title, LV_PCT(100));
     }
 
     if(add_close_btn) {
@@ -115,9 +107,7 @@ lv_obj_t * lv_msgbox_create(lv_obj_t * parent, const char * title, const char * 
 
     mbox->content = lv_obj_class_create_obj(&lv_msgbox_content_class, obj);
     LV_ASSERT_MALLOC(mbox->content);
-    if(mbox->content == NULL) {
-        return NULL;
-    }
+    if(mbox->content == NULL) return NULL;
     lv_obj_class_init_obj(mbox->content);
 
     bool has_txt = txt && strlen(txt) > 0;
@@ -197,22 +187,14 @@ const char * lv_msgbox_get_active_btn_text(lv_obj_t * mbox)
 
 void lv_msgbox_close(lv_obj_t * mbox)
 {
-    if(lv_obj_has_flag(mbox, LV_MSGBOX_FLAG_AUTO_PARENT)) {
-        lv_obj_del(lv_obj_get_parent(mbox));
-    }
-    else {
-        lv_obj_del(mbox);
-    }
+    if(lv_obj_has_flag(mbox, LV_MSGBOX_FLAG_AUTO_PARENT)) lv_obj_del(lv_obj_get_parent(mbox));
+    else lv_obj_del(mbox);
 }
 
 void lv_msgbox_close_async(lv_obj_t * dialog)
 {
-    if(lv_obj_has_flag(dialog, LV_MSGBOX_FLAG_AUTO_PARENT)) {
-        lv_obj_del_async(lv_obj_get_parent(dialog));
-    }
-    else {
-        lv_obj_del_async(dialog);
-    }
+    if(lv_obj_has_flag(dialog, LV_MSGBOX_FLAG_AUTO_PARENT)) lv_obj_del_async(lv_obj_get_parent(dialog));
+    else lv_obj_del_async(dialog);
 }
 
 /**********************

@@ -63,9 +63,7 @@ void * lv_msg_subsribe(uint32_t msg_id, lv_msg_subscribe_cb_t cb, void * user_da
 {
     sub_dsc_t * s = _lv_ll_ins_tail(&subs_ll);
     LV_ASSERT_MALLOC(s);
-    if(s == NULL) {
-        return NULL;
-    }
+    if(s == NULL) return NULL;
 
     lv_memset_00(s, sizeof(*s));
 
@@ -78,9 +76,7 @@ void * lv_msg_subsribe(uint32_t msg_id, lv_msg_subscribe_cb_t cb, void * user_da
 void * lv_msg_subsribe_obj(uint32_t msg_id, lv_obj_t * obj, void * user_data)
 {
     sub_dsc_t * s = lv_msg_subsribe(msg_id, obj_notify_cb, user_data);
-    if(s == NULL) {
-        return NULL;
-    }
+    if(s == NULL) return NULL;
     s->_priv_data = obj;
 
     /*If not added yet, add a delete event cb which automatically unsubcribes the object*/

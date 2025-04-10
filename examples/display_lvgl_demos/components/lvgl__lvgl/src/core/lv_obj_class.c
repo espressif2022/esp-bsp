@@ -45,9 +45,7 @@ lv_obj_t * lv_obj_class_create_obj(const lv_obj_class_t * class_p, lv_obj_t * pa
     LV_TRACE_OBJ_CREATE("Creating object with %p class on %p parent", (void *)class_p, (void *)parent);
     uint32_t s = get_instance_size(class_p);
     lv_obj_t * obj = lv_mem_alloc(s);
-    if(obj == NULL) {
-        return NULL;
-    }
+    if(obj == NULL) return NULL;
     lv_memset_00(obj, s);
     obj->class_p = class_p;
     obj->parent = parent;
@@ -135,9 +133,7 @@ void lv_obj_class_init_obj(lv_obj_t * obj)
 
 void _lv_obj_destruct(lv_obj_t * obj)
 {
-    if(obj->class_p->destructor_cb) {
-        obj->class_p->destructor_cb(obj->class_p, obj);
-    }
+    if(obj->class_p->destructor_cb) obj->class_p->destructor_cb(obj->class_p, obj);
 
     if(obj->class_p->base_class) {
         /*Don't let the descendant methods run during destructing the ancestor type*/
@@ -153,13 +149,9 @@ bool lv_obj_is_editable(lv_obj_t * obj)
     const lv_obj_class_t * class_p = obj->class_p;
 
     /*Find a base in which editable is set*/
-    while(class_p && class_p->editable == LV_OBJ_CLASS_EDITABLE_INHERIT) {
-        class_p = class_p->base_class;
-    }
+    while(class_p && class_p->editable == LV_OBJ_CLASS_EDITABLE_INHERIT) class_p = class_p->base_class;
 
-    if(class_p == NULL) {
-        return false;
-    }
+    if(class_p == NULL) return false;
 
     return class_p->editable == LV_OBJ_CLASS_EDITABLE_TRUE ? true : false;
 }
@@ -169,13 +161,9 @@ bool lv_obj_is_group_def(lv_obj_t * obj)
     const lv_obj_class_t * class_p = obj->class_p;
 
     /*Find a base in which group_def is set*/
-    while(class_p && class_p->group_def == LV_OBJ_CLASS_GROUP_DEF_INHERIT) {
-        class_p = class_p->base_class;
-    }
+    while(class_p && class_p->group_def == LV_OBJ_CLASS_GROUP_DEF_INHERIT) class_p = class_p->base_class;
 
-    if(class_p == NULL) {
-        return false;
-    }
+    if(class_p == NULL) return false;
 
     return class_p->group_def == LV_OBJ_CLASS_GROUP_DEF_TRUE ? true : false;
 }
@@ -199,22 +187,16 @@ static void lv_obj_construct(lv_obj_t * obj)
     /*Restore the original class*/
     obj->class_p = original_class_p;
 
-    if(obj->class_p->constructor_cb) {
-        obj->class_p->constructor_cb(obj->class_p, obj);
-    }
+    if(obj->class_p->constructor_cb) obj->class_p->constructor_cb(obj->class_p, obj);
 }
 
 static uint32_t get_instance_size(const lv_obj_class_t * class_p)
 {
     /*Find a base in which instance size is set*/
     const lv_obj_class_t * base = class_p;
-    while(base && base->instance_size == 0) {
-        base = base->base_class;
-    }
+    while(base && base->instance_size == 0) base = base->base_class;
 
-    if(base == NULL) {
-        return 0;    /*Never happens: set at least in `lv_obj` class*/
-    }
+    if(base == NULL) return 0;  /*Never happens: set at least in `lv_obj` class*/
 
     return base->instance_size;
 }

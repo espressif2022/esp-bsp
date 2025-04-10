@@ -43,12 +43,8 @@ static void dump_masks(SDL_Texture * texture, const lv_area_t * coords);
 void lv_draw_sdl_polygon(lv_draw_ctx_t * draw_ctx, const lv_draw_rect_dsc_t * draw_dsc, const lv_point_t * points,
                          uint16_t point_cnt)
 {
-    if(point_cnt < 3) {
-        return;
-    }
-    if(points == NULL) {
-        return;
-    }
+    if(point_cnt < 3) return;
+    if(points == NULL) return;
 
     lv_draw_mask_polygon_param_t polygon_param;
     lv_draw_mask_polygon_init(&polygon_param, points, point_cnt);
@@ -114,9 +110,7 @@ static void dump_masks(SDL_Texture * texture, const lv_area_t * coords)
     SDL_Rect rect = {0, 0, w, h};
     uint8_t * pixels;
     int pitch;
-    if(SDL_LockTexture(texture, &rect, (void **) &pixels, &pitch) != 0) {
-        return;
-    }
+    if(SDL_LockTexture(texture, &rect, (void **) &pixels, &pitch) != 0) return;
 
     lv_opa_t * line_buf = lv_mem_buf_get(rect.w);
     for(lv_coord_t y = 0; y < rect.h; y++) {

@@ -170,20 +170,17 @@ lv_lru_res_t lv_lru_set(lv_lru_t * cache, const void * key, size_t key_length, v
         item->key_length = key_length;
         required = (int) value_length;
 
-        if(prev) {
+        if(prev)
             prev->next = item;
-        }
-        else {
+        else
             cache->items[hash_index] = item;
-        }
     }
     item->access_count = ++cache->access_count;
 
     // remove as many items as necessary to free enough space
     if(required > 0 && (size_t) required > cache->free_memory) {
-        while(cache->free_memory < (size_t) required) {
+        while(cache->free_memory < (size_t) required)
             lv_lru_remove_lru_item(cache);
-        }
     }
     cache->free_memory -= required;
     return LV_LRU_OK;
@@ -198,9 +195,8 @@ lv_lru_res_t lv_lru_get(lv_lru_t * cache, const void * key, size_t key_size, voi
     uint32_t hash_index = lv_lru_hash(cache, key, key_size);
     lv_lru_item_t * item = cache->items[hash_index];
 
-    while(item && lv_lru_cmp_keys(item, key, key_size)) {
+    while(item && lv_lru_cmp_keys(item, key, key_size))
         item = (lv_lru_item_t *) item->next;
-    }
 
     if(item) {
         *value = item->value;

@@ -455,9 +455,8 @@ static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style,
             const_prop = style->v_p.const_props + i;
             lv_style_prop_t prop_id = LV_STYLE_PROP_ID_MASK(const_prop->prop);
             if(prop_id == prop) {
-                if(const_prop->prop & LV_STYLE_PROP_META_INHERIT) {
+                if(const_prop->prop & LV_STYLE_PROP_META_INHERIT)
                     return LV_STYLE_RES_INHERIT;
-                }
                 *value = (const_prop->prop & LV_STYLE_PROP_META_INITIAL) ? lv_style_prop_get_default(prop_id) : const_prop->value;
                 return LV_STYLE_RES_FOUND;
             }
@@ -465,9 +464,7 @@ static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style,
         return LV_STYLE_RES_NOT_FOUND;
     }
 
-    if(style->prop_cnt == 0) {
-        return LV_STYLE_RES_NOT_FOUND;
-    }
+    if(style->prop_cnt == 0) return LV_STYLE_RES_NOT_FOUND;
 
     if(style->prop_cnt > 1) {
         uint8_t * tmp = style->v_p.values_and_props + style->prop_cnt * sizeof(lv_style_value_t);
@@ -476,12 +473,10 @@ static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style,
         for(i = 0; i < style->prop_cnt; i++) {
             lv_style_prop_t prop_id = LV_STYLE_PROP_ID_MASK(props[i]);
             if(prop_id == prop) {
-                if(props[i] & LV_STYLE_PROP_META_INHERIT) {
+                if(props[i] & LV_STYLE_PROP_META_INHERIT)
                     return LV_STYLE_RES_INHERIT;
-                }
-                if(props[i] & LV_STYLE_PROP_META_INITIAL) {
+                if(props[i] & LV_STYLE_PROP_META_INITIAL)
                     *value = lv_style_prop_get_default(prop_id);
-                }
                 else {
                     lv_style_value_t * values = (lv_style_value_t *)style->v_p.values_and_props;
                     *value = values[i];
@@ -491,9 +486,8 @@ static inline lv_style_res_t lv_style_get_prop_inlined(const lv_style_t * style,
         }
     }
     else if(LV_STYLE_PROP_ID_MASK(style->prop1) == prop) {
-        if(style->prop1 & LV_STYLE_PROP_META_INHERIT) {
+        if(style->prop1 & LV_STYLE_PROP_META_INHERIT)
             return LV_STYLE_RES_INHERIT;
-        }
         *value = (style->prop1 & LV_STYLE_PROP_META_INITIAL) ? lv_style_prop_get_default(LV_STYLE_PROP_ID_MASK(
                                                                                              style->prop1)) : style->v_p.value1;
         return LV_STYLE_RES_FOUND;

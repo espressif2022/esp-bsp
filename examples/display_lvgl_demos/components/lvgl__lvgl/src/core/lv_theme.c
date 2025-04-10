@@ -47,9 +47,7 @@ lv_theme_t  * lv_theme_get_from_obj(lv_obj_t * obj)
 void lv_theme_apply(lv_obj_t * obj)
 {
     lv_theme_t * th = lv_theme_get_from_obj(obj);
-    if(th == NULL) {
-        return;
-    }
+    if(th == NULL) return;
 
     lv_obj_remove_style_all(obj);
 
@@ -115,10 +113,6 @@ lv_color_t lv_theme_get_color_secondary(lv_obj_t * obj)
 
 static void apply_theme(lv_theme_t * th, lv_obj_t * obj)
 {
-    if(th->parent) {
-        apply_theme(th->parent, obj);
-    }
-    if(th->apply_cb) {
-        th->apply_cb(th, obj);
-    }
+    if(th->parent) apply_theme(th->parent, obj);
+    if(th->apply_cb) th->apply_cb(th, obj);
 }

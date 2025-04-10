@@ -105,9 +105,8 @@ lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t * point1, const lv_point_t
 
     lv_color32_t col32 = { .full = lv_color_to32(dsc->color) }; /*Convert color to RGBA8888*/
     vg_lite_buffer_format_t color_format = LV_COLOR_DEPTH == 16 ? VG_LITE_BGRA8888 : VG_LITE_ABGR8888;
-    if(lv_vglite_premult_and_swizzle(&vgcol, col32, dsc->opa, color_format) != LV_RES_OK) {
+    if(lv_vglite_premult_and_swizzle(&vgcol, col32, dsc->opa, color_format) != LV_RES_OK)
         VG_LITE_RETURN_INV("Premultiplication and swizzle failed.");
-    }
 
     /*** Draw line ***/
     err = vg_lite_set_draw_path_type(&path, VG_LITE_DRAW_STROKE_PATH);
@@ -125,9 +124,8 @@ lv_res_t lv_gpu_nxp_vglite_draw_line(const lv_point_t * point1, const lv_point_t
     err = vg_lite_draw(vgbuf, &path, VG_LITE_FILL_NON_ZERO, &matrix, vglite_blend_mode, vgcol);
     VG_LITE_ERR_RETURN_INV(err, "Draw line failed.");
 
-    if(lv_vglite_run() != LV_RES_OK) {
+    if(lv_vglite_run() != LV_RES_OK)
         VG_LITE_RETURN_INV("Run failed.");
-    }
 
     lv_vglite_disable_scissor();
 

@@ -169,24 +169,16 @@ void * lv_mem_alloc(size_t size)
 void lv_mem_free(void * data)
 {
     MEM_TRACE("freeing %p", data);
-    if(data == &zero_mem) {
-        return;
-    }
-    if(data == NULL) {
-        return;
-    }
+    if(data == &zero_mem) return;
+    if(data == NULL) return;
 
 #if LV_MEM_CUSTOM == 0
 #  if LV_MEM_ADD_JUNK
     lv_memset(data, 0xbb, lv_tlsf_block_size(data));
 #  endif
     size_t size = lv_tlsf_free(tlsf, data);
-    if(cur_used > size) {
-        cur_used -= size;
-    }
-    else {
-        cur_used = 0;
-    }
+    if(cur_used > size) cur_used -= size;
+    else cur_used = 0;
 #else
     LV_MEM_CUSTOM_FREE(data);
 #endif
@@ -208,9 +200,7 @@ void * lv_mem_realloc(void * data_p, size_t new_size)
         return &zero_mem;
     }
 
-    if(data_p == &zero_mem) {
-        return lv_mem_alloc(new_size);
-    }
+    if(data_p == &zero_mem) return lv_mem_alloc(new_size);
 
 #if LV_MEM_CUSTOM == 0
     void * new_p = lv_tlsf_realloc(tlsf, data_p, new_size);
@@ -284,9 +274,7 @@ void lv_mem_monitor(lv_mem_monitor_t * mon_p)
  */
 void * lv_mem_buf_get(uint32_t size)
 {
-    if(size == 0) {
-        return NULL;
-    }
+    if(size == 0) return NULL;
 
     MEM_TRACE("begin, getting %d bytes", size);
 
@@ -321,9 +309,7 @@ void * lv_mem_buf_get(uint32_t size)
             /*if this fails you probably need to increase your LV_MEM_SIZE/heap size*/
             void * buf = lv_mem_realloc(LV_GC_ROOT(lv_mem_buf[i]).p, size);
             LV_ASSERT_MSG(buf != NULL, "Out of memory, can't allocate a new buffer (increase your LV_MEM_SIZE/heap size)");
-            if(buf == NULL) {
-                return NULL;
-            }
+            if(buf == NULL) return NULL;
 
             LV_GC_ROOT(lv_mem_buf[i]).used = 1;
             LV_GC_ROOT(lv_mem_buf[i]).size = size;
@@ -572,9 +558,8 @@ static void lv_mem_walker(void * ptr, size_t size, int used, void * user)
     else {
         mon_p->free_cnt++;
         mon_p->free_size += size;
-        if(size > mon_p->free_biggest_size) {
+        if(size > mon_p->free_biggest_size)
             mon_p->free_biggest_size = size;
-        }
     }
 }
 #endif

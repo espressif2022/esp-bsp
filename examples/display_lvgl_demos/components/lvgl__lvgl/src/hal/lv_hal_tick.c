@@ -70,7 +70,7 @@ uint32_t lv_tick_get(void)
     do {
         tick_irq_flag = 1;
         result        = sys_time;
-    } while(!tick_irq_flag);  /*Continue until see a non interrupted cycle*/
+    } while(!tick_irq_flag); /*Continue until see a non interrupted cycle*/
 
     return result;
 #else

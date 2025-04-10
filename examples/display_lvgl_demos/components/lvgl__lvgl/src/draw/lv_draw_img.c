@@ -68,9 +68,7 @@ void lv_draw_img(lv_draw_ctx_t * draw_ctx, const lv_draw_img_dsc_t * dsc, const 
         return;
     }
 
-    if(dsc->opa <= LV_OPA_MIN) {
-        return;
-    }
+    if(dsc->opa <= LV_OPA_MIN) return;
 
     lv_res_t res = LV_RES_INV;
 
@@ -198,9 +196,7 @@ lv_img_src_t lv_img_src_get_type(const void * src)
 {
     lv_img_src_t img_src_type = LV_IMG_SRC_UNKNOWN;
 
-    if(src == NULL) {
-        return img_src_type;
-    }
+    if(src == NULL) return img_src_type;
     const uint8_t * u8_p = src;
 
     /*The first or fourth byte depending on platform endianess shows the type of the image source*/
@@ -232,9 +228,7 @@ lv_img_src_t lv_img_src_get_type(const void * src)
 void lv_draw_img_decoded(lv_draw_ctx_t * draw_ctx, const lv_draw_img_dsc_t * dsc,
                          const lv_area_t * coords, const uint8_t * map_p, lv_img_cf_t color_format)
 {
-    if(draw_ctx->draw_img_decoded == NULL) {
-        return;
-    }
+    if(draw_ctx->draw_img_decoded == NULL) return;
 
     draw_ctx->draw_img_decoded(draw_ctx, dsc, coords, map_p, color_format);
 }
@@ -247,32 +241,18 @@ static lv_res_t LV_ATTRIBUTE_FAST_MEM decode_and_draw(lv_draw_ctx_t * draw_ctx,
                                                       const lv_draw_img_dsc_t * draw_dsc,
                                                       const lv_area_t * coords, const void * src)
 {
-    if(draw_dsc->opa <= LV_OPA_MIN) {
-        return LV_RES_OK;
-    }
+    if(draw_dsc->opa <= LV_OPA_MIN) return LV_RES_OK;
 
     _lv_img_cache_entry_t * cdsc = _lv_img_cache_open(src, draw_dsc->recolor, draw_dsc->frame_id);
 
-    if(cdsc == NULL) {
-        return LV_RES_INV;
-    }
+    if(cdsc == NULL) return LV_RES_INV;
 
     lv_img_cf_t cf;
-    if(lv_img_cf_is_chroma_keyed(cdsc->dec_dsc.header.cf)) {
-        cf = LV_IMG_CF_TRUE_COLOR_CHROMA_KEYED;
-    }
-    else if(LV_IMG_CF_ALPHA_8BIT == cdsc->dec_dsc.header.cf) {
-        cf = LV_IMG_CF_ALPHA_8BIT;
-    }
-    else if(LV_IMG_CF_RGB565A8 == cdsc->dec_dsc.header.cf) {
-        cf = LV_IMG_CF_RGB565A8;
-    }
-    else if(lv_img_cf_has_alpha(cdsc->dec_dsc.header.cf)) {
-        cf = LV_IMG_CF_TRUE_COLOR_ALPHA;
-    }
-    else {
-        cf = LV_IMG_CF_TRUE_COLOR;
-    }
+    if(lv_img_cf_is_chroma_keyed(cdsc->dec_dsc.header.cf)) cf = LV_IMG_CF_TRUE_COLOR_CHROMA_KEYED;
+    else if(LV_IMG_CF_ALPHA_8BIT == cdsc->dec_dsc.header.cf) cf = LV_IMG_CF_ALPHA_8BIT;
+    else if(LV_IMG_CF_RGB565A8 == cdsc->dec_dsc.header.cf) cf = LV_IMG_CF_RGB565A8;
+    else if(lv_img_cf_has_alpha(cdsc->dec_dsc.header.cf)) cf = LV_IMG_CF_TRUE_COLOR_ALPHA;
+    else cf = LV_IMG_CF_TRUE_COLOR;
 
     if(cf == LV_IMG_CF_ALPHA_8BIT) {
         if(draw_dsc->angle || draw_dsc->zoom != LV_IMG_ZOOM_NONE) {
@@ -345,9 +325,7 @@ static lv_res_t LV_ATTRIBUTE_FAST_MEM decode_and_draw(lv_draw_ctx_t * draw_ctx,
         for(row = mask_com.y1; row <= mask_com.y2; row++) {
             lv_area_t mask_line;
             union_ok = _lv_area_intersect(&mask_line, clip_area_ori, &line);
-            if(union_ok == false) {
-                continue;
-            }
+            if(union_ok == false) continue;
 
             read_res = lv_img_decoder_read_line(&cdsc->dec_dsc, x, y, width, buf);
             if(read_res != LV_RES_OK) {

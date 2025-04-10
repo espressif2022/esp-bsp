@@ -87,9 +87,7 @@ static void obj_test_timer_cb(lv_timer_t * tmr)
                 lv_mem_monitor_t mon;
                 lv_mem_monitor(&mon);
 
-                if(mem_free_start == 0) {
-                    mem_free_start = mon.free_size;
-                }
+                if(mem_free_start == 0)  mem_free_start = mon.free_size;
 
                 LV_LOG_USER("mem leak since start: %d, frag: %3d %%",  mem_free_start - mon.free_size, mon.frag_pct);
             }

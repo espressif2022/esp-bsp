@@ -50,12 +50,10 @@ static void LV_ATTRIBUTE_FAST_MEM draw_letter_normal(lv_draw_ctx_t * draw_ctx, c
     uint32_t bpp = g->bpp;
     lv_opa_t opa = dsc->opa;
     uint32_t shades;
-    if(bpp == 3) {
-        bpp = 4;
-    }
+    if(bpp == 3) bpp = 4;
 
 #if LV_USE_IMGFONT
-    if(bpp == LV_IMGFONT_BPP) {  //is imgfont
+    if(bpp == LV_IMGFONT_BPP) { //is imgfont
         lv_area_t fill_area;
         fill_area.x1 = pos->x;
         fill_area.y1 = pos->y;
@@ -237,12 +235,8 @@ void lv_draw_gpu_letter(lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t * ds
     const lv_font_t * font_p = dsc->font;
 
     lv_opa_t opa = dsc->opa;
-    if(opa < LV_OPA_MIN) {
-        return;
-    }
-    if(opa > LV_OPA_MAX) {
-        opa = LV_OPA_COVER;
-    }
+    if(opa < LV_OPA_MIN) return;
+    if(opa > LV_OPA_MAX) opa = LV_OPA_COVER;
 
     if(font_p == NULL) {
         LV_LOG_WARN("lv_draw_letter: font is NULL");
@@ -263,9 +257,7 @@ void lv_draw_gpu_letter(lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t * ds
     }
 
     /*Don't draw anything if the character is empty. E.g. space*/
-    if((g.box_h == 0) || (g.box_w == 0)) {
-        return;
-    }
+    if((g.box_h == 0) || (g.box_w == 0)) return;
 
     lv_point_t gpos;
     gpos.x = pos_p->x + g.ofs_x;

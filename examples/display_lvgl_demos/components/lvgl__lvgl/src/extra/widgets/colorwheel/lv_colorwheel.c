@@ -96,22 +96,14 @@ lv_obj_t * lv_colorwheel_create(lv_obj_t * parent, bool knob_recolor)
  */
 bool lv_colorwheel_set_hsv(lv_obj_t * obj, lv_color_hsv_t hsv)
 {
-    if(hsv.h > 360) {
-        hsv.h %= 360;
-    }
-    if(hsv.s > 100) {
-        hsv.s = 100;
-    }
-    if(hsv.v > 100) {
-        hsv.v = 100;
-    }
+    if(hsv.h > 360) hsv.h %= 360;
+    if(hsv.s > 100) hsv.s = 100;
+    if(hsv.v > 100) hsv.v = 100;
 
     LV_ASSERT_OBJ(obj, MY_CLASS);
     lv_colorwheel_t * colorwheel = (lv_colorwheel_t *)obj;
 
-    if(colorwheel->hsv.h == hsv.h && colorwheel->hsv.s == hsv.s && colorwheel->hsv.v == hsv.v) {
-        return false;
-    }
+    if(colorwheel->hsv.h == hsv.h && colorwheel->hsv.s == hsv.s && colorwheel->hsv.v == hsv.v) return false;
 
     colorwheel->hsv = hsv;
 
@@ -367,9 +359,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
     /*Call the ancestor's event handler*/
     lv_res_t res = lv_obj_event_base(MY_CLASS, e);
 
-    if(res != LV_RES_OK) {
-        return;
-    }
+    if(res != LV_RES_OK) return;
 
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
@@ -418,9 +408,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
 
             if(lv_colorwheel_set_hsv(obj, hsv_cur)) {
                 res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-                if(res != LV_RES_OK) {
-                    return;
-                }
+                if(res != LV_RES_OK) return;
             }
         }
         else if(c == LV_KEY_LEFT || c == LV_KEY_DOWN) {
@@ -441,9 +429,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
 
             if(lv_colorwheel_set_hsv(obj, hsv_cur)) {
                 res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-                if(res != LV_RES_OK) {
-                    return;
-                }
+                if(res != LV_RES_OK) return;
             }
         }
     }
@@ -451,15 +437,11 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
         colorwheel->last_change_time = lv_tick_get();
         lv_indev_get_point(lv_indev_get_act(), &colorwheel->last_press_point);
         res = double_click_reset(obj);
-        if(res != LV_RES_OK) {
-            return;
-        }
+        if(res != LV_RES_OK) return;
     }
     else if(code == LV_EVENT_PRESSING) {
         lv_indev_t * indev = lv_indev_get_act();
-        if(indev == NULL) {
-            return;
-        }
+        if(indev == NULL) return;
 
         lv_indev_type_t indev_type = lv_indev_get_type(indev);
         lv_point_t p;
@@ -497,9 +479,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
             lv_coord_t inner = cir_w / 2;
             r_in -= inner;
 
-            if(r_in < LV_DPI_DEF / 2) {
-                r_in = LV_DPI_DEF / 2;
-            }
+            if(r_in < LV_DPI_DEF / 2) r_in = LV_DPI_DEF / 2;
         }
 
         if(p.x * p.x + p.y * p.y < r_in * r_in) {
@@ -515,9 +495,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
         }
 
         /*Set the angle only if pressed on the ring*/
-        if(!on_ring) {
-            return;
-        }
+        if(!on_ring) return;
 
         angle = lv_atan2(p.x, p.y) % 360;
 
@@ -538,9 +516,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
 
         if(lv_colorwheel_set_hsv(obj, hsv_cur)) {
             res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-            if(res != LV_RES_OK) {
-                return;
-            }
+            if(res != LV_RES_OK) return;
         }
     }
     else if(code == LV_EVENT_HIT_TEST) {
@@ -555,9 +531,7 @@ static void lv_colorwheel_event(const lv_obj_class_t * class_p, lv_event_t * e)
     }
     else if(code == LV_EVENT_COVER_CHECK) {
         lv_cover_check_info_t * info = lv_event_get_param(e);
-        if(info->res != LV_COVER_RES_MASKED) {
-            info->res = LV_COVER_RES_NOT_COVER;
-        }
+        if(info->res != LV_COVER_RES_MASKED) info->res = LV_COVER_RES_NOT_COVER;
     }
 }
 
@@ -612,9 +586,7 @@ static lv_res_t double_click_reset(lv_obj_t * obj)
 
         if(lv_colorwheel_set_hsv(obj, hsv_cur)) {
             lv_res_t res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-            if(res != LV_RES_OK) {
-                return res;
-            }
+            if(res != LV_RES_OK) return res;
         }
     }
     colorwheel->last_click_time = lv_tick_get();
@@ -679,9 +651,7 @@ static lv_color_t angle_to_mode_color_fast(lv_obj_t * obj, uint16_t angle)
     static uint16_t angle_saved = 0xffff;
 
     /*If the angle is different recalculate scaling*/
-    if(angle_saved != angle) {
-        m = 255;
-    }
+    if(angle_saved != angle) m = 255;
     angle_saved = angle;
 
     switch(ext->mode) {

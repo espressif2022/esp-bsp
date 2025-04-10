@@ -55,12 +55,10 @@ void test_custom_prop_ids(void)
         }
         /*We should find our flags*/
         TEST_ASSERT_EQUAL(fake_flag, _lv_style_prop_lookup_flags(prop));
-        if(fake_flag == 0xff) {
+        if(fake_flag == 0xff)
             fake_flag = 0;
-        }
-        else {
+        else
             fake_flag++;
-        }
     }
     TEST_ASSERT_EQUAL(initial_custom_props + max_props_to_register, lv_style_get_num_custom_props());
     /*

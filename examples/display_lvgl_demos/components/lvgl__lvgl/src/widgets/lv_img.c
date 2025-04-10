@@ -126,15 +126,11 @@ void lv_img_set_src(lv_obj_t * obj, const void * src)
             }
             char * new_str = lv_mem_alloc(strlen(src) + 1);
             LV_ASSERT_MALLOC(new_str);
-            if(new_str == NULL) {
-                return;
-            }
+            if(new_str == NULL) return;
             strcpy(new_str, src);
             img->src = new_str;
 
-            if(old_src) {
-                lv_mem_free((void *)old_src);
-            }
+            if(old_src) lv_mem_free((void *)old_src);
         }
     }
 
@@ -159,9 +155,7 @@ void lv_img_set_src(lv_obj_t * obj, const void * src)
     lv_obj_refresh_self_size(obj);
 
     /*Provide enough room for the rotated corners*/
-    if(img->angle || img->zoom != LV_IMG_ZOOM_NONE) {
-        lv_obj_refresh_ext_draw_size(obj);
-    }
+    if(img->angle || img->zoom != LV_IMG_ZOOM_NONE) lv_obj_refresh_ext_draw_size(obj);
 
     lv_obj_invalidate(obj);
 }
@@ -188,17 +182,11 @@ void lv_img_set_offset_y(lv_obj_t * obj, lv_coord_t y)
 
 void lv_img_set_angle(lv_obj_t * obj, int16_t angle)
 {
-    while(angle >= 3600) {
-        angle -= 3600;
-    }
-    while(angle < 0) {
-        angle += 3600;
-    }
+    while(angle >= 3600) angle -= 3600;
+    while(angle < 0) angle += 3600;
 
     lv_img_t * img = (lv_img_t *)obj;
-    if(angle == img->angle) {
-        return;
-    }
+    if(angle == img->angle) return;
 
     lv_obj_update_layout(obj);  /*Be sure the object's size is calculated*/
     lv_coord_t w = lv_obj_get_width(obj);
@@ -231,9 +219,7 @@ void lv_img_set_angle(lv_obj_t * obj, int16_t angle)
 void lv_img_set_pivot(lv_obj_t * obj, lv_coord_t x, lv_coord_t y)
 {
     lv_img_t * img = (lv_img_t *)obj;
-    if(img->pivot.x == x && img->pivot.y == y) {
-        return;
-    }
+    if(img->pivot.x == x && img->pivot.y == y) return;
 
     lv_obj_update_layout(obj);  /*Be sure the object's size is calculated*/
     lv_coord_t w = lv_obj_get_width(obj);
@@ -267,13 +253,9 @@ void lv_img_set_pivot(lv_obj_t * obj, lv_coord_t x, lv_coord_t y)
 void lv_img_set_zoom(lv_obj_t * obj, uint16_t zoom)
 {
     lv_img_t * img = (lv_img_t *)obj;
-    if(zoom == img->zoom) {
-        return;
-    }
+    if(zoom == img->zoom) return;
 
-    if(zoom == 0) {
-        zoom = 1;
-    }
+    if(zoom == 0) zoom = 1;
 
     lv_obj_update_layout(obj);  /*Be sure the object's size is calculated*/
     lv_coord_t w = lv_obj_get_width(obj);
@@ -306,9 +288,7 @@ void lv_img_set_zoom(lv_obj_t * obj, uint16_t zoom)
 void lv_img_set_antialias(lv_obj_t * obj, bool antialias)
 {
     lv_img_t * img = (lv_img_t *)obj;
-    if(antialias == img->antialias) {
-        return;
-    }
+    if(antialias == img->antialias) return;
 
     img->antialias = antialias;
     lv_obj_invalidate(obj);
@@ -318,9 +298,7 @@ void lv_img_set_size_mode(lv_obj_t * obj, lv_img_size_mode_t mode)
 {
     LV_ASSERT_OBJ(obj, MY_CLASS);
     lv_img_t * img = (lv_img_t *)obj;
-    if(mode == img->obj_size_mode) {
-        return;
-    }
+    if(mode == img->obj_size_mode) return;
 
     img->obj_size_mode = mode;
     lv_obj_invalidate(obj);
@@ -465,9 +443,7 @@ static void lv_img_event(const lv_obj_class_t * class_p, lv_event_t * e)
     if(code != LV_EVENT_DRAW_MAIN && code != LV_EVENT_DRAW_POST) {
         /*Call the ancestor's event handler*/
         lv_res_t res = lv_obj_event_base(MY_CLASS, e);
-        if(res != LV_RES_OK) {
-            return;
-        }
+        if(res != LV_RES_OK) return;
     }
 
     lv_obj_t * obj = lv_event_get_target(e);
@@ -546,9 +522,7 @@ static void draw_img(lv_event_t * e)
     lv_img_t * img = (lv_img_t *)obj;
     if(code == LV_EVENT_COVER_CHECK) {
         lv_cover_check_info_t * info = lv_event_get_param(e);
-        if(info->res == LV_COVER_RES_MASKED) {
-            return;
-        }
+        if(info->res == LV_COVER_RES_MASKED) return;
         if(img->src_type == LV_IMG_SRC_UNKNOWN || img->src_type == LV_IMG_SRC_SYMBOL) {
             info->res = LV_COVER_RES_NOT_COVER;
             return;
@@ -628,19 +602,13 @@ static void draw_img(lv_event_t * e)
         lv_area_copy(&obj->coords, &bg_coords);
 
         lv_res_t res = lv_obj_event_base(MY_CLASS, e);
-        if(res != LV_RES_OK) {
-            return;
-        }
+        if(res != LV_RES_OK) return;
 
         lv_area_copy(&obj->coords, &ori_coords);
 
         if(code == LV_EVENT_DRAW_MAIN) {
-            if(img->h == 0 || img->w == 0) {
-                return;
-            }
-            if(img->zoom == 0) {
-                return;
-            }
+            if(img->h == 0 || img->w == 0) return;
+            if(img->zoom == 0) return;
 
             lv_draw_ctx_t * draw_ctx = lv_event_get_draw_ctx(e);
 
@@ -683,25 +651,19 @@ static void draw_img(lv_event_t * e)
                 img_clip_area.y2 = bg_coords.y2 - pbottom;
                 const lv_area_t * clip_area_ori = draw_ctx->clip_area;
 
-                if(!_lv_area_intersect(&img_clip_area, draw_ctx->clip_area, &img_clip_area)) {
-                    return;
-                }
+                if(!_lv_area_intersect(&img_clip_area, draw_ctx->clip_area, &img_clip_area)) return;
                 draw_ctx->clip_area = &img_clip_area;
 
                 lv_area_t coords_tmp;
                 lv_coord_t offset_x = img->offset.x % img->w;
                 lv_coord_t offset_y = img->offset.y % img->h;
                 coords_tmp.y1 = img_max_area.y1 + offset_y;
-                if(coords_tmp.y1 > img_max_area.y1) {
-                    coords_tmp.y1 -= img->h;
-                }
+                if(coords_tmp.y1 > img_max_area.y1) coords_tmp.y1 -= img->h;
                 coords_tmp.y2 = coords_tmp.y1 + img->h - 1;
 
                 for(; coords_tmp.y1 < img_max_area.y2; coords_tmp.y1 += img_size_final.y, coords_tmp.y2 += img_size_final.y) {
                     coords_tmp.x1 = img_max_area.x1 + offset_x;
-                    if(coords_tmp.x1 > img_max_area.x1) {
-                        coords_tmp.x1 -= img->w;
-                    }
+                    if(coords_tmp.x1 > img_max_area.x1) coords_tmp.x1 -= img->w;
                     coords_tmp.x2 = coords_tmp.x1 + img->w - 1;
 
                     for(; coords_tmp.x1 < img_max_area.x2; coords_tmp.x1 += img_size_final.x, coords_tmp.x2 += img_size_final.x) {

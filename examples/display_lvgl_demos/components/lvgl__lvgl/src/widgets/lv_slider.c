@@ -100,9 +100,7 @@ static void lv_slider_event(const lv_obj_class_t * class_p, lv_event_t * e)
 
     /*Call the ancestor's event handler*/
     res = lv_obj_event_base(MY_CLASS, e);
-    if(res != LV_RES_OK) {
-        return;
-    }
+    if(res != LV_RES_OK) return;
 
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
@@ -193,9 +191,7 @@ static void lv_slider_event(const lv_obj_class_t * class_p, lv_event_t * e)
     }
     else if(code == LV_EVENT_PRESSING && slider->value_to_set != NULL) {
         lv_indev_t * indev = lv_indev_get_act();
-        if(lv_indev_get_type(indev) != LV_INDEV_TYPE_POINTER) {
-            return;
-        }
+        if(lv_indev_get_type(indev) != LV_INDEV_TYPE_POINTER) return;
 
         lv_point_t p;
         lv_indev_get_point(indev, &p);
@@ -250,9 +246,7 @@ static void lv_slider_event(const lv_obj_class_t * class_p, lv_event_t * e)
                 lv_bar_set_value(obj, new_value, LV_ANIM_ON);
             }
             res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-            if(res != LV_RES_OK) {
-                return;
-            }
+            if(res != LV_RES_OK) return;
         }
 
     }
@@ -269,9 +263,7 @@ static void lv_slider_event(const lv_obj_class_t * class_p, lv_event_t * e)
         if(indev_type == LV_INDEV_TYPE_ENCODER) {
             if(editing) {
                 if(lv_slider_get_mode(obj) == LV_SLIDER_MODE_RANGE) {
-                    if(slider->left_knob_focus == 0) {
-                        slider->left_knob_focus = 1;
-                    }
+                    if(slider->left_knob_focus == 0) slider->left_knob_focus = 1;
                     else {
                         slider->left_knob_focus = 0;
                         lv_group_set_editing(g, false);
@@ -318,29 +310,19 @@ static void lv_slider_event(const lv_obj_class_t * class_p, lv_event_t * e)
         char c = *((char *)lv_event_get_param(e));
 
         if(c == LV_KEY_RIGHT || c == LV_KEY_UP) {
-            if(!slider->left_knob_focus) {
-                lv_slider_set_value(obj, lv_slider_get_value(obj) + 1, LV_ANIM_ON);
-            }
-            else {
-                lv_slider_set_left_value(obj, lv_slider_get_left_value(obj) + 1, LV_ANIM_ON);
-            }
+            if(!slider->left_knob_focus) lv_slider_set_value(obj, lv_slider_get_value(obj) + 1, LV_ANIM_ON);
+            else lv_slider_set_left_value(obj, lv_slider_get_left_value(obj) + 1, LV_ANIM_ON);
         }
         else if(c == LV_KEY_LEFT || c == LV_KEY_DOWN) {
-            if(!slider->left_knob_focus) {
-                lv_slider_set_value(obj, lv_slider_get_value(obj) - 1, LV_ANIM_ON);
-            }
-            else {
-                lv_slider_set_left_value(obj, lv_slider_get_left_value(obj) - 1, LV_ANIM_ON);
-            }
+            if(!slider->left_knob_focus) lv_slider_set_value(obj, lv_slider_get_value(obj) - 1, LV_ANIM_ON);
+            else lv_slider_set_left_value(obj, lv_slider_get_left_value(obj) - 1, LV_ANIM_ON);
         }
         else {
             return;
         }
 
         res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-        if(res != LV_RES_OK) {
-            return;
-        }
+        if(res != LV_RES_OK) return;
     }
     else if(code == LV_EVENT_DRAW_MAIN) {
         draw_knob(e);
@@ -360,27 +342,17 @@ static void draw_knob(lv_event_t * e)
     lv_coord_t knob_size;
     bool is_symmetrical = false;
     if(slider->bar.mode == LV_BAR_MODE_SYMMETRICAL && slider->bar.min_value < 0 &&
-       slider->bar.max_value > 0) {
-        is_symmetrical = true;
-    }
+       slider->bar.max_value > 0) is_symmetrical = true;
 
     if(is_horizontal) {
         knob_size = lv_obj_get_height(obj);
-        if(is_symmetrical && slider->bar.cur_value < 0) {
-            knob_area.x1 = slider->bar.indic_area.x1;
-        }
-        else {
-            knob_area.x1 = LV_SLIDER_KNOB_COORD(is_rtl, slider->bar.indic_area);
-        }
+        if(is_symmetrical && slider->bar.cur_value < 0) knob_area.x1 = slider->bar.indic_area.x1;
+        else knob_area.x1 = LV_SLIDER_KNOB_COORD(is_rtl, slider->bar.indic_area);
     }
     else {
         knob_size = lv_obj_get_width(obj);
-        if(is_symmetrical && slider->bar.cur_value < 0) {
-            knob_area.y1 = slider->bar.indic_area.y2;
-        }
-        else {
-            knob_area.y1 = slider->bar.indic_area.y1;
-        }
+        if(is_symmetrical && slider->bar.cur_value < 0) knob_area.y1 = slider->bar.indic_area.y2;
+        else knob_area.y1 = slider->bar.indic_area.y1;
     }
 
     lv_draw_rect_dsc_t knob_rect_dsc;

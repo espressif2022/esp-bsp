@@ -122,22 +122,17 @@ uint32_t _lv_txt_ap_calc_bytes_cnt(const char * txt)
         ch_enc = _lv_txt_encoded_next(txt, &j);
         current_ap_idx = lv_ap_get_char_index(ch_enc);
 
-        if(current_ap_idx != LV_UNDEF_ARABIC_PERSIAN_CHARS) {
+        if(current_ap_idx != LV_UNDEF_ARABIC_PERSIAN_CHARS)
             ch_enc = ap_chars_map[current_ap_idx].char_end_form;
-        }
 
-        if(ch_enc < 0x80) {
+        if(ch_enc < 0x80)
             chars_cnt++;
-        }
-        else if(ch_enc < 0x0800) {
+        else if(ch_enc < 0x0800)
             chars_cnt += 2;
-        }
-        else if(ch_enc < 0x010000) {
+        else if(ch_enc < 0x010000)
             chars_cnt += 3;
-        }
-        else {
+        else
             chars_cnt += 4;
-        }
 
         i++;
     }
@@ -160,9 +155,8 @@ void _lv_txt_ap_proc(const char * txt, char * txt_out)
 
     i = 0;
     j = 0;
-    while(j < txt_length) {
+    while(j < txt_length)
         ch_enc[j++] = _lv_txt_encoded_next(txt, &i);
-    }
 
     ch_enc[j] = 0;
 
@@ -208,29 +202,23 @@ void _lv_txt_ap_proc(const char * txt, char * txt_out)
             continue;
         }
 
-        if(conjunction_to_previuse && conjunction_to_next) {
+        if(conjunction_to_previuse && conjunction_to_next)
             ch_fin[j] = ap_chars_map[index_current].char_end_form + ap_chars_map[index_current].char_middle_form_offset;
-        }
-        else if(!conjunction_to_previuse && conjunction_to_next) {
+        else if(!conjunction_to_previuse && conjunction_to_next)
             ch_fin[j] = ap_chars_map[index_current].char_end_form + ap_chars_map[index_current].char_begining_form_offset;
-        }
-        else if(conjunction_to_previuse && !conjunction_to_next) {
+        else if(conjunction_to_previuse && !conjunction_to_next)
             ch_fin[j] = ap_chars_map[index_current].char_end_form;
-        }
-        else {
+        else
             ch_fin[j] = ap_chars_map[index_current].char_end_form + ap_chars_map[index_current].char_isolated_form_offset;
-        }
         idx_previous = index_current;
         i++;
         j++;
     }
     ch_fin[j] = 0;
-    for(i = 0; i < txt_length; i++) {
+    for(i = 0; i < txt_length; i++)
         ch_enc[i] = 0;
-    }
-    for(i = 0; i < j; i++) {
+    for(i = 0; i < j; i++)
         ch_enc[i] = ch_fin[i];
-    }
     lv_mem_free(ch_fin);
 
     txt_out_temp = txt_out;
@@ -268,9 +256,8 @@ void _lv_txt_ap_proc(const char * txt, char * txt_out)
 static uint32_t lv_ap_get_char_index(uint16_t c)
 {
     for(uint8_t i = 0; ap_chars_map[i].char_end_form; i++) {
-        if(c == (ap_chars_map[i].char_offset + LV_AP_ALPHABET_BASE_CODE)) {
+        if(c == (ap_chars_map[i].char_offset + LV_AP_ALPHABET_BASE_CODE))
             return i;
-        }
         else if(c == ap_chars_map[i].char_end_form                                                  //is it an End form
                 || c == (ap_chars_map[i].char_end_form + ap_chars_map[i].char_begining_form_offset)     //is it a Beginning form
                 || c == (ap_chars_map[i].char_end_form + ap_chars_map[i].char_middle_form_offset)       //is it a middle form

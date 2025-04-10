@@ -17,7 +17,6 @@ extern "C" {
 #include <stddef.h>
 #include <stdbool.h>
 #include "lv_font.h"
-#include "../misc/lv_fs.h"
 
 /*********************
  *      DEFINES
@@ -44,7 +43,6 @@ typedef struct {
     int16_t ofs_x;                  /**< x offset of the bounding box*/
     int16_t ofs_y;                  /**< y offset of the bounding box. Measured from the top of the line*/
 #endif
-    int16_t offset;
 } lv_font_fmt_txt_glyph_dsc_t;
 
 /** Format of font character map.*/
@@ -197,22 +195,6 @@ typedef struct {
 
     /*Cache the last letter and is glyph id*/
     lv_font_fmt_txt_glyph_cache_t * cache;
-
-    /* Function pointer to get the glyph bitmap */
-    uint8_t * (*get_glyph_bitmap_cb)(void * fmt_dsc, void * glyph_dsc);
-
-    /* File pointer for font file */
-    lv_fs_file_t * fp;
-
-    /* Number of glyph */
-    uint32_t loca_count;
-
-    /* Array of glyph offsets */
-    uint32_t * glyph_offset;
-
-    /* Start offset of glyph data */
-    uint32_t glyph_start;
-
 } lv_font_fmt_txt_dsc_t;
 
 /**********************

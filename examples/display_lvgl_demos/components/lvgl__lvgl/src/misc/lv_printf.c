@@ -317,12 +317,10 @@ static size_t _ftoa(out_fct_type out, char * buffer, size_t idx, size_t maxlen, 
     static const double pow10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
     // test for special values
-    if(value != value) {
+    if(value != value)
         return _out_rev(out, buffer, idx, maxlen, "nan", 3, width, flags);
-    }
-    if(value < -DBL_MAX) {
+    if(value < -DBL_MAX)
         return _out_rev(out, buffer, idx, maxlen, "fni-", 4, width, flags);
-    }
     if(value > DBL_MAX)
         return _out_rev(out, buffer, idx, maxlen, (flags & FLAGS_PLUS) ? "fni+" : "fni", (flags & FLAGS_PLUS) ? 4U : 3U, width,
                         flags);
@@ -540,9 +538,7 @@ static size_t _etoa(out_fct_type out, char * buffer, size_t idx, size_t maxlen, 
                          FLAGS_ZEROPAD | FLAGS_PLUS);
         // might need to right-pad spaces
         if(flags & FLAGS_LEFT) {
-            while(idx - start_idx < width) {
-                out(' ', buffer, idx++, maxlen);
-            }
+            while(idx - start_idx < width) out(' ', buffer, idx++, maxlen);
         }
     }
     return idx;
@@ -697,16 +693,14 @@ static int _vsnprintf(out_fct_type out, char * buffer, const size_t maxlen, cons
                         base = 16U;
                         flags |= FLAGS_HASH;   // always hash for pointer format
 #if defined(PRINTF_SUPPORT_LONG_LONG)
-                        if(sizeof(uintptr_t) == sizeof(long long)) {
+                        if(sizeof(uintptr_t) == sizeof(long long))
                             flags |= FLAGS_LONG_LONG;
-                        }
                         else
 #endif
                             flags |= FLAGS_LONG;
 
-                        if(*(format + 1) == 'V') {
+                        if(*(format + 1) == 'V')
                             format++;
-                        }
                     }
                     else if(*format == 'o') {
                         base =  8U;
@@ -785,9 +779,7 @@ static int _vsnprintf(out_fct_type out, char * buffer, const size_t maxlen, cons
 #if defined(PRINTF_SUPPORT_FLOAT)
             case 'f' :
             case 'F' :
-                if(*format == 'F') {
-                    flags |= FLAGS_UPPERCASE;
-                }
+                if(*format == 'F') flags |= FLAGS_UPPERCASE;
                 idx = _ftoa(out, buffer, idx, maxlen, va_arg(va, double), precision, width, flags);
                 format++;
                 break;
@@ -796,12 +788,8 @@ static int _vsnprintf(out_fct_type out, char * buffer, const size_t maxlen, cons
             case 'E':
             case 'g':
             case 'G':
-                if((*format == 'g') || (*format == 'G')) {
-                    flags |= FLAGS_ADAPT_EXP;
-                }
-                if((*format == 'E') || (*format == 'G')) {
-                    flags |= FLAGS_UPPERCASE;
-                }
+                if((*format == 'g') || (*format == 'G')) flags |= FLAGS_ADAPT_EXP;
+                if((*format == 'E') || (*format == 'G')) flags |= FLAGS_UPPERCASE;
                 idx = _etoa(out, buffer, idx, maxlen, va_arg(va, double), precision, width, flags);
                 format++;
                 break;

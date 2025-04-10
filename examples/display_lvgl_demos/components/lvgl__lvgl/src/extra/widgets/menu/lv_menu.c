@@ -127,9 +127,7 @@ lv_obj_t * lv_menu_page_create(lv_obj_t * parent, char * title)
     if(title) {
         page->title = lv_mem_alloc(strlen(title) + 1);
         LV_ASSERT_MALLOC(page->title);
-        if(page->title == NULL) {
-            return NULL;
-        }
+        if(page->title == NULL) return NULL;
         strcpy(page->title, title);
     }
     else {
@@ -348,9 +346,7 @@ void lv_menu_set_mode_header(lv_obj_t * obj, lv_menu_mode_header_t mode_header)
     if(menu->mode_header != mode_header) {
         menu->mode_header = mode_header;
         lv_menu_refr_main_header_mode(obj);
-        if(menu->sidebar_generated) {
-            lv_menu_refr_sidebar_header_mode(obj);
-        }
+        if(menu->sidebar_generated) lv_menu_refr_sidebar_header_mode(obj);
     }
 }
 
@@ -595,9 +591,7 @@ static void lv_menu_refr_sidebar_header_mode(lv_obj_t * obj)
 
     lv_menu_t * menu = (lv_menu_t *)obj;
 
-    if(menu->sidebar_header == NULL || menu->sidebar_page == NULL) {
-        return;
-    }
+    if(menu->sidebar_header == NULL || menu->sidebar_page == NULL) return;
 
     switch(menu->mode_header) {
         case LV_MENU_HEADER_TOP_FIXED:
@@ -632,9 +626,7 @@ static void lv_menu_refr_main_header_mode(lv_obj_t * obj)
 
     lv_menu_t * menu = (lv_menu_t *)obj;
 
-    if(menu->main_header == NULL || menu->main_page == NULL) {
-        return;
-    }
+    if(menu->main_header == NULL || menu->main_page == NULL) return;
 
     switch(menu->mode_header) {
         case LV_MENU_HEADER_TOP_FIXED:
@@ -677,9 +669,7 @@ static void lv_menu_load_page_event_cb(lv_event_t * e)
         lv_obj_t * parent = obj;
 
         while(parent) {
-            if(parent == (lv_obj_t *)menu) {
-                break;
-            }
+            if(parent == (lv_obj_t *)menu) break;
             if(parent == menu->sidebar) {
                 sidebar = true;
                 break;
@@ -721,15 +711,11 @@ static void lv_menu_back_event_cb(lv_event_t * e)
         lv_obj_t * obj = lv_event_get_target(e);
         lv_menu_t * menu = (lv_menu_t *)lv_event_get_user_data(e);
 
-        if(!(obj == menu->main_header_back_btn || obj == menu->sidebar_header_back_btn)) {
-            return;
-        }
+        if(!(obj == menu->main_header_back_btn || obj == menu->sidebar_header_back_btn)) return;
 
         menu->prev_depth = menu->cur_depth; /* Save the previous value for user event handler */
 
-        if(lv_menu_back_btn_is_root((lv_obj_t *)menu, obj)) {
-            return;
-        }
+        if(lv_menu_back_btn_is_root((lv_obj_t *)menu, obj)) return;
 
         lv_ll_t * history_ll = &(menu->history_ll);
 

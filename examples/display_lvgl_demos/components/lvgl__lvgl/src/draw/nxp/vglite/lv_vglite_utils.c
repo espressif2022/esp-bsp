@@ -142,9 +142,8 @@ vg_lite_blend_t lv_vglite_get_blend_mode(lv_blend_mode_t lv_blend_mode)
 static inline void invalidate_cache(void)
 {
     lv_disp_t * disp = _lv_refr_get_disp_refreshing();
-    if(disp->driver->clean_dcache_cb) {
+    if(disp->driver->clean_dcache_cb)
         disp->driver->clean_dcache_cb(disp->driver);
-    }
 }
 
 #endif /*LV_USE_GPU_NXP_VG_LITE*/

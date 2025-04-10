@@ -156,9 +156,8 @@ lv_res_t lv_gpu_nxp_vglite_fill(const lv_area_t * dest_area, lv_color_t color, l
     vg_lite_buffer_t * vgbuf = lv_vglite_get_dest_buf();
 
     vg_lite_buffer_format_t color_format = LV_COLOR_DEPTH == 16 ? VG_LITE_BGRA8888 : VG_LITE_ABGR8888;
-    if(lv_vglite_premult_and_swizzle(&vgcol, col32, opa, color_format) != LV_RES_OK) {
+    if(lv_vglite_premult_and_swizzle(&vgcol, col32, opa, color_format) != LV_RES_OK)
         VG_LITE_RETURN_INV("Premultiplication and swizzle failed.");
-    }
 
     if(opa >= (lv_opa_t)LV_OPA_MAX) {   /*Opaque fill*/
         vg_lite_rectangle_t rect = {
@@ -171,9 +170,8 @@ lv_res_t lv_gpu_nxp_vglite_fill(const lv_area_t * dest_area, lv_color_t color, l
         err = vg_lite_clear(vgbuf, &rect, vgcol);
         VG_LITE_ERR_RETURN_INV(err, "Clear failed.");
 
-        if(lv_vglite_run() != LV_RES_OK) {
+        if(lv_vglite_run() != LV_RES_OK)
             VG_LITE_RETURN_INV("Run failed.");
-        }
     }
     else {   /*fill with transparency*/
 
@@ -199,9 +197,8 @@ lv_res_t lv_gpu_nxp_vglite_fill(const lv_area_t * dest_area, lv_color_t color, l
         err = vg_lite_draw(vgbuf, &path, VG_LITE_FILL_EVEN_ODD, &matrix, VG_LITE_BLEND_SRC_OVER, vgcol);
         VG_LITE_ERR_RETURN_INV(err, "Draw rectangle failed.");
 
-        if(lv_vglite_run() != LV_RES_OK) {
+        if(lv_vglite_run() != LV_RES_OK)
             VG_LITE_RETURN_INV("Run failed.");
-        }
 
         err = vg_lite_clear_path(&path);
         VG_LITE_ERR_RETURN_INV(err, "Clear path failed.");
@@ -232,9 +229,8 @@ lv_res_t lv_gpu_nxp_vglite_blit(const lv_area_t * dest_area,
                                 const lv_color_t * src_buf, const lv_area_t * src_area, lv_coord_t src_stride,
                                 lv_opa_t opa)
 {
-    if(check_src_alignment(src_buf, src_stride) != LV_RES_OK) {
+    if(check_src_alignment(src_buf, src_stride) != LV_RES_OK)
         VG_LITE_RETURN_INV("Check src alignment failed.");
-    }
 
     /* Set src_vgbuf structure. */
     lv_vglite_set_src_buf(src_buf, src_area, src_stride);
@@ -260,9 +256,8 @@ lv_res_t lv_gpu_nxp_vglite_blit_transform(const lv_area_t * dest_area, const lv_
 {
     lv_res_t rv = LV_RES_INV;
 
-    if(check_src_alignment(src_buf, src_stride) != LV_RES_OK) {
+    if(check_src_alignment(src_buf, src_stride) != LV_RES_OK)
         VG_LITE_RETURN_INV("Check src alignment failed.");
-    }
 
     /* Set src_vgbuf structure. */
     lv_vglite_set_src_buf(src_buf, src_area, src_stride);
@@ -288,9 +283,8 @@ lv_res_t lv_gpu_nxp_vglite_buffer_copy(lv_color_t * dest_buf, const lv_area_t * 
 {
     vg_lite_error_t err = VG_LITE_SUCCESS;
 
-    if(check_src_alignment(src_buf, src_stride) != LV_RES_OK) {
+    if(check_src_alignment(src_buf, src_stride) != LV_RES_OK)
         VG_LITE_RETURN_INV("Check src alignment failed.");
-    }
 
     vg_lite_buffer_t src_vgbuf;
     /* Set src_vgbuf structure. */
@@ -367,9 +361,8 @@ static lv_res_t lv_vglite_blit_split(lv_color_t * dest_buf, lv_area_t * dest_are
     /* Stage 2: If we're in limit, do a single BLIT */
     if((src_area->x2 < LV_GPU_NXP_VG_LITE_BLIT_SPLIT_THR) &&
        (src_area->y2 < LV_GPU_NXP_VG_LITE_BLIT_SPLIT_THR)) {
-        if(check_src_alignment(src_buf, src_stride) != LV_RES_OK) {
+        if(check_src_alignment(src_buf, src_stride) != LV_RES_OK)
             VG_LITE_RETURN_INV("Check src alignment failed.");
-        }
 
         /* Set new dest_vgbuf and src_vgbuf memory addresses. */
         lv_vglite_set_dest_buf_ptr(dest_buf);
@@ -484,9 +477,8 @@ static lv_res_t lv_vglite_blit_split(lv_color_t * dest_buf, lv_area_t * dest_are
                 tile_dest_area.x2 += shift_dest_x;
             }
 
-            if(check_src_alignment(tile_src_buf, src_stride) != LV_RES_OK) {
+            if(check_src_alignment(tile_src_buf, src_stride) != LV_RES_OK)
                 VG_LITE_RETURN_INV("Check src alignment failed.");
-            }
 
             /* Set new dest_vgbuf and src_vgbuf memory addresses. */
             lv_vglite_set_dest_buf_ptr(tile_dest_buf);
@@ -561,9 +553,8 @@ static lv_res_t lv_vglite_blit(const lv_area_t * src_area, lv_opa_t opa)
     err = vg_lite_blit_rect(dst_vgbuf, src_vgbuf, rect, &vgmatrix, blend, color, VG_LITE_FILTER_POINT);
     VG_LITE_ERR_RETURN_INV(err, "Blit rectangle failed.");
 
-    if(lv_vglite_run() != LV_RES_OK) {
+    if(lv_vglite_run() != LV_RES_OK)
         VG_LITE_RETURN_INV("Run failed.");
-    }
 
     return LV_RES_OK;
 }
@@ -598,9 +589,8 @@ static inline void lv_vglite_set_transformation_matrix(const lv_area_t * dest_ar
     bool has_rotation = (dsc->angle != 0);
 
     vg_lite_translate(dsc->pivot.x, dsc->pivot.y, &vgmatrix);
-    if(has_rotation) {
-        vg_lite_rotate(dsc->angle / 10.0f, &vgmatrix);    /* angle is 1/10 degree */
-    }
+    if(has_rotation)
+        vg_lite_rotate(dsc->angle / 10.0f, &vgmatrix);   /* angle is 1/10 degree */
     if(has_scale) {
         vg_lite_float_t scale = 1.0f * dsc->zoom / LV_IMG_ZOOM_NONE;
         vg_lite_scale(scale, scale, &vgmatrix);

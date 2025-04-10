@@ -14,10 +14,6 @@
 #include "../misc/lv_fs.h"
 #include "lv_font_loader.h"
 
-#include "esp_log.h"
-
-#define TAG "loader"
-
 /**********************
  *      TYPEDEFS
  **********************/
@@ -27,12 +23,6 @@ typedef struct {
     uint8_t byte_value;
 } bit_iterator_t;
 
-// 01000000030014001100faff1200fbff0200faff1100
-// 0000100000000004050506000000010000003c000000636d617002000000
-// 2c000000200000005f0001005f0002002c000000504e00001c4660000700
-// 03000000b603ea040505fb1e853d1b460000dc0000006c6f636167000000
-// 080008000c002000330091001701b401380242028502c802f00230033d03
-// 4b0352038603ea0326048a04ee045205b6051a067606e00644075a077407
 typedef struct font_header_bin {
     uint32_t version;
     uint16_t tables_count;
@@ -95,11 +85,10 @@ static unsigned int read_bits(bit_iterator_t * it, int n_bits, lv_fs_res_t * res
  */
 lv_font_t * lv_font_load(const char * font_name)
 {
-    static lv_fs_file_t file;
+    lv_fs_file_t file;
     lv_fs_res_t res = lv_fs_open(&file, font_name, LV_FS_MODE_RD);
-    if(res != LV_FS_RES_OK) {
+    if(res != LV_FS_RES_OK)
         return NULL;
-    }
 
     lv_font_t * font = lv_mem_alloc(sizeof(lv_font_t));
     if(font) {
@@ -116,9 +105,8 @@ lv_font_t * lv_font_load(const char * font_name)
         }
     }
 
-#if !LV_USE_FONT_DYNAMIC_LOAD
     lv_fs_close(&file);
-#endif
+
     return font;
 }
 
@@ -138,13 +126,11 @@ void lv_font_free(lv_font_t * font)
                     (lv_font_fmt_txt_kern_pair_t *)dsc->kern_dsc;
 
                 if(NULL != kern_dsc) {
-                    if(kern_dsc->glyph_ids) {
+                    if(kern_dsc->glyph_ids)
                         lv_mem_free((void *)kern_dsc->glyph_ids);
-                    }
 
-                    if(kern_dsc->values) {
+                    if(kern_dsc->values)
                         lv_mem_free((void *)kern_dsc->values);
-                    }
 
                     lv_mem_free((void *)kern_dsc);
                 }
@@ -154,17 +140,14 @@ void lv_font_free(lv_font_t * font)
                     (lv_font_fmt_txt_kern_classes_t *)dsc->kern_dsc;
 
                 if(NULL != kern_dsc) {
-                    if(kern_dsc->class_pair_values) {
+                    if(kern_dsc->class_pair_values)
                         lv_mem_free((void *)kern_dsc->class_pair_values);
-                    }
 
-                    if(kern_dsc->left_class_mapping) {
+                    if(kern_dsc->left_class_mapping)
                         lv_mem_free((void *)kern_dsc->left_class_mapping);
-                    }
 
-                    if(kern_dsc->right_class_mapping) {
+                    if(kern_dsc->right_class_mapping)
                         lv_mem_free((void *)kern_dsc->right_class_mapping);
-                    }
 
                     lv_mem_free((void *)kern_dsc);
                 }
@@ -175,12 +158,10 @@ void lv_font_free(lv_font_t * font)
 
             if(NULL != cmaps) {
                 for(int i = 0; i < dsc->cmap_num; ++i) {
-                    if(NULL != cmaps[i].glyph_id_ofs_list) {
+                    if(NULL != cmaps[i].glyph_id_ofs_list)
                         lv_mem_free((void *)cmaps[i].glyph_id_ofs_list);
-                    }
-                    if(NULL != cmaps[i].unicode_list) {
+                    if(NULL != cmaps[i].unicode_list)
                         lv_mem_free((void *)cmaps[i].unicode_list);
-                    }
                 }
                 lv_mem_free(cmaps);
             }
@@ -191,12 +172,6 @@ void lv_font_free(lv_font_t * font)
             if(NULL != dsc->glyph_dsc) {
                 lv_mem_free((void *)dsc->glyph_dsc);
             }
-            if(NULL != dsc->glyph_offset) {
-                lv_mem_free((void *)dsc->glyph_offset);
-            }
-#if LV_USE_FONT_DYNAMIC_LOAD
-            lv_fs_close(dsc->fp);
-#endif
             lv_mem_free(dsc);
         }
         lv_mem_free(font);
@@ -220,7 +195,7 @@ static unsigned int read_bits(bit_iterator_t * it, int n_bits, lv_fs_res_t * res
 {
     unsigned int value = 0;
     while(n_bits--) {
-        it->byte_value = it->byte_value << 1;//read MSB first
+        it->byte_value = it->byte_value << 1;
         it->bit_pos--;
 
         if(it->bit_pos < 0) {
@@ -346,16 +321,12 @@ static int32_t load_cmaps(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc, u
     lv_font_fmt_txt_cmap_t * cmaps =
         lv_mem_alloc(cmaps_subtables_count * sizeof(lv_font_fmt_txt_cmap_t));
 
-    ESP_LOGI(TAG, "cmaps_subtables_count: 0x%x, size:%02X", cmaps_subtables_count,
-             cmaps_subtables_count * sizeof(lv_font_fmt_txt_cmap_t));
-
     memset(cmaps, 0, cmaps_subtables_count * sizeof(lv_font_fmt_txt_cmap_t));
 
     font_dsc->cmaps = cmaps;
     font_dsc->cmap_num = cmaps_subtables_count;
 
     cmap_table_bin_t * cmaps_tables = lv_mem_alloc(sizeof(cmap_table_bin_t) * font_dsc->cmap_num);
-    ESP_LOGI(TAG, "cmaps_tables: 0x%x, size:%02X", font_dsc->cmap_num, sizeof(cmap_table_bin_t) * font_dsc->cmap_num);
 
     bool success = load_cmaps_tables(fp, font_dsc, cmaps_start, cmaps_tables);
 
@@ -363,80 +334,6 @@ static int32_t load_cmaps(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc, u
 
     return success ? cmaps_length : -1;
 }
-
-#if LV_USE_FONT_DYNAMIC_LOAD
-static uint8_t * load_glyph_bitmap(void * fmt_dsc, void * glyph_dsc)
-{
-
-    lv_font_fmt_txt_dsc_t * fdsc = (lv_font_fmt_txt_dsc_t *)fmt_dsc;
-    lv_font_fmt_txt_glyph_dsc_t * gdsc = (lv_font_fmt_txt_glyph_dsc_t *)glyph_dsc;
-
-    /*header*/
-    int32_t header_length = read_label(fdsc->fp, 0, "head");
-    if(header_length < 0) {
-        return NULL;
-    }
-
-    font_header_bin_t font_header;
-    if(lv_fs_read(fdsc->fp, &font_header, sizeof(font_header_bin_t), NULL) != LV_FS_RES_OK) {
-        return NULL;
-    }
-    int nbits = font_header.advance_width_bits + 2 * font_header.xy_bits + 2 * font_header.wh_bits;
-
-    /*glyf*/
-    int32_t glyph_length = read_label(fdsc->fp, fdsc->glyph_start, "glyf");
-    if(glyph_length < 0) {
-        return NULL;
-    }
-
-    int16_t  offset        = gdsc->offset;
-    uint32_t bitmap_index  = gdsc->bitmap_index;
-
-    uint8_t * glyph_bmp    = fdsc->glyph_bitmap;
-    uint32_t  loca_count   = fdsc->loca_count;
-
-    int next_offset        = (offset < loca_count - 1) ? fdsc->glyph_offset[offset + 1] : (uint32_t)glyph_length;
-    int bmp_size           = next_offset - fdsc->glyph_offset[offset] - (nbits / 8);
-
-    lv_fs_res_t res = lv_fs_seek(fdsc->fp, fdsc->glyph_start + fdsc->glyph_offset[offset], LV_FS_SEEK_SET);
-    if(res != LV_FS_RES_OK) {
-        return NULL;
-    }
-    bit_iterator_t bit_it = init_bit_iterator(fdsc->fp);
-
-    read_bits(&bit_it, nbits, &res);
-    if(res != LV_FS_RES_OK) {
-        return NULL;
-    }
-
-    if(gdsc->box_w * gdsc->box_h == 0) {
-        return NULL;
-    }
-
-    if(nbits % 8 == 0) {  /*Fast path*/
-        if(lv_fs_read(fdsc->fp, &glyph_bmp[0], bmp_size, NULL) != LV_FS_RES_OK) {
-            return NULL;
-        }
-    }
-    else {
-        for(int k = 0; k < bmp_size - 1; ++k) {
-            glyph_bmp[0 + k] = read_bits(&bit_it, 8, &res);
-            if(res != LV_FS_RES_OK) {
-                return NULL;
-            }
-        }
-        glyph_bmp[bmp_size - 1] = read_bits(&bit_it, 8 - nbits % 8, &res);
-        if(res != LV_FS_RES_OK) {
-            return NULL;
-        }
-
-        /*The last fragment should be on the MSB but read_bits() will place it to the LSB*/
-        glyph_bmp[bmp_size - 1] = glyph_bmp[bmp_size - 1] << (nbits % 8);
-    }
-
-    return glyph_bmp;
-}
-#endif
 
 static int32_t load_glyph(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc,
                           uint32_t start, uint32_t * glyph_offset, uint32_t loca_count, font_header_bin_t * header)
@@ -448,18 +345,12 @@ static int32_t load_glyph(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc,
 
     lv_font_fmt_txt_glyph_dsc_t * glyph_dsc = (lv_font_fmt_txt_glyph_dsc_t *)
                                               lv_mem_alloc(loca_count * sizeof(lv_font_fmt_txt_glyph_dsc_t));
+
     memset(glyph_dsc, 0, loca_count * sizeof(lv_font_fmt_txt_glyph_dsc_t));
 
     font_dsc->glyph_dsc = glyph_dsc;
 
-    int nbits = header->advance_width_bits + 2 * header->xy_bits + 2 * header->wh_bits;
-
     int cur_bmp_size = 0;
-#if LV_USE_FONT_DYNAMIC_LOAD
-    int max_bmp_size = 0;
-#endif
-
-    // header, xy_bits:5, wh_bits:5, advance_width_bits:6
 
     for(unsigned int i = 0; i < loca_count; ++i) {
         lv_font_fmt_txt_glyph_dsc_t * gdsc = &glyph_dsc[i];
@@ -505,6 +396,7 @@ static int32_t load_glyph(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc,
             return -1;
         }
 
+        int nbits = header->advance_width_bits + 2 * header->xy_bits + 2 * header->wh_bits;
         int next_offset = (i < loca_count - 1) ? glyph_offset[i + 1] : (uint32_t)glyph_length;
         int bmp_size = next_offset - glyph_offset[i] - nbits / 8;
 
@@ -517,26 +409,12 @@ static int32_t load_glyph(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc,
         }
 
         gdsc->bitmap_index = cur_bmp_size;
-        gdsc->offset = i;
-        if(i < 10) {
-            ESP_LOGI(TAG, "glyph_dsc [%d], offset:%04d, bmp_size:%02d", i, cur_bmp_size, bmp_size);
-        }
         if(gdsc->box_w * gdsc->box_h != 0) {
             cur_bmp_size += bmp_size;
-#if LV_USE_FONT_DYNAMIC_LOAD
-            if(max_bmp_size < bmp_size) {
-                max_bmp_size = bmp_size;
-            }
-#endif
         }
     }
 
-#if LV_USE_FONT_DYNAMIC_LOAD
-    ESP_LOGI(TAG, "max_bmp_size:%d", max_bmp_size);
-    font_dsc->glyph_bitmap = (uint8_t *)lv_mem_alloc(sizeof(uint8_t) * max_bmp_size);
-#else
     uint8_t * glyph_bmp = (uint8_t *)lv_mem_alloc(sizeof(uint8_t) * cur_bmp_size);
-    ESP_LOGI(TAG, "glyph_bmp, cur_bmp malloc:%d, loca_count:%d", sizeof(uint8_t) * cur_bmp_size, loca_count);
 
     font_dsc->glyph_bitmap = glyph_bmp;
 
@@ -549,8 +427,7 @@ static int32_t load_glyph(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc,
         }
         bit_iterator_t bit_it = init_bit_iterator(fp);
 
-        int nbits = header->advance_width_bits + 2 * header->xy_bits + 2 * header->wh_bits;//== 26
-        // ESP_LOGI(TAG, "[%d]nbits:%d", i, nbits);
+        int nbits = header->advance_width_bits + 2 * header->xy_bits + 2 * header->wh_bits;
 
         read_bits(&bit_it, nbits, &res);
         if(res != LV_FS_RES_OK) {
@@ -585,13 +462,9 @@ static int32_t load_glyph(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc,
             glyph_bmp[cur_bmp_size + bmp_size - 1] = glyph_bmp[cur_bmp_size + bmp_size - 1] << (nbits % 8);
 
         }
-        if(i < 10) {
-            ESP_LOGW(TAG, "glyph_bmp [%d], offset:%04d, bmp_size:%02d", i, cur_bmp_size, bmp_size);
-        }
 
         cur_bmp_size += bmp_size;
     }
-#endif
     return glyph_length;
 }
 
@@ -642,7 +515,6 @@ static bool lvgl_load_font(lv_fs_file_t * fp, lv_font_t * font)
     /*cmaps*/
     uint32_t cmaps_start = header_length;
     int32_t cmaps_length = load_cmaps(fp, font_dsc, cmaps_start);
-    ESP_LOGI(TAG, "cmaps_start: 0x%x, len:%02X", cmaps_start, cmaps_length);
     if(cmaps_length < 0) {
         return false;
     }
@@ -662,11 +534,6 @@ static bool lvgl_load_font(lv_fs_file_t * fp, lv_font_t * font)
     bool failed = false;
     uint32_t * glyph_offset = lv_mem_alloc(sizeof(uint32_t) * (loca_count + 1));
 
-    ESP_LOGI(TAG, "Header, xy_bits:%d, wh_bits:%d, advance_width_bits:%d, index_to_loc_format:%d", \
-             font_header.xy_bits,
-             font_header.wh_bits,
-             font_header.advance_width_bits,
-             font_header.index_to_loc_format);
     if(font_header.index_to_loc_format == 0) {
         for(unsigned int i = 0; i < loca_count; ++i) {
             uint16_t offset;
@@ -694,20 +561,10 @@ static bool lvgl_load_font(lv_fs_file_t * fp, lv_font_t * font)
 
     /*glyph*/
     uint32_t glyph_start = loca_start + loca_length;
-    ESP_LOGI(TAG, "glyph_start: 0x%x, loca_count:%d, font_dsc:%p, glyph_offset:%p, fp:%p", glyph_start, loca_count,
-             font_dsc, glyph_offset, font_dsc->fp);
     int32_t glyph_length = load_glyph(
                                fp, font_dsc, glyph_start, glyph_offset, loca_count, &font_header);
 
-#if LV_USE_FONT_DYNAMIC_LOAD
-    font_dsc->get_glyph_bitmap_cb = load_glyph_bitmap;
-    font_dsc->fp = fp;
-    font_dsc->loca_count = loca_count;
-    font_dsc->glyph_offset = glyph_offset;
-    font_dsc->glyph_start = glyph_start;
-#else
     lv_mem_free(glyph_offset);
-#endif
 
     if(glyph_length < 0) {
         return false;
@@ -741,7 +598,7 @@ int32_t load_kern(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc, uint8_t f
         return -1;
     }
 
-    if(0 == kern_format_type) {  /*sorted pairs*/
+    if(0 == kern_format_type) { /*sorted pairs*/
         lv_font_fmt_txt_kern_pair_t * kern_pair = lv_mem_alloc(sizeof(lv_font_fmt_txt_kern_pair_t));
 
         memset(kern_pair, 0, sizeof(lv_font_fmt_txt_kern_pair_t));
@@ -778,7 +635,7 @@ int32_t load_kern(lv_fs_file_t * fp, lv_font_fmt_txt_dsc_t * font_dsc, uint8_t f
             return -1;
         }
     }
-    else if(3 == kern_format_type) {    /*array M*N of classes*/
+    else if(3 == kern_format_type) { /*array M*N of classes*/
 
         lv_font_fmt_txt_kern_classes_t * kern_classes = lv_mem_alloc(sizeof(lv_font_fmt_txt_kern_classes_t));
 

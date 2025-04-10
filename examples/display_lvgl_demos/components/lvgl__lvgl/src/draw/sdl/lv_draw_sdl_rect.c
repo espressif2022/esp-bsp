@@ -282,9 +282,7 @@ SDL_Texture * lv_draw_sdl_rect_grad_strip_obtain(lv_draw_sdl_ctx_t * ctx, const 
 void lv_draw_sdl_rect_bg_frag_draw_corners(lv_draw_sdl_ctx_t * ctx, SDL_Texture * frag, lv_coord_t frag_size,
                                            const lv_area_t * coords, const lv_area_t * clip, bool full)
 {
-    if(!clip) {
-        clip = coords;
-    }
+    if(!clip) clip = coords;
     lv_area_t corner_area, dst_area;
     /* Upper left */
     corner_area.x1 = coords->x1;
@@ -532,9 +530,7 @@ static void draw_bg_img(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const
                         const lv_draw_rect_dsc_t * dsc)
 {
     LV_UNUSED(draw_area);
-    if(SKIP_IMAGE(dsc)) {
-        return;
-    }
+    if(SKIP_IMAGE(dsc)) return;
 
     lv_img_src_t src_type = lv_img_src_get_type(dsc->bg_img_src);
     if(src_type == LV_IMG_SRC_SYMBOL) {
@@ -622,9 +618,7 @@ static void draw_shadow(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const
                         const lv_draw_rect_dsc_t * dsc)
 {
     /*Check whether the shadow is visible*/
-    if(SKIP_SHADOW(dsc)) {
-        return;
-    }
+    if(SKIP_SHADOW(dsc)) return;
 
     lv_coord_t sw = dsc->shadow_width;
 
@@ -642,16 +636,12 @@ static void draw_shadow(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const
 
     lv_opa_t opa = dsc->shadow_opa;
 
-    if(opa > LV_OPA_MAX) {
-        opa = LV_OPA_COVER;
-    }
+    if(opa > LV_OPA_MAX) opa = LV_OPA_COVER;
 
     /*Get clipped draw area which is the real draw area.
      *It is always the same or inside `shadow_area`*/
     lv_area_t draw_area;
-    if(!_lv_area_intersect(&draw_area, &shadow_area, clip)) {
-        return;
-    }
+    if(!_lv_area_intersect(&draw_area, &shadow_area, clip)) return;
 
     SDL_Rect core_area_rect;
     lv_area_to_sdl_rect(&shadow_area, &core_area_rect);
@@ -713,9 +703,7 @@ static void draw_shadow(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const
 static void draw_border(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const lv_area_t * draw_area,
                         const lv_draw_rect_dsc_t * dsc)
 {
-    if(SKIP_BORDER(dsc)) {
-        return;
-    }
+    if(SKIP_BORDER(dsc)) return;
 
     SDL_Color border_color;
     lv_color_to_sdl_color(&dsc->border_color, &border_color);
@@ -737,15 +725,11 @@ static void draw_border(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const
 static void draw_outline(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, const lv_area_t * clip,
                          const lv_draw_rect_dsc_t * dsc)
 {
-    if(SKIP_OUTLINE(dsc)) {
-        return;
-    }
+    if(SKIP_OUTLINE(dsc)) return;
 
     lv_opa_t opa = dsc->outline_opa;
 
-    if(opa > LV_OPA_MAX) {
-        opa = LV_OPA_COVER;
-    }
+    if(opa > LV_OPA_MAX) opa = LV_OPA_COVER;
 
     /*Get the inner radius*/
     lv_area_t area_inner;
@@ -767,17 +751,13 @@ static void draw_outline(lv_draw_sdl_ctx_t * ctx, const lv_area_t * coords, cons
     area_outer.y2 += dsc->outline_width;
 
     lv_area_t draw_area;
-    if(!_lv_area_intersect(&draw_area, &area_outer, clip)) {
-        return;
-    }
+    if(!_lv_area_intersect(&draw_area, &area_outer, clip)) return;
 
     int32_t inner_w = lv_area_get_width(&area_inner);
     int32_t inner_h = lv_area_get_height(&area_inner);
     lv_coord_t rin = dsc->radius;
     int32_t short_side = LV_MIN(inner_w, inner_h);
-    if(rin > short_side >> 1) {
-        rin = short_side >> 1;
-    }
+    if(rin > short_side >> 1) rin = short_side >> 1;
 
     lv_coord_t rout = rin + dsc->outline_width;
 
@@ -812,9 +792,7 @@ static void draw_border_generic(lv_draw_sdl_ctx_t * ctx, const lv_area_t * outer
         }
 
         /*Create mask for the inner mask*/
-        if(rin < 0) {
-            rin = 0;
-        }
+        if(rin < 0) rin = 0;
         const lv_area_t frag_inner_area = {frag_area.x1 + key.offsets.x1, frag_area.y1 + key.offsets.y1,
                                            frag_area.x2 + key.offsets.x2, frag_area.y2 + key.offsets.y2
                                           };
@@ -944,9 +922,7 @@ static void frag_render_center(SDL_Renderer * renderer, SDL_Texture * frag, lv_c
         coords->x2 - frag_size,
         coords->y2 - frag_size,
     };
-    if(center_area.x2 < center_area.x1 || center_area.y2 < center_area.y1) {
-        return;
-    }
+    if(center_area.x2 < center_area.x1 || center_area.y2 < center_area.y1) return;
     lv_area_t draw_area;
     if(!_lv_area_intersect(&draw_area, &center_area, clipped)) {
         return;

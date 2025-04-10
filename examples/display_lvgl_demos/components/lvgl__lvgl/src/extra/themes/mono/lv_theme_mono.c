@@ -187,9 +187,7 @@ lv_theme_t * lv_theme_mono_init(lv_disp_t * disp, bool dark_bg, const lv_font_t 
 
     style_init(dark_bg, font);
 
-    if(disp == NULL || lv_disp_get_theme(disp) == &theme) {
-        lv_obj_report_style_change(NULL);
-    }
+    if(disp == NULL || lv_disp_get_theme(disp) == &theme) lv_obj_report_style_change(NULL);
 
     inited = true;
 

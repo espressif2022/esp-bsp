@@ -98,9 +98,7 @@ static void textarea_event_cb(lv_event_t * e)
         switch(lv_msg_get_id(m)) {
             case MSG_LOGIN_ERROR:
                 /*If there was an error, clean the text area*/
-                if(strlen(lv_msg_get_payload(m))) {
-                    lv_textarea_set_text(ta, "");
-                }
+                if(strlen(lv_msg_get_payload(m))) lv_textarea_set_text(ta, "");
                 break;
             case MSG_LOGIN_OK:
                 lv_obj_add_state(ta, LV_STATE_DISABLED);

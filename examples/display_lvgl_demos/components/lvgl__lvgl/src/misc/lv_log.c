@@ -65,9 +65,7 @@ void lv_log_register_print_cb(lv_log_print_g_cb_t print_cb)
  */
 void _lv_log_add(lv_log_level_t level, const char * file, int line, const char * func, const char * format, ...)
 {
-    if(level >= _LV_LOG_LEVEL_NUM) {
-        return;    /*Invalid level*/
-    }
+    if(level >= _LV_LOG_LEVEL_NUM) return; /*Invalid level*/
 
     static uint32_t last_log_time = 0;
 
@@ -116,9 +114,7 @@ void _lv_log_add(lv_log_level_t level, const char * file, int line, const char *
 
 void lv_log(const char * format, ...)
 {
-    if(LV_LOG_LEVEL >= LV_LOG_LEVEL_NONE) {
-        return;    /* disable log */
-    }
+    if(LV_LOG_LEVEL >= LV_LOG_LEVEL_NONE) return; /* disable log */
 
     va_list args;
     va_start(args, format);

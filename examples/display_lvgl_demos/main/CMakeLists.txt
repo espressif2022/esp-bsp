@@ -17,5 +17,6 @@ spiffs_create_partition_assets(
     factory 
     ../spiffs_assets
     FLASH_IN_PROJECT
+    FLASH_APPEND_APP
     MMAP_FILE_SUPPORT_FORMAT ".bin")
 

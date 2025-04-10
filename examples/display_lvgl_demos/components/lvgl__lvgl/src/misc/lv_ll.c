@@ -74,12 +74,12 @@ void * _lv_ll_ins_head(lv_ll_t * ll_p)
         node_set_prev(ll_p, n_new, NULL);       /*No prev. before the new head*/
         node_set_next(ll_p, n_new, ll_p->head); /*After new comes the old head*/
 
-        if(ll_p->head != NULL) {  /*If there is old head then before it goes the new*/
+        if(ll_p->head != NULL) { /*If there is old head then before it goes the new*/
             node_set_prev(ll_p, ll_p->head, n_new);
         }
 
         ll_p->head = n_new;      /*Set the new head in the dsc.*/
-        if(ll_p->tail == NULL) {  /*If there is no tail (1. node) set the tail too*/
+        if(ll_p->tail == NULL) { /*If there is no tail (1. node) set the tail too*/
             ll_p->tail = n_new;
         }
     }
@@ -97,21 +97,15 @@ void * _lv_ll_ins_prev(lv_ll_t * ll_p, void * n_act)
 {
     lv_ll_node_t * n_new;
 
-    if(NULL == ll_p || NULL == n_act) {
-        return NULL;
-    }
+    if(NULL == ll_p || NULL == n_act) return NULL;
 
     if(_lv_ll_get_head(ll_p) == n_act) {
         n_new = _lv_ll_ins_head(ll_p);
-        if(n_new == NULL) {
-            return NULL;
-        }
+        if(n_new == NULL) return NULL;
     }
     else {
         n_new = lv_mem_alloc(ll_p->n_size + LL_NODE_META_SIZE);
-        if(n_new == NULL) {
-            return NULL;
-        }
+        if(n_new == NULL) return NULL;
 
         lv_ll_node_t * n_prev;
         n_prev = _lv_ll_get_prev(ll_p, n_act);
@@ -143,7 +137,7 @@ void * _lv_ll_ins_tail(lv_ll_t * ll_p)
         }
 
         ll_p->tail = n_new;      /*Set the new tail in the dsc.*/
-        if(ll_p->head == NULL) {  /*If there is no head (1. node) set the head too*/
+        if(ll_p->head == NULL) { /*If there is no head (1. node) set the head too*/
             ll_p->head = n_new;
         }
     }
@@ -159,9 +153,7 @@ void * _lv_ll_ins_tail(lv_ll_t * ll_p)
  */
 void _lv_ll_remove(lv_ll_t * ll_p, void * node_p)
 {
-    if(ll_p == NULL) {
-        return;
-    }
+    if(ll_p == NULL) return;
 
     if(_lv_ll_get_head(ll_p) == node_p) {
         /*The new head will be the node after 'n_act'*/
@@ -231,12 +223,12 @@ void _lv_ll_chg_list(lv_ll_t * ll_ori_p, lv_ll_t * ll_new_p, void * node, bool h
         node_set_prev(ll_new_p, node, NULL);
         node_set_next(ll_new_p, node, ll_new_p->head);
 
-        if(ll_new_p->head != NULL) {  /*If there is old head then before it goes the new*/
+        if(ll_new_p->head != NULL) { /*If there is old head then before it goes the new*/
             node_set_prev(ll_new_p, ll_new_p->head, node);
         }
 
         ll_new_p->head = node;       /*Set the new head in the dsc.*/
-        if(ll_new_p->tail == NULL) {  /*If there is no tail (first node) set the tail too*/
+        if(ll_new_p->tail == NULL) { /*If there is no tail (first node) set the tail too*/
             ll_new_p->tail = node;
         }
     }
@@ -245,12 +237,12 @@ void _lv_ll_chg_list(lv_ll_t * ll_ori_p, lv_ll_t * ll_new_p, void * node, bool h
         node_set_prev(ll_new_p, node, ll_new_p->tail);
         node_set_next(ll_new_p, node, NULL);
 
-        if(ll_new_p->tail != NULL) {  /*If there is old tail then after it goes the new*/
+        if(ll_new_p->tail != NULL) { /*If there is old tail then after it goes the new*/
             node_set_next(ll_new_p, ll_new_p->tail, node);
         }
 
         ll_new_p->tail = node;       /*Set the new tail in the dsc.*/
-        if(ll_new_p->head == NULL) {  /*If there is no head (first node) set the head too*/
+        if(ll_new_p->head == NULL) { /*If there is no head (first node) set the head too*/
             ll_new_p->head = node;
         }
     }
@@ -263,9 +255,7 @@ void _lv_ll_chg_list(lv_ll_t * ll_ori_p, lv_ll_t * ll_new_p, void * node, bool h
  */
 void * _lv_ll_get_head(const lv_ll_t * ll_p)
 {
-    if(ll_p == NULL) {
-        return NULL;
-    }
+    if(ll_p == NULL) return NULL;
     return ll_p->head;
 }
 
@@ -276,9 +266,7 @@ void * _lv_ll_get_head(const lv_ll_t * ll_p)
  */
 void * _lv_ll_get_tail(const lv_ll_t * ll_p)
 {
-    if(ll_p == NULL) {
-        return NULL;
-    }
+    if(ll_p == NULL) return NULL;
     return ll_p->tail;
 }
 
@@ -337,21 +325,15 @@ uint32_t _lv_ll_get_len(const lv_ll_t * ll_p)
  */
 void _lv_ll_move_before(lv_ll_t * ll_p, void * n_act, void * n_after)
 {
-    if(n_act == n_after) {
-        return;    /*Can't move before itself*/
-    }
+    if(n_act == n_after) return; /*Can't move before itself*/
 
     void * n_before;
-    if(n_after != NULL) {
+    if(n_after != NULL)
         n_before = _lv_ll_get_prev(ll_p, n_after);
-    }
-    else {
-        n_before = _lv_ll_get_tail(ll_p);    /*if `n_after` is NULL `n_act` should be the new tail*/
-    }
+    else
+        n_before = _lv_ll_get_tail(ll_p); /*if `n_after` is NULL `n_act` should be the new tail*/
 
-    if(n_act == n_before) {
-        return;    /*Already before `n_after`*/
-    }
+    if(n_act == n_before) return; /*Already before `n_after`*/
 
     /*It's much easier to remove from the list and add again*/
     _lv_ll_remove(ll_p, n_act);
@@ -363,14 +345,10 @@ void _lv_ll_move_before(lv_ll_t * ll_p, void * n_act, void * n_after)
     node_set_next(ll_p, n_act, n_after);
 
     /*If `n_act` was moved before NULL then it become the new tail*/
-    if(n_after == NULL) {
-        ll_p->tail = n_act;
-    }
+    if(n_after == NULL) ll_p->tail = n_act;
 
     /*If `n_act` was moved before `NULL` then it's the new head*/
-    if(n_before == NULL) {
-        ll_p->head = n_act;
-    }
+    if(n_before == NULL) ll_p->head = n_act;
 }
 
 /**
@@ -380,13 +358,9 @@ void _lv_ll_move_before(lv_ll_t * ll_p, void * n_act, void * n_after)
  */
 bool _lv_ll_is_empty(lv_ll_t * ll_p)
 {
-    if(ll_p == NULL) {
-        return true;
-    }
+    if(ll_p == NULL) return true;
 
-    if(ll_p->head == NULL && ll_p->tail == NULL) {
-        return true;
-    }
+    if(ll_p->head == NULL && ll_p->tail == NULL) return true;
 
     return false;
 }
@@ -403,9 +377,7 @@ bool _lv_ll_is_empty(lv_ll_t * ll_p)
  */
 static void node_set_prev(lv_ll_t * ll_p, lv_ll_node_t * act, lv_ll_node_t * prev)
 {
-    if(act == NULL) {
-        return;    /*Can't set the prev node of `NULL`*/
-    }
+    if(act == NULL) return; /*Can't set the prev node of `NULL`*/
 
     uint8_t * act8 = (uint8_t *)act;
 
@@ -425,9 +397,7 @@ static void node_set_prev(lv_ll_t * ll_p, lv_ll_node_t * act, lv_ll_node_t * pre
  */
 static void node_set_next(lv_ll_t * ll_p, lv_ll_node_t * act, lv_ll_node_t * next)
 {
-    if(act == NULL) {
-        return;    /*Can't set the next node of `NULL`*/
-    }
+    if(act == NULL) return; /*Can't set the next node of `NULL`*/
     uint8_t * act8 = (uint8_t *)act;
 
     act8 += LL_NEXT_P_OFFSET(ll_p);

@@ -60,12 +60,8 @@ void lv_draw_sdl_draw_letter(lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t
     const lv_font_t * font_p = dsc->font;
     lv_opa_t opa = dsc->opa;
     lv_color_t color = dsc->color;
-    if(opa < LV_OPA_MIN) {
-        return;
-    }
-    if(opa > LV_OPA_MAX) {
-        opa = LV_OPA_COVER;
-    }
+    if(opa < LV_OPA_MIN) return;
+    if(opa > LV_OPA_MAX) opa = LV_OPA_COVER;
 
     if(font_p == NULL) {
         LV_LOG_WARN("lv_draw_letter: font is NULL");
@@ -101,9 +97,7 @@ void lv_draw_sdl_draw_letter(lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t
     }
 
     /*Don't draw anything if the character is empty. E.g. space*/
-    if((g.box_h == 0) || (g.box_w == 0)) {
-        return;
-    }
+    if((g.box_h == 0) || (g.box_w == 0)) return;
 
     int32_t pos_x = pos_p->x + g.ofs_x;
     int32_t pos_y = pos_p->y + (font_p->line_height - font_p->base_line) - g.box_h - g.ofs_y;

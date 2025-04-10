@@ -122,9 +122,8 @@ static void lv_gif_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
     LV_UNUSED(class_p);
     lv_gif_t * gifobj = (lv_gif_t *) obj;
     lv_img_cache_invalidate_src(&gifobj->imgdsc);
-    if(gifobj->gif) {
+    if(gifobj->gif)
         gd_close_gif(gifobj->gif);
-    }
     lv_timer_del(gifobj->timer);
 }
 
@@ -133,9 +132,7 @@ static void next_frame_task_cb(lv_timer_t * t)
     lv_obj_t * obj = t->user_data;
     lv_gif_t * gifobj = (lv_gif_t *) obj;
     uint32_t elaps = lv_tick_elaps(gifobj->last_call);
-    if(elaps < gifobj->gif->gce.delay * 10) {
-        return;
-    }
+    if(elaps < gifobj->gif->gce.delay * 10) return;
 
     gifobj->last_call = lv_tick_get();
 
@@ -144,9 +141,7 @@ static void next_frame_task_cb(lv_timer_t * t)
         /*It was the last repeat*/
         lv_res_t res = lv_event_send(obj, LV_EVENT_READY, NULL);
         lv_timer_pause(t);
-        if(res != LV_FS_RES_OK) {
-            return;
-        }
+        if(res != LV_FS_RES_OK) return;
     }
 
     gd_render_frame(gifobj->gif, (uint8_t *)gifobj->imgdsc.data);

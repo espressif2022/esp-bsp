@@ -103,9 +103,7 @@ void lv_fragment_del_obj(lv_fragment_t * fragment)
     lv_fragment_manager_del_obj(fragment->child_manager);
     lv_fragment_managed_states_t * states = fragment->managed;
     if(states) {
-        if(!states->obj_created) {
-            return;
-        }
+        if(!states->obj_created) return;
         states->destroying_obj = true;
         bool cb_removed = lv_obj_remove_event_cb(fragment->obj, cb_delete_assertion);
         LV_ASSERT(cb_removed);

@@ -177,15 +177,9 @@ bool lv_slider_is_dragged(const lv_obj_t * obj);
 static inline lv_slider_mode_t lv_slider_get_mode(lv_obj_t * slider)
 {
     lv_bar_mode_t mode = lv_bar_get_mode(slider);
-    if(mode == LV_BAR_MODE_SYMMETRICAL) {
-        return LV_SLIDER_MODE_SYMMETRICAL;
-    }
-    else if(mode == LV_BAR_MODE_RANGE) {
-        return LV_SLIDER_MODE_RANGE;
-    }
-    else {
-        return LV_SLIDER_MODE_NORMAL;
-    }
+    if(mode == LV_BAR_MODE_SYMMETRICAL) return LV_SLIDER_MODE_SYMMETRICAL;
+    else if(mode == LV_BAR_MODE_RANGE) return LV_SLIDER_MODE_RANGE;
+    else return LV_SLIDER_MODE_NORMAL;
 }
 
 /**********************

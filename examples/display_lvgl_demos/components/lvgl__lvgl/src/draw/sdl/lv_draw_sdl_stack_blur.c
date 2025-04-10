@@ -122,8 +122,8 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
 
         for(y = minY; y < maxY; y++) {
             sum_r =
-                sum_in_r =
-                    sum_out_r = 0;
+            sum_in_r =
+            sum_out_r = 0;
 
             src_ptr = src + stride * y; // start of line (0,y)
 
@@ -135,9 +135,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
             }
 
             for(i = 1; i <= radius; i++) {
-                if(i <= wm) {
-                    src_ptr += 1;
-                }
+                if(i <= wm) src_ptr += 1;
                 stack_ptr = &stack[i + radius];
                 stack_ptr[0] = src_ptr[0];
                 sum_r += src_ptr[0] * (radius + 1 - i);
@@ -146,9 +144,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
 
             sp = radius;
             xp = radius;
-            if(xp > wm) {
-                xp = wm;
-            }
+            if(xp > wm) xp = wm;
             src_ptr = src + (xp + y * w); //   img.pix_ptr(xp, y);
             dst_ptr = src + y * stride; // img.pix_ptr(0, y);
             for(x = 0; x < w; x++) {
@@ -158,9 +154,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
                 sum_r -= sum_out_r;
 
                 stack_start = sp + div - radius;
-                if(stack_start >= div) {
-                    stack_start -= div;
-                }
+                if(stack_start >= div) stack_start -= div;
                 stack_ptr = &stack[stack_start];
 
                 sum_out_r -= stack_ptr[0];
@@ -176,9 +170,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
                 sum_r += sum_in_r;
 
                 ++sp;
-                if(sp >= div) {
-                    sp = 0;
-                }
+                if(sp >= div) sp = 0;
                 stack_ptr = &stack[sp];
 
                 sum_out_r += stack_ptr[0];
@@ -195,8 +187,8 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
 
         for(x = minX; x < maxX; x++) {
             sum_r =
-                sum_in_r =
-                    sum_out_r = 0;
+            sum_in_r =
+            sum_out_r = 0;
 
             src_ptr = src + x; // x,0
             for(i = 0; i <= radius; i++) {
@@ -206,9 +198,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
                 sum_out_r += src_ptr[0];
             }
             for(i = 1; i <= radius; i++) {
-                if(i <= hm) {
-                    src_ptr += stride;    // +stride
-                }
+                if(i <= hm) src_ptr += stride;  // +stride
 
                 stack_ptr = &stack[i + radius];
                 stack_ptr[0] = src_ptr[0];
@@ -218,9 +208,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
 
             sp = radius;
             yp = radius;
-            if(yp > hm) {
-                yp = hm;
-            }
+            if(yp > hm) yp = hm;
             src_ptr = src + (x + yp * w); // img.pix_ptr(x, yp);
             dst_ptr = src + x;               // img.pix_ptr(x, 0);
             for(y = 0; y < h; y++) {
@@ -230,9 +218,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
                 sum_r -= sum_out_r;
 
                 stack_start = sp + div - radius;
-                if(stack_start >= div) {
-                    stack_start -= div;
-                }
+                if(stack_start >= div) stack_start -= div;
                 stack_ptr = &stack[stack_start];
 
                 sum_out_r -= stack_ptr[0];
@@ -248,9 +234,7 @@ static void stack_blur_job(lv_opa_t * src, unsigned int w, unsigned int h, unsig
                 sum_r += sum_in_r;
 
                 ++sp;
-                if(sp >= div) {
-                    sp = 0;
-                }
+                if(sp >= div) sp = 0;
                 stack_ptr = &stack[sp];
 
                 sum_out_r += stack_ptr[0];

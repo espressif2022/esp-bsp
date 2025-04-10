@@ -100,9 +100,8 @@ void lv_vglite_set_src_buf_ptr(const lv_color_t * buf)
 
 void lv_vglite_set_src_buf(const lv_color_t * buf, const lv_area_t * area, lv_coord_t stride)
 {
-    if(src_vgbuf.memory != (void *)buf) {
+    if(src_vgbuf.memory != (void *)buf)
         lv_vglite_set_buf(&src_vgbuf, buf, area, stride);
-    }
 }
 
 void lv_vglite_set_buf(vg_lite_buffer_t * vgbuf, const lv_color_t * buf,
