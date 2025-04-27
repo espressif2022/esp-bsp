@@ -185,9 +185,6 @@
                  if(NULL != loader->glyph_offset) {
                      lv_mem_free((void *)loader->glyph_offset);
                  }
-                 if(NULL != loader->header) {
-                     lv_mem_free(loader->fp);
-                 }
                  if(NULL != loader->fp) {
                      lv_fs_close(loader->fp);
                      lv_mem_free(loader->fp);
@@ -359,7 +356,7 @@
  }
  
  static uint8_t * read_glyph_bitmap_data(lv_fs_file_t * fp, uint32_t pos, uint8_t * glyph_bmp,
-                                         uint32_t offset, int nbits, int bmp_size)
+                                         uint32_t offset, uint32_t nbits, int bmp_size)
  {
      lv_fs_res_t res = lv_fs_seek(fp, pos, LV_FS_SEEK_SET);
      if(res != LV_FS_RES_OK) {
@@ -408,17 +405,16 @@
      lv_font_fmt_txt_dsc_t * fdsc = (lv_font_fmt_txt_dsc_t *)fmt_dsc;
      lv_font_fmt_txt_glyph_loader_t * loader = fdsc->loader;
  
-     font_header_bin_t * header = (font_header_bin_t *)loader->header;
-     int32_t glyph_length = loader->glyph_length;
+     uint32_t glyph_nbits = loader->glyph_per_bits;
+     uint32_t glyph_length = loader->glyph_length;
  
-     int offset = gdsc->bitmap_index;
-     int next_offset = (offset < loader->loca_count - 1) ?
-                       loader->glyph_offset[offset + 1] : (uint32_t)glyph_length;
-     int nbits = header->advance_width_bits + 2 * header->xy_bits + 2 * header->wh_bits;
-     int bmp_size = next_offset - loader->glyph_offset[offset] - (nbits / 8);
+     uint32_t offset = gdsc->bitmap_index;
+     uint32_t next_offset = (offset < loader->loca_count - 1) ?
+                            loader->glyph_offset[offset + 1] : glyph_length;
+     int bmp_size = next_offset - loader->glyph_offset[offset] - (glyph_nbits / 8);
  
      return read_glyph_bitmap_data(loader->fp, loader->glyph_start + loader->glyph_offset[offset],
-                                   (uint8_t *)fdsc->glyph_bitmap, 0, nbits, bmp_size);
+                                   (uint8_t *)fdsc->glyph_bitmap, 0, glyph_nbits, bmp_size);
  }
  #endif
  
@@ -512,7 +508,7 @@
      LV_ASSERT_MALLOC(glyph_bmp);
  
      font_dsc->glyph_bitmap = glyph_bmp;
-     
+ 
  #if !LV_USE_FONT_DYNAMIC_LOAD
      cur_bmp_size = 0;
  
@@ -521,7 +517,7 @@
              continue;
          }
  
-         int next_offset = (i < loca_count - 1) ? glyph_offset[i + 1] : glyph_length;
+         int next_offset = (i < loca_count - 1) ? glyph_offset[i + 1] : (uint32_t)glyph_length;
          int bmp_size = next_offset - glyph_offset[i] - (nbits / 8);
  
          if(!read_glyph_bitmap_data(fp, start + glyph_offset[i], glyph_bmp,
@@ -635,7 +631,6 @@
  #if LV_USE_FONT_DYNAMIC_LOAD
      lv_font_fmt_txt_glyph_loader_t * loader = (lv_font_fmt_txt_glyph_loader_t *)
                                                lv_mem_alloc(sizeof(lv_font_fmt_txt_glyph_loader_t));
- 
      LV_ASSERT_MALLOC(loader);
      lv_memset(loader, 0, sizeof(lv_font_fmt_txt_glyph_loader_t));
  
@@ -647,10 +642,7 @@
      loader->glyph_length = glyph_length;
      loader->glyph_offset = glyph_offset;
      loader->get_glyph_bitmap_cb = load_glyph_bitmap;
- 
-     loader->header = lv_mem_alloc(sizeof(font_header_bin_t));
-     LV_ASSERT_MALLOC(loader->header);
-     memcpy(loader->header, &font_header, sizeof(font_header_bin_t));
+     loader->glyph_per_bits = font_header.advance_width_bits + 2 * font_header.xy_bits + 2 * font_header.wh_bits;
  #else
      lv_mem_free(glyph_offset);
  #endif
@@ -687,7 +679,7 @@
          return -1;
      }
  
-     if(0 == kern_format_type) {  /*sorted pairs*/
+     if(0 == kern_format_type) { /*sorted pairs*/
          lv_font_fmt_txt_kern_pair_t * kern_pair = lv_mem_alloc(sizeof(lv_font_fmt_txt_kern_pair_t));
  
          memset(kern_pair, 0, sizeof(lv_font_fmt_txt_kern_pair_t));
@@ -724,7 +716,7 @@
              return -1;
          }
      }
-     else if(3 == kern_format_type) {    /*array M*N of classes*/
+     else if(3 == kern_format_type) { /*array M*N of classes*/
  
          lv_font_fmt_txt_kern_classes_t * kern_classes = lv_mem_alloc(sizeof(lv_font_fmt_txt_kern_classes_t));
  

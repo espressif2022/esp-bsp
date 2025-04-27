@@ -34,6 +34,8 @@ static int64_t last_time = 0;
 static lv_font_t *my_font;
 static lv_obj_t *main_label;
 
+char test[64];
+
 static void timer_callback(TimerHandle_t xTimer)
 {
     int64_t current_time = esp_timer_get_time();
@@ -42,26 +44,30 @@ static void timer_callback(TimerHandle_t xTimer)
     }
     static int i = 0;
     bsp_display_lock(0);
-    // lv_label_set_text(main_label, "T");
-#if 0
-    char test[2] = {i % 26 + 'A', 0};
-    lv_label_set_text(main_label, test);
-#else
-    char test[4];
+
     if (i % 2 == 0) {
-        test[0] = rand() % 26 + 'A'; // Random English letter
-        test[1] = 0;
+        // Random English data
+        const char *english_data[] = {
+            "Temperature: 25°C", 
+            "Humidity: 60%", 
+            "Pressure: 1013 hPa", 
+            "Speed: 15 km/h"
+        };
+        snprintf(test, sizeof(test), "%s", english_data[rand() % (sizeof(english_data) / sizeof(english_data[0]))]);
     } else {
-        uint16_t unicode = 0x4E00 + (rand() % (0x9FA5 - 0x4E00 + 1)); // Random Chinese character
-        // Manually encode to UTF-8
-        test[0] = 0xE0 | ((unicode >> 12) & 0x0F);
-        test[1] = 0x80 | ((unicode >> 6) & 0x3F);
-        test[2] = 0x80 | (unicode & 0x3F);
-        test[3] = 0;
+        // Random Chinese data
+        const char *chinese_data[] = {
+            "温度: 25°C", 
+            "湿度: 60%", 
+            "气压: 1013 hPa", 
+            "速度: 15 km/h"
+        };
+        snprintf(test, sizeof(test), "%s", chinese_data[rand() % (sizeof(chinese_data) / sizeof(chinese_data[0]))]);
     }
+
     printf("label:%s\r\n", test);
     lv_label_set_text(main_label, test);
-#endif
+
     bsp_display_unlock();
     i++;
     last_time = current_time;
@@ -158,7 +164,8 @@ void app_main(void)
         }
     }
 
-#if LOG_MEM_INFO
+// #if LOG_MEM_INFO
+#if 0
     static char buffer[128];    /* Make sure buffer is enough for `sprintf` */
     while (1) {
     // if (1) {

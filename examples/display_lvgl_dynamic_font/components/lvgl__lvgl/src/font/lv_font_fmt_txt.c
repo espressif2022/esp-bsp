@@ -76,7 +76,6 @@ static int32_t kern_pair_16_compare(const void * ref, const void * element);
  * @param unicode_letter a unicode letter which bitmap should be get
  * @return pointer to the bitmap or NULL if not found
  */
-#include<stdio.h>
 const uint8_t * lv_font_get_bitmap_fmt_txt(const lv_font_t * font, uint32_t unicode_letter)
 {
     if(unicode_letter == '\t') unicode_letter = ' ';
